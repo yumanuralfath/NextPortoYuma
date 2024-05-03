@@ -25,7 +25,7 @@ const Homepage = () => {
         <p className="md:text-xl">
           I&apos;m a junior full-stack developer with a primary focus on web
           development. However, I&apos;m also deeply intrigued by mobile app
-          development and artificial intelligence. I thrive on learning new
+          development and artificial intelligence. I on learning new
           skills and am constantly seeking out fresh opportunities to grow and
           contribute.
         </p>
