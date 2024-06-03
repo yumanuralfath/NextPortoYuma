@@ -4,6 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
 import NavLink from "./NavLink";
+import { motion } from "framer-motion";
 
 const links = [
   { url: "/", title: "Home" },
@@ -14,6 +15,36 @@ const links = [
 
 const Navbar = () => {
   const [open, setOpen] = useState(false);
+
+  const topVariants = {
+    closed: {
+      rotate: 0,
+    },
+    openend: {
+      rotate: 45,
+      backgroundColor: "rgb(255,255,255)",
+    },
+  };
+
+  const centerVariants = {
+    closed: {
+      opacity: 1,
+    },
+    openend: {
+      opacity: 0,
+    },
+  };
+
+  const bottomVariants = {
+    closed: {
+      rotate: 0,
+    },
+    openend: {
+      rotate: -45,
+      backgroundColor: "rgb(255,255,255)",
+    },
+  };
+
   return (
     <div className="h-full flex items-center justify-between px-4 sm:px-8 md:px-12 lg:px-20 xl:px-48 text-xl">
       {/* LINKS */}
@@ -71,9 +102,18 @@ const Navbar = () => {
           className="w-10 h-8 flex flex-col justify-between z-50 relative"
           onClick={() => setOpen((prev) => !prev)}
         >
-          <div className="w-10 h-1 bg-white rounded"></div>
-          <div className="w-10 h-1 bg-white rounded"></div>
-          <div className="w-10 h-1 bg-white rounded"></div>
+          <motion.div
+            variants={topVariants}
+            className="w-10 h-1 bg-white rounded"
+          ></motion.div>
+          <motion.div
+            variants={centerVariants}
+            className="w-10 h-1 bg-white rounded"
+          ></motion.div>
+          <motion.div
+            variants={bottomVariants}
+            className="w-10 h-1 bg-white rounded"
+          ></motion.div>
         </button>
         {/* MENU LIST */}
         {open && (
