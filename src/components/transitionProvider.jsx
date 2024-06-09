@@ -1,8 +1,8 @@
 "use client";
 
 import { AnimatePresence, motion } from "framer-motion";
-import Navbar from "./Navbar";
 import { usePathname } from "next/navigation";
+import Navbar from "./navbar";
 
 const routeContent = {
   "/": "Home",
@@ -46,4 +46,3 @@ const TransitionProvider = ({ children }) => {
 };
 
 export default TransitionProvider;
-
