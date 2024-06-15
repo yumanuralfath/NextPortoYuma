@@ -59,7 +59,7 @@ const Navbar = () => {
   };
 
   return (
-    <div className="flex items-center justify-between px-4 sm:px-8 md:px-12 lg:px-20 xl:px-48 text-xl">
+    <div className="fixed top-0 left-0 right-0 z-50 h-16 flex items-center justify-between px-4 sm:px-8 md:px-12 lg:px-20 xl:px-48 text-xl bg-transparent shadow">
       {/* LINKS */}
       <div className="hidden md:flex gap-4 w-1/3">
         {links.map((link) => (
@@ -77,7 +77,6 @@ const Navbar = () => {
             Na
           </span>
         </Link>
-        {/* SOCIAL BUTTON */}
       </div>
       <div className="hidden md:flex gap-4 w-1/3 justify-end">
         <Link href="https://github.com/yumanuralfath" target="_blank">
@@ -137,11 +136,13 @@ const Navbar = () => {
             variants={listVariants}
             initial="closed"
             animate="openend"
-            className="absolute top-0 left-0 w-screen h-screen bg-black text-white flex flex-col items-center justify-center gap-8 text-4xl z-40"
+            className="fixed top-0 left-0 w-screen h-screen bg-black text-white flex flex-col items-center justify-center gap-8 text-4xl z-40"
           >
             {links.map((link) => (
-              <motion.div variants={listVariants} className="" key={link.title}>
-                <Link href={link.url}>{link.title}</Link>
+              <motion.div variants={listVariants} key={link.title}>
+                <Link href={link.url} onClick={() => setOpen(false)}>
+                  {link.title}
+                </Link>
               </motion.div>
             ))}
           </motion.div>

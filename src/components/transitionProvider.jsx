@@ -24,7 +24,7 @@ const TransitionProvider = ({ children }) => {
           initial={{ opacity: 1, height: "100vh" }}
           animate={{ opacity: 0, height: "0vh" }}
           exit={{ opacity: 1, height: "100vh" }}
-          transition={{ duration: 0.5, ease: "easeInOut" }}
+          transition={{ duration: 1, ease: "easeInOut" }}
           className="fixed top-0 left-0 right-0 bottom-0 bg-black z-50 flex items-center justify-center"
         >
           <motion.div
@@ -38,7 +38,10 @@ const TransitionProvider = ({ children }) => {
           </motion.div>
         </motion.div>
       </AnimatePresence>
-      <div className="relative h-[calc(100vh-6rem)] z-10 flex items-center justify-center">
+      <div
+        className="relative z-10 flex items-center justify-center"
+        style={{ height: "calc(100vh - 6rem)", paddingTop: "4rem" }}
+      >
         {children}
       </div>
     </div>
