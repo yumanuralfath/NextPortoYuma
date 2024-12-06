@@ -2,7 +2,6 @@
 "use client";
 
 import Image from "next/image";
-import { ReactTyped } from "react-typed";
 import Tilt from "react-parallax-tilt";
 
 const Homepage = () => {
@@ -29,18 +28,6 @@ const Homepage = () => {
             Hello, I'm <br />
             Yuma Nur Alfath
           </h1>
-          {/* SUBTITLE */}
-          <ReactTyped
-            strings={[
-              "I Am Into Frontend Developer",
-              "I Am Into Backend Developer",
-              "I Am Into FullStack Web Dev",
-            ]}
-            typeSpeed={40}
-            backSpeed={30}
-            loop
-            className="md:text-xl"
-          />
           {/* BUTTON */}
           <div className="w-full flex flex-col lg:flex-row gap-4 justify-center lg:justify-start">
             <button className="p-4 rounded-lg ring-1 ring-black bg-black text-white hover:bg-white hover:text-black transition-colors">
