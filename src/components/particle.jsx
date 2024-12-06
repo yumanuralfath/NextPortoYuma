@@ -39,21 +39,17 @@ const Particle = () => {
                   quantity: 4,
                 },
                 repulse: {
-                  distance: 200,
+                  distance: 100,
                   duration: 0.4,
                 },
               },
             },
             particles: {
               color: {
-                value: "#111827",
+                value: "#000000", // Black particles
               },
               links: {
-                color: "#111827",
-                distance: 150,
-                enable: true,
-                opacity: 0.5,
-                width: 1,
+                enable: false, // Disable links between particles
               },
               move: {
                 direction: "none",
@@ -61,8 +57,8 @@ const Particle = () => {
                 outModes: {
                   default: "bounce",
                 },
-                random: false,
-                speed: 2,
+                random: true, // Random movement for a more dynamic effect
+                speed: 2, // Moderate speed for a smooth effect
                 straight: false,
               },
               number: {
@@ -70,19 +66,22 @@ const Particle = () => {
                   enable: true,
                   area: 800,
                 },
-                value: 80,
+                value: 100, // Number of particles
               },
               opacity: {
-                value: 0.5,
+                value: 0.7, // Slightly transparent for a softer look
               },
               shape: {
-                type: "circle",
+                type: ["circle", "triangle"], // Use circle and triangle shapes for variety
               },
               size: {
-                value: { min: 1, max: 5 },
+                value: { min: 1, max: 5 }, // Size range for particles
               },
             },
             detectRetina: true,
+            background: {
+              color: "#ffffff", // White background
+            },
           }}
         />
       )}
