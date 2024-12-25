@@ -6,8 +6,8 @@ import Particle from "@/components/particle";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata = {
-  title: "Yuma Next Portofolio",
-  description: " Yuma Next Portofolio with framer motion",
+  title: "Yuma Nur Alfath | Portfolio Website",
+  description: "Yuma Nur Alfath Portfolio Website with Next.js and Rocker",
 };
 
 export default function RootLayout({ children }) {
