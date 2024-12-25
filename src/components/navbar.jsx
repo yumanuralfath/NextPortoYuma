@@ -9,8 +9,8 @@ import { motion } from "framer-motion";
 const links = [
   { url: "/", title: "Home" },
   { url: "/about", title: "About" },
-  { url: "/portofolio", title: "Portofolio" },
-  { url: "/contact", title: "Contact" },
+  { url: "/blog", title: "Blog" },
+  { url: "/pictoria", title: "Pictoria" },
 ];
 
 const Navbar = () => {
