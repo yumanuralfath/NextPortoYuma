@@ -41,7 +41,7 @@ const Homepage = () => {
             <Link href="/project">View My Projects</Link>
           </button>
           <button className="p-4 px-6 rounded-lg ring-1 ring-gray-300 bg-white text-gray-800 font-semibold hover:bg-gray-100 hover:ring-gray-400 transition-all shadow-md hover:shadow-lg">
-            <Link href="https://wa.me/082268975635">Contact Me</Link>
+            <Link href="https://wa.me/6282268975635">Contact Me</Link>
           </button>
         </div>
       </div>
