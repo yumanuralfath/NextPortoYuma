@@ -3,6 +3,7 @@
 
 import Image from "next/image";
 import Tilt from "react-parallax-tilt";
+import Link from "next/link";
 
 const Homepage = () => {
   return (
@@ -37,10 +38,10 @@ const Homepage = () => {
         {/* BUTTON */}
         <div className="w-full flex flex-col lg:flex-row gap-4 justify-center lg:justify-start">
           <button className="p-4 px-6 rounded-lg ring-1 ring-gray-300 bg-gradient-to-r from-blue-500 to-purple-500 text-white font-semibold hover:from-purple-500 hover:to-blue-500 hover:ring-gray-400 transition-all shadow-md hover:shadow-lg">
-            View My Projects
+            <Link href="/project">View My Projects</Link>
           </button>
           <button className="p-4 px-6 rounded-lg ring-1 ring-gray-300 bg-white text-gray-800 font-semibold hover:bg-gray-100 hover:ring-gray-400 transition-all shadow-md hover:shadow-lg">
-            Contact Me
+            <Link href="https://wa.me/082268975635">Contact Me</Link>
           </button>
         </div>
       </div>
