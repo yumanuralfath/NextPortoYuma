@@ -7,41 +7,40 @@ import Navbar from "./navbar";
 const routeContent = {
   "/": "Home",
   "/blog": "Blog",
-  "/portofolio": "Portfolio",
-  "/project": "Project",
-  "/pictoria": "Pictoria",
+  "/codex": "Codex",
 };
 
 const TransitionProvider = ({ children }) => {
   const pathName = usePathname();
-  const content = routeContent[pathName] || "Loading...";
+  const content = routeContent[pathName];
+  const shouldAnimate = Object.keys(routeContent).includes(pathName);
 
   return (
     <div className="relative w-screen h-screen">
       <Navbar />
-      <AnimatePresence mode="wait">
-        <motion.div
-          key={pathName}
-          initial={{ opacity: 1, height: "100vh" }}
-          animate={{ opacity: 0, height: "0vh" }}
-          exit={{ opacity: 1, height: "100vh" }}
-          transition={{ duration: 1, ease: "easeInOut" }}
-          className="fixed top-0 left-0 right-0 bottom-0 bg-black z-50 flex items-center justify-center"
-        >
+      {shouldAnimate ? (
+        <AnimatePresence mode="wait">
           <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.5 }}
-            className="text-white text-4xl"
+            key={pathName}
+            initial={{ opacity: 1, height: "100vh" }}
+            animate={{ opacity: 0, height: "0vh" }}
+            exit={{ opacity: 1, height: "100vh" }}
+            transition={{ duration: 1, ease: "easeInOut" }}
+            className="fixed top-0 left-0 right-0 bottom-0 bg-black z-50 flex items-center justify-center"
           >
-            {content}
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.5 }}
+              className="text-white text-4xl"
+            >
+              {content}
+            </motion.div>
           </motion.div>
-        </motion.div>
-      </AnimatePresence>
-      <div
-        className="relative z-10 w-full h-full overflow-y-auto"
-      >
+        </AnimatePresence>
+      ) : null}
+      <div className="relative z-10 w-full h-full overflow-y-auto">
         {children}
       </div>
     </div>
