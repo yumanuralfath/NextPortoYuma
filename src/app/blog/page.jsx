@@ -22,17 +22,16 @@ const BlogPage = () => {
     };
   });
 
-  // Urutkan post berdasarkan tanggal terbaru
   const sortedPosts = posts.sort((a, b) => new Date(b.date) - new Date(a.date));
 
   return (
     <div className="min-h-screen p-8 pt-24 bg-gradient-to-br from-indigo-50 via-white to-gray-100">
       <div className="max-w-7xl mx-auto">
         <h1 className="text-6xl font-extrabold text-center mb-6 bg-gradient-to-r from-purple-600 to-blue-500 bg-clip-text text-transparent drop-shadow-lg">
-          Explore Our Blog
+          Explore My Notes
         </h1>
         <p className="text-gray-700 text-center mb-16 text-lg font-medium">
-          Insights, tutorials, and inspiration for web enthusiasts
+          Random thoughts and ideas about programming and life
         </p>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12">

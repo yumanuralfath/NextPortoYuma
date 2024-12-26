@@ -6,9 +6,10 @@ import Navbar from "./navbar";
 
 const routeContent = {
   "/": "Home",
-  "/about": "About",
+  "/blog": "Blog",
   "/portofolio": "Portfolio",
-  "/contact": "Contact",
+  "/project": "Project",
+  "/pictoria": "Pictoria",
 };
 
 const TransitionProvider = ({ children }) => {
@@ -39,8 +40,7 @@ const TransitionProvider = ({ children }) => {
         </motion.div>
       </AnimatePresence>
       <div
-        className="relative z-10 flex items-center justify-center"
-        style={{ height: "calc(100vh - 6rem)", paddingTop: "4rem" }}
+        className="relative z-10 w-full h-full overflow-y-auto"
       >
         {children}
       </div>
