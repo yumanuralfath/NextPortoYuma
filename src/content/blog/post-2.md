@@ -11,7 +11,7 @@ image: "https://picsum.photos/id/134/360/200"
 ---
 Feature on progress
 
-![test gambar](https://picsum.photos/id/121/360/200)
+![test gambar](https://picsum.photos/id/54/360/200 "test")
 
 ## What is Lorem Ipsum?
 
