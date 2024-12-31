@@ -3,7 +3,7 @@ import { NextResponse } from 'next/server';
 export function middleware(request) {
   const token = request.cookies.get('token');
 
-  if (!token && request.nextUrl.pathname.startsWith('/dashboard')) {
+  if (!token && request.nextUrl.pathname.startsWith('/threaded')) {
     return NextResponse.redirect(new URL('/codex', request.url));
   }
 
@@ -11,5 +11,5 @@ export function middleware(request) {
 }
 
 export const config = {
-  matcher: '/dashboard/:path*'
+  matcher: '/threaded/:path*'
 };

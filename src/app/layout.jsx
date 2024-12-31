@@ -6,7 +6,8 @@ const inter = Inter({ subsets: ["latin"] });
 
 export const metadata = {
   title: "Yuma Nur Alfath | Portfolio Website",
-  description: "Yuma Nur Alfath Portfolio Website with Next.js and Rocker",
+  description:
+    "Yuma Nur Alfath Portfolio Website with Next.js and Rocket Rust Framework",
 };
 
 export default function RootLayout({ children }) {
