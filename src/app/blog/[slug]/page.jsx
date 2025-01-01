@@ -3,7 +3,8 @@ import path from "path";
 import matter from "gray-matter";
 import { marked } from "marked";
 
-export async function generateMetadata({ params }) {
+export async function generateMetadata(props) {
+  const params = await props.params;
   const { slug } = params;
   const filePath = path.join(process.cwd(), "src/content/blog", `${slug}.md`);
   const fileContent = fs.readFileSync(filePath, "utf-8");

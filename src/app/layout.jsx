@@ -7,7 +7,7 @@ const inter = Inter({ subsets: ["latin"] });
 export const metadata = {
   title: {
     default: "Yuma Nur Alfath | Portfolio Website",
-    template: "%s - Yuma Nur Alfath | Portfolio Website",
+    template: "%s - Yuma Nur Alfath",
   },
   description:
     "Yuma Nur Alfath Portfolio Website build with Next.js and Rocket Rust Framework",
