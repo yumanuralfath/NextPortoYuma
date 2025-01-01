@@ -7,7 +7,8 @@ export const metadata = {
   title: "Blog Post",
 };
 
-const BlogPost = ({ params }) => {
+const BlogPost = async props => {
+  const params = await props.params;
   const { slug } = params;
   const filePath = path.join(process.cwd(), "src/content/blog", `${slug}.md`);
   const fileContent = fs.readFileSync(filePath, "utf-8");
