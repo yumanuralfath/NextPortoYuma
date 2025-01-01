@@ -4,6 +4,10 @@ import matter from "gray-matter";
 import Link from "next/link";
 import Image from "next/image";
 
+export const metadata = {
+  title: "Blog",
+};
+
 const BlogPage = () => {
   const blogDir = path.join(process.cwd(), "src/content/blog");
   const files = fs.readdirSync(blogDir);

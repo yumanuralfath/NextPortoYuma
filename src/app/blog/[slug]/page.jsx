@@ -3,6 +3,10 @@ import path from "path";
 import matter from "gray-matter";
 import { marked } from "marked";
 
+export const metadata = {
+  title: "Blog Post",
+};
+
 const BlogPost = ({ params }) => {
   const { slug } = params;
   const filePath = path.join(process.cwd(), "src/content/blog", `${slug}.md`);
