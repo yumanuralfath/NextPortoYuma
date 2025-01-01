@@ -3,11 +3,26 @@ import path from "path";
 import matter from "gray-matter";
 import { marked } from "marked";
 
-export const metadata = {
-  title: "Blog Post",
-};
+export async function generateMetadata({ params }) {
+  const { slug } = params;
+  const filePath = path.join(process.cwd(), "src/content/blog", `${slug}.md`);
+  const fileContent = fs.readFileSync(filePath, "utf-8");
+  const { data: frontMatter } = matter(fileContent);
 
-const BlogPost = async props => {
+  return {
+    title: frontMatter.title,
+    description: frontMatter.excerpt,
+    openGraph: {
+      images: [
+        {
+          url: frontMatter.image,
+        },
+      ],
+    },
+  };
+}
+
+const BlogPost = async (props) => {
   const params = await props.params;
   const { slug } = params;
   const filePath = path.join(process.cwd(), "src/content/blog", `${slug}.md`);

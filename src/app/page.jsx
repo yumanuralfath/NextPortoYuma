@@ -17,6 +17,7 @@ const Homepage = () => {
               alt="Hero Icon"
               className="grayscale rounded-full shadow-lg transition-all duration-300 ease-in-out hover:shadow-2xl hover:scale-105 hover:grayscale-0"
               fill
+              sizes="(max-width: 1024px) 20rem, (max-width: 1280px) 25rem, 30rem"
               style={{ objectFit: "cover" }}
             />
           </div>
