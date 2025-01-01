@@ -1,14 +1,13 @@
 import fs from "fs";
 import path from "path";
 import matter from "gray-matter";
-import Link from "next/link";
-import Image from "next/image";
 
-export const metadata = {
-  title: "Blog",
-};
+const POSTS_PER_PAGE = 6;
 
-const BlogPage = () => {
+export default async function BlogPage({ searchParams }) {
+  // Ambil halaman saat ini dari query parameter
+  const currentPage = parseInt(searchParams.page) || 1;
+
   const blogDir = path.join(process.cwd(), "src/content/blog");
   const files = fs.readdirSync(blogDir);
 
@@ -28,6 +27,15 @@ const BlogPage = () => {
 
   const sortedPosts = posts.sort((a, b) => new Date(b.date) - new Date(a.date));
 
+  // Hitung jumlah total halaman
+  const totalPages = Math.ceil(sortedPosts.length / POSTS_PER_PAGE);
+
+  // Ambil data post untuk halaman saat ini
+  const currentPosts = sortedPosts.slice(
+    (currentPage - 1) * POSTS_PER_PAGE,
+    currentPage * POSTS_PER_PAGE
+  );
+
   return (
     <div className="min-h-screen p-8 pt-24 bg-gradient-to-br from-indigo-50 via-white to-gray-100">
       <div className="max-w-7xl mx-auto">
@@ -38,16 +46,15 @@ const BlogPage = () => {
           Random thoughts and ideas about programming and life
         </p>
 
+        {/* Konten blog */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12">
-          {sortedPosts.map((post) => (
-            <Link href={`/blog/${post.slug}`} key={post.slug} className="group">
+          {currentPosts.map((post) => (
+            <div key={post.slug} className="group">
               <div className="bg-white rounded-2xl shadow-md overflow-hidden transform hover:scale-105 hover:shadow-xl transition-all duration-300">
                 <div className="relative h-56 overflow-hidden">
-                  <Image
+                  <img
                     src={post.image}
                     alt={post.title}
-                    width={400}
-                    height={200}
                     className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent opacity-75 group-hover:opacity-50 transition-opacity duration-300" />
@@ -72,12 +79,35 @@ const BlogPage = () => {
                   </p>
                 </div>
               </div>
-            </Link>
+            </div>
           ))}
+        </div>
+
+        {/* Pagination */}
+        <div className="mt-8 flex justify-center items-center gap-4">
+          {currentPage > 1 && (
+            <a
+              href={`?page=${currentPage - 1}`}
+              className="px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white rounded-lg"
+            >
+              Previous
+            </a>
+          )}
+
+          <span className="text-lg font-semibold text-gray-700">
+            Page {currentPage} of {totalPages}
+          </span>
+
+          {currentPage < totalPages && (
+            <a
+              href={`?page=${currentPage + 1}`}
+              className="px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white rounded-lg"
+            >
+              Next
+            </a>
+          )}
         </div>
       </div>
     </div>
   );
-};
-
-export default BlogPage;
+}

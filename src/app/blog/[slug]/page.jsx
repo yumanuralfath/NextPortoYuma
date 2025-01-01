@@ -14,11 +14,26 @@ export async function generateMetadata(props) {
     title: frontMatter.title,
     description: frontMatter.excerpt,
     openGraph: {
+      title: frontMatter.title,
+      description: frontMatter.excerpt,
+      url: "https://yumana.my.id/blog",
+      siteName: "Yuma Nur Alfath blog Website",
       images: [
         {
           url: frontMatter.image,
+          width: 800,
+          height: 600,
         },
       ],
+      locale: "id_ID",
+      alternateLocale: ["en_US"],
+      type: "website",
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: frontMatter.title,
+      description: frontMatter.excerpt,
+      images: [frontMatter.image],
     },
   };
 }

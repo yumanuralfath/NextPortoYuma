@@ -21,7 +21,7 @@ const ProjectPage = () => {
       description: "Website warehouse with Next.js",
       image: "/baby_warehouse.png",
       tech: ["Next.js", "Tailwind", "Vercel"],
-      github: "https://github.com/BM-Warehouse/Client",
+      github: "https://github.com/BM-Warehouse",
       demo: "https://www.bmwarehouse.my.id/",
     },
   ];
