@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { motion } from "framer-motion";
-import { loginService, registerService } from "@/lib/auth";
+import { loginService, registerService } from "../../lib/auth";
 import { useRouter } from "next/navigation";
 
 const CodexPage = () => {
