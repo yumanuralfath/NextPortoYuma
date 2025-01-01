@@ -7,7 +7,7 @@ category: "Tutorial"
 
 excerpt: "Panduan lengkap memulai pengembangan web dengan Next.js"
 
-image: "https://picsum.photos/id/8/360/200"
+image: "https://picsum.photos/id/8/400/200"
 ---
 ![test](https://picsum.photos/id/6/360/200)
 
@@ -30,7 +30,6 @@ Untuk membuat proyek Next.js baru, jalankan perintah berikut:
 ```bash
 npx create-next-app@latest my-next-app
 ```
-
 
 ## Struktur Proyek
 

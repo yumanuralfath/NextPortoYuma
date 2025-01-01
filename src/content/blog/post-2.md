@@ -7,7 +7,7 @@ category: "Tutorial"
 
 excerpt: "Panduan lengkap memulai pengembangan web dengan Next.js"
 
-image: "https://picsum.photos/id/134/360/200"
+image: "https://picsum.photos/id/134/400/200"
 ---
 Feature on progress
 

@@ -1,10 +1,35 @@
 import fs from "fs";
 import path from "path";
 import matter from "gray-matter";
+import Link from "next/link";
+import Image from "next/image";
 
 const POSTS_PER_PAGE = 6;
 
-export default async function BlogPage({ searchParams }) {
+export const metadata = {
+  title: "Blog",
+  description:
+    "Blog with random thoughts and ideas but mostly about technology",
+  openGraph: {
+    title: "Yuma Nur Alfath Blog Site",
+    description:
+      "Blog with random thoughts and ideas but mostly about technology",
+    url: "https://yumana.my.id/blog",
+    siteName: "Yuma Nur Alfath Website Blog",
+    images: [
+      {
+        url: "https://yumana.my.id/hero_metadata.png",
+        width: 800,
+        height: 600,
+      },
+    ],
+    locale: "id_ID",
+    type: "website",
+  },
+};
+
+export default async function BlogPage(props) {
+  const searchParams = await props.searchParams;
   // Ambil halaman saat ini dari query parameter
   const currentPage = parseInt(searchParams.page) || 1;
 
@@ -37,40 +62,42 @@ export default async function BlogPage({ searchParams }) {
   );
 
   return (
-    <div className="min-h-screen p-8 pt-24 bg-gradient-to-br from-indigo-50 via-white to-gray-100">
+    <div className="min-h-screen p-8 pt-20 bg-gradient-to-br from-indigo-50 via-white to-gray-100">
       <div className="max-w-7xl mx-auto">
         <h1 className="text-6xl font-extrabold text-center mb-6 bg-gradient-to-r from-purple-600 to-blue-500 bg-clip-text text-transparent drop-shadow-lg">
           Explore My Notes
         </h1>
-        <p className="text-gray-700 text-center mb-16 text-lg font-medium">
+        <p className="text-gray-700 text-center mb-8 text-lg font-medium">
           Random thoughts and ideas about programming and life
         </p>
 
         {/* Konten blog */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {currentPosts.map((post) => (
-            <div key={post.slug} className="group">
+            <Link href={`/blog/${post.slug}`} key={post.slug} className="group">
               <div className="bg-white rounded-2xl shadow-md overflow-hidden transform hover:scale-105 hover:shadow-xl transition-all duration-300">
-                <div className="relative h-56 overflow-hidden">
-                  <img
+                <div className="relative h-48 overflow-hidden">
+                  <Image
                     src={post.image}
                     alt={post.title}
+                    width={400}
+                    height={200}
                     className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent opacity-75 group-hover:opacity-50 transition-opacity duration-300" />
                 </div>
 
-                <div className="p-6">
-                  <div className="flex items-center gap-2 mb-3">
-                    <span className="px-3 py-1 text-xs font-semibold bg-purple-100 text-purple-700 rounded-full">
+                <div className="p-4">
+                  <div className="flex items-center gap-2 mb-2">
+                    <span className="px-2 py-1 text-xs font-semibold bg-purple-100 text-purple-700 rounded-full">
                       {post.category}
                     </span>
-                    <span className="text-sm text-gray-500">
+                    <span className="text-xs text-gray-500">
                       {new Date(post.date).toLocaleDateString()}
                     </span>
                   </div>
 
-                  <h2 className="text-2xl font-bold text-gray-800 mb-3 transition-colors duration-300 group-hover:text-purple-600">
+                  <h2 className="text-lg font-bold text-gray-800 mb-2 transition-colors duration-300 group-hover:text-purple-600">
                     {post.title}
                   </h2>
 
@@ -79,7 +106,7 @@ export default async function BlogPage({ searchParams }) {
                   </p>
                 </div>
               </div>
-            </div>
+            </Link>
           ))}
         </div>
 
