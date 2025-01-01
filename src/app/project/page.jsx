@@ -22,7 +22,7 @@ const ProjectPage = () => {
       image: "/baby_warehouse.png",
       tech: ["Next.js", "Tailwind", "Vercel"],
       github: "https://github.com/BM-Warehouse/Client",
-      demo: "https://bmwarehouse.vercel.app/",
+      demo: "https://www.bmwarehouse.my.id/",
     },
   ];
 
