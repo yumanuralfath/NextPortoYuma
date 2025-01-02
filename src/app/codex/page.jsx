@@ -4,12 +4,12 @@ import { useState } from "react";
 import { motion } from "framer-motion";
 import { loginService, registerService } from "../../lib/auth";
 import { useRouter } from "next/navigation";
+import { Success, ErrorMessage } from "@/lib/sweetalert";
 
 const CodexPage = () => {
   const router = useRouter();
   const [isLogin, setIsLogin] = useState(true);
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
   const [formData, setFormData] = useState({
     email: "",
     password: "",
@@ -26,30 +26,32 @@ const CodexPage = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
-    setError(null);
 
     try {
       let response;
       if (isLogin) {
         const { email, password } = formData;
         response = await loginService({ email, password });
-      } else {
-        response = await registerService(formData);
-      }
+        localStorage.setItem("token", response.token);
+        localStorage.setItem("user", JSON.stringify(response.user));
+        Success("Login successfully");
 
-      localStorage.setItem("token", response.token);
-      localStorage.setItem("user", JSON.stringify(response.user));
-      router.push("/threaded/profile");
+        router.push("/threaded/profile");
+      } else {
+        await registerService(formData);
+        Success("Register successfully");
+        window.location.reload();
+      }
     } catch (err) {
-      setError(err.message);
+      ErrorMessage(err.message);
     } finally {
       setLoading(false);
     }
   };
 
   const getButtonText = (loading, isLogin) => {
-    if (loading) return "Memproses...";
-    return isLogin ? "Login ke Codex" : "Daftar Akun Baru";
+    if (loading) return "loading...";
+    return isLogin ? "Login Codex" : "Register Codex";
   };
 
   const getButtonClassName = (isCurrentLogin, isLoginButton) => {
@@ -94,12 +96,6 @@ const CodexPage = () => {
               transition={{ duration: 0.3 }}
               className="p-8"
             >
-              {error && (
-                <div className="mb-4 p-3 bg-red-100 text-red-700 rounded-lg">
-                  {error}
-                </div>
-              )}
-
               <form onSubmit={handleSubmit} className="space-y-6">
                 {!isLogin && (
                   <div>
@@ -115,7 +111,7 @@ const CodexPage = () => {
                       value={formData.username}
                       onChange={handleChange}
                       className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-purple-500 focus:border-transparent outline-none transition-all"
-                      placeholder="Masukkan username Anda"
+                      placeholder="Please enter your username"
                     />
                   </div>
                 )}
@@ -133,7 +129,7 @@ const CodexPage = () => {
                     value={formData.email}
                     onChange={handleChange}
                     className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-purple-500 focus:border-transparent outline-none transition-all"
-                    placeholder="Masukkan email Anda"
+                    placeholder="Please enter your email"
                   />
                 </div>
 
@@ -150,7 +146,7 @@ const CodexPage = () => {
                     value={formData.password}
                     onChange={handleChange}
                     className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-purple-500 focus:border-transparent outline-none transition-all"
-                    placeholder="Masukkan password Anda"
+                    placeholder="Please enter your password"
                   />
                 </div>
 

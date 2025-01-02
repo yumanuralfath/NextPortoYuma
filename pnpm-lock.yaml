@@ -35,6 +35,9 @@ importers:
       sharp:
         specifier: ^0.33.5
         version: 0.33.5
+      sweetalert2:
+        specifier: ^11.15.8
+        version: 11.15.8
     devDependencies:
       '@types/node':
         specifier: 22.10.3
@@ -1680,6 +1683,9 @@ packages:
   supports-preserve-symlinks-flag@1.0.0:
     resolution: {integrity: sha512-ot0WnXS9fgdkgIcePe6RHNk1WA8+muPa6cSjeR3V8K27q9BB1rTE3R1p7Hv0z1ZyAc8s6Vvv8DIyWf681MAt0w==}
     engines: {node: '>= 0.4'}
+
+  sweetalert2@11.15.8:
+    resolution: {integrity: sha512-6HkGbI7yftv+ZWCQvAOj7CUdN5u5ySNh6fU+NVXs9NWs8rL5X2HvNsE6xM8Xeer6khDhddhAffL2x6PUs3eS3g==}
 
   tailwindcss@3.3.0:
     resolution: {integrity: sha512-hOXlFx+YcklJ8kXiCAfk/FMyr4Pm9ck477G0m/us2344Vuj355IpoEDB5UmGAsSpTBmr+4ZhjzW04JuFXkb/fw==}
@@ -3622,6 +3628,8 @@ snapshots:
       has-flag: 4.0.0
 
   supports-preserve-symlinks-flag@1.0.0: {}
+
+  sweetalert2@11.15.8: {}
 
   tailwindcss@3.3.0(postcss@8.4.49):
     dependencies:

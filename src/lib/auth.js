@@ -12,7 +12,7 @@ export const loginService = async (credentials) => {
   const data = await response.json();
 
   if (!response.ok) {
-    throw new Error(data.message || 'Login gagal');
+    throw new Error(data.message || 'Login Failed');
   }
 
   return data;
@@ -30,7 +30,7 @@ export const registerService = async (userData) => {
   const data = await response.json();
 
   if (!response.ok) {
-    throw new Error(data.message || 'Registrasi gagal');
+    throw new Error(data.message || 'Failed Register');
   }
 
   return data;
