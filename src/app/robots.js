@@ -4,7 +4,6 @@ export default function robots() {
       {
         userAgent: "*",
         allow: "/",
-        disallow: ["/codex"]
       }
     ],
     sitemap: `${process.env.NEXT_PUBLIC_BASE_URL}/sitemap.xml`

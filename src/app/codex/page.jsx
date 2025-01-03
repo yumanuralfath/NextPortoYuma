@@ -34,13 +34,14 @@ const CodexPage = () => {
         response = await loginService({ email, password });
         localStorage.setItem("token", response.token);
         localStorage.setItem("user", JSON.stringify(response.user));
-        Success("Login successfully");
-
-        router.push("/threaded/profile");
+        Success("Login successfully").then(() => {
+          router.push("/threaded/profile");
+        });
       } else {
         await registerService(formData);
-        Success("Register successfully");
-        window.location.reload();
+        Success("Register successfully").then(() => {
+          window.location.reload();
+        });
       }
     } catch (err) {
       ErrorMessage(err.message);

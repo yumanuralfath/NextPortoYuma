@@ -1,4 +1,4 @@
-import Swal from "sweetalert2";
+import Swal from 'sweetalert2';
 
 export const Toast = Swal.mixin({
   toast: true,
@@ -12,12 +12,12 @@ export const Toast = Swal.mixin({
   },
 });
 
-
-export const Success = (title) => {
-  Toast.fire({
+export const Success = async (title) => {
+  const result = await Toast.fire({
     icon: "success",
     title: title,
   });
+  return result;
 };
 
 export const ErrorMessage = (title) => {
