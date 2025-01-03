@@ -32,8 +32,8 @@ const ProfilePage = () => {
           <div className="flex flex-col items-center mb-8">
             <div className="relative w-32 h-32 mb-4">
               <Image
-                src="/default-avatar.png"
-                alt="Profile"
+                src={user.profile_picture_url}
+                alt="Profile Picture"
                 fill
                 className="rounded-full object-cover"
               />
@@ -61,7 +61,13 @@ const ProfilePage = () => {
               </div>
             </div>
 
-            <div className="flex justify-end pt-6">
+            <div className="flex justify-between pt-6">
+              <button
+                onClick={() => router.push("/threaded")}
+                className="px-6 py-3 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors"
+              >
+                Thread
+              </button>
               <button
                 onClick={handleLogout}
                 className="px-6 py-3 bg-red-500 text-white rounded-lg hover:bg-red-600 transition-colors"
