@@ -1,6 +1,7 @@
 import { Inter } from "next/font/google";
 import "./globals.css";
 import TransitionProvider from "../components/transitionProvider";
+import { Analytics } from "@vercel/analytics/next";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -42,6 +43,7 @@ export default function RootLayout({ children }) {
       <meta name="p:domain_verify" content="c801e44222b4e6bc238e8714a4e171de" />
       <body className={inter.className}>
         <TransitionProvider> {children} </TransitionProvider>
+        <Analytics />
       </body>
     </html>
   );
