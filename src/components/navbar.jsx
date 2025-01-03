@@ -12,6 +12,34 @@ const links = [
   { url: "/codex", title: "Codex" },
 ];
 
+const socialLinks = [
+  {
+    url: "https://github.com/yumanuralfath",
+    icon: "/github.png",
+    alt: "Github Icon",
+  },
+  {
+    url: "https://linkedin.com/in/yumana/",
+    icon: "/linkedin.png",
+    alt: "Linkedin Icon",
+  },
+  {
+    url: "https://www.instagram.com/yumana20",
+    icon: "/instagram.png",
+    alt: "Instagram Icon",
+  },
+  {
+    url: "https://web.facebook.com/yuma.nuralfath/",
+    icon: "/facebook.png",
+    alt: "Facebook Icon",
+  },
+  {
+    url: "https://discordapp.com/users/393721612358254592",
+    icon: "/discord.png",
+    alt: "Discord Icon",
+  },
+];
+
 const Navbar = () => {
   const [open, setOpen] = useState(false);
 
@@ -78,33 +106,11 @@ const Navbar = () => {
         </Link>
       </div>
       <div className="hidden md:flex gap-4 w-1/3 justify-end">
-        <Link href="https://github.com/yumanuralfath" target="_blank">
-          <Image src="/github.png" alt="Github Icon" width={24} height={24} />
-        </Link>
-        <Link href="https://linkedin.com/in/yumana/" target="_blank">
-          <Image
-            src="/linkedin.png"
-            alt="Linkedin Icon"
-            width={24}
-            height={24}
-          />
-        </Link>
-        <Link href="https://www.instagram.com/yumana20" target="_blank">
-          <Image
-            src="/instagram.png"
-            alt="Instagram Icon"
-            width={24}
-            height={24}
-          />
-        </Link>
-        <Link href="https://web.facebook.com/yuma.nuralfath/" target="_blank">
-          <Image
-            src="/facebook.png"
-            alt="Facebook Icon"
-            width={24}
-            height={24}
-          />
-        </Link>
+        {socialLinks.map((social) => (
+          <Link href={social.url} target="_blank" key={social.alt}>
+            <Image src={social.icon} alt={social.alt} width={24} height={24} />
+          </Link>
+        ))}
       </div>
       {/* Responsive Menu */}
       <div className="md:hidden">
@@ -144,6 +150,18 @@ const Navbar = () => {
                 </Link>
               </motion.div>
             ))}
+            <div className="flex gap-4 mt-8">
+              {socialLinks.map((social) => (
+                <Link href={social.url} target="_blank" key={social.alt}>
+                  <Image
+                    src={social.icon}
+                    alt={social.alt}
+                    width={32}
+                    height={32}
+                  />
+                </Link>
+              ))}
+            </div>
           </motion.div>
         )}
       </div>

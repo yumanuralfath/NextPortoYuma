@@ -16,22 +16,16 @@ image: "/web-app-manifest-512x512.png"
 
 ## **Perkenalkan Saya Yuma✨**
 
-Halo semuanya! 👋 Nama saya Yuma Nur Alfath, dan saya ingin berbagi sedikit tentang perjalanan saya di dunia kimia dan teknologi. Saya baru saja menyelesaikan gelar Sarjana di bidang Kimia di Universitas Andalas. 🎉
+Halo semua! Selamat datang di blog pribadi saya. Saya senang sekali akhirnya bisa punya tempat untuk berbagi cerita, pengalaman, dan mungkin sedikit ilmu yang saya pelajari di perjalanan hidup ini.
 
-Sejak kecil, saya selalu tertarik dengan sains, terutama kimia. Rasanya seperti sihir ketika melihat reaksi kimia yang terjadi di laboratorium. 🧪✨ Setelah selesai kuliah, saya mendapatkan banyak pengalaman berharga, termasuk magang sebagai Backend Engineer di PT Rakamin Kolektif Madani. Di sana, saya mengelola sistem backend dengan lebih dari 400.000 pengguna! 😲
+Perkenalkan, nama saya Yuma Nur Alfath. Saya lahir di tahun 2000, dan saat ini saya adalah seorang lulusan FMIPA Kimia dari Universitas Andalas, tamat pada tahun 2023. Saya anak tunggal, besar di Pekanbaru, dan menjalani masa sekolah di SDN 8 Pekanbaru, SMPN 6 Pekanbaru, lalu SMAN 3 Pekanbaru. Sekarang, saya sedang menapaki perjalanan hidup yang baru sambil terus belajar dan bertumbuh.
 
-Sebelum itu, saya juga magang di Pertamina Research and Technology di jakarta timur sebagai Pilot Plant Engineer. Di sana, saya menguji berbagai sampel katalis untuk mengevaluasi efektivitas katalis minyak bumi. Pengalaman ini sangat berharga dan memberikan wawasan mendalam tentang industri energi. 🔬⛽
+Sejak kecil, saya selalu tertarik pada ilmu pengetahuan, terutama science. Dunia ini penuh misteri, dan menurut saya, ilmu pengetahuan adalah kunci untuk memahami semua itu. Tapi bukan hanya science yang mengisi hari-hari saya. Saya juga punya banyak hobi yang membuat hidup jadi lebih berwarna. Saya suka ngoding, menonton film, terutama anime (anime favorit saya adalah KonoSuba), dan main game, seperti Monster Hunter yang jadi favorit sepanjang masa. Selain itu, saya juga suka membaca buku-buku self-improvement, yang selalu memberi saya perspektif baru tentang bagaimana menjalani hidup dengan lebih baik.
 
-Tugas saya tidak hanya mengatasi lebih dari 30 bug, tetapi juga berkolaborasi dengan tim lain untuk meningkatkan stabilitas sistem dan pengalaman pengguna. Saya juga berhasil meningkatkan efisiensi onboarding tenant sebesar 10%! 🚀
+Ngomong-ngomong soal hidup, saya juga seorang penganut stokisme. Filosofi ini membantu saya tetap tenang menghadapi berbagai tantangan dan menerima hal-hal yang berada di luar kendali saya. Saat ini, saya sedang belajar bahasa Inggris, karena saya punya cita-cita untuk melanjutkan studi ke jenjang S2 di masa depan. Semoga ini bisa segera terwujud!
 
-Sebelum itu, saya juga pernah bekerja sebagai Asisten Laboratorium Komputasi di Universitas Andalas. Di sini, saya berkoordinasi dengan lebih dari 80 anggota laboratorium dan memberikan dukungan perangkat lunak harian. Setiap hari, saya menyelesaikan lebih dari 30 permintaan troubleshooting. Rasanya sangat memuaskan bisa membantu teman-teman saya agar praktikum berjalan lancar! 💻🔧
+Oh ya, saya pernah magang sebagai backend developer, pengalaman yang membuka mata saya tentang dunia teknologi dan coding. Rasanya luar biasa bisa menciptakan sesuatu dari nol, dan itulah yang membuat saya jatuh cinta pada dunia programming. Warna favorit saya adalah hijau, mungkin karena melambangkan pertumbuhan dan harapan.
 
-Saya juga pernah menjadi Asisten Laboratorium Kimia Dasar, di mana saya mengawasi lebih dari 110 anggota laboratorium. Mengelola sesi praktikum dan memastikan semua berjalan dengan aman dan akurat adalah tantangan yang sangat saya nikmati. 🧑‍🔬
+Blog ini adalah tempat saya berbagi, baik itu pengalaman hidup, cerita-cerita menarik, tips belajar, atau mungkin sekadar opini pribadi tentang anime atau game yang saya sukai. Saya harap, melalui tulisan-tulisan di sini, kita bisa saling mengenal dan berbagi inspirasi. Kalau kalian punya saran, kritik, atau sekadar ingin menyapa, jangan ragu untuk meninggalkan komentar.
 
-Selain pengalaman di laboratorium, saya juga terus mengembangkan diri dengan mengikuti berbagai sertifikasi. Saya baru saja mendapatkan sertifikasi Alibaba Cloud Associate Big Data dan juga mengikuti workshop Network Pharmacology di IPB University Via Zoom. 🌐📚
-
-Saya percaya bahwa kombinasi antara keterampilan teknis dan soft skill seperti kerja tim, manajemen waktu, dan kepemimpinan adalah kunci untuk sukses di dunia kerja. Saya sangat bersemangat untuk terus belajar dan berkontribusi di bidang yang saya cintai ini! 💪
-
-Jadi, jika kamu juga memiliki minat di bidang kimia atau teknologi atau bahkan science, jangan ragu untuk diskusi bersama! Mari kita berbagi pengetahuan dan pengalaman! 😊
-
-Sampai jumpa di kesempatan berikutnya! 🌟
+Terima kasih sudah meluangkan waktu untuk membaca! Mari kita mulai perjalanan ini bersama-sama. Salam kenal!
