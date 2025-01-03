@@ -16,7 +16,7 @@ export async function generateMetadata(props) {
     openGraph: {
       title: frontMatter.title,
       description: frontMatter.excerpt,
-      url: "https://yumana.my.id/blog",
+      url: `https://yumana.my.id/blog/${slug}`,
       siteName: "Yuma Nur Alfath blog Website",
       images: [
         {
@@ -66,6 +66,28 @@ const BlogPost = async (props) => {
           dangerouslySetInnerHTML={{ __html: htmlContent }}
         />
       </article>
+
+      {/* Disqus Comments Section */}
+      <div
+        id="disqus_thread"
+        className="max-w-6xl mx-auto bg-white rounded-xl shadow-lg p-8 mb-16"
+      ></div>
+      <script
+        dangerouslySetInnerHTML={{
+          __html: `
+            var disqus_config = function () {
+              this.page.url = "https://yumana.my.id/blog/${slug}";  
+              this.page.identifier = "${slug}";
+            };
+            (function() {
+              var d = document, s = d.createElement('script');
+              s.src = 'https://yumana.disqus.com/embed.js';
+              s.setAttribute('data-timestamp', +new Date());
+              (d.head || d.body).appendChild(s);
+            })();
+          `,
+        }}
+      />
     </div>
   );
 };
