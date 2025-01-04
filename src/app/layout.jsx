@@ -25,7 +25,8 @@ export const metadata = {
         height: 600,
       },
     ],
-    locale: "id_ID",
+    locale: "en_US",
+    alternateLocale: ["id_ID"],
     type: "website",
   },
   twitter: {

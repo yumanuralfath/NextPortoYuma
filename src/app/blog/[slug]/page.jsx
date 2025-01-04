@@ -25,8 +25,8 @@ export async function generateMetadata({ params }) {
           height: 600,
         },
       ],
-      locale: "id_ID",
-      alternateLocale: ["en_US"],
+      locale: "en_US",
+      alternateLocale: ["id_ID"],
       type: "website",
     },
     twitter: {

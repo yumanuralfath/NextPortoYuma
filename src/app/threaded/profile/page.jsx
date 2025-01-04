@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
-import UploadImage from "@/components/UploadImage"; // Import komponen UploadImage
+import UploadImage from "@/components/UploadImage";
 
 const ProfilePage = () => {
   const router = useRouter();
@@ -33,7 +33,7 @@ const ProfilePage = () => {
 
     const updatedUser = { ...user, profile_picture_url: newImageUrl };
     localStorage.setItem("user", JSON.stringify(updatedUser));
-    setShowUpload(false); // Close overlay after successful upload
+    setShowUpload(false);
   };
 
   const handleKeyDown = (event, action) => {
@@ -68,7 +68,7 @@ const ProfilePage = () => {
                 className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-50 rounded-full opacity-0 group-hover:opacity-100 transition-opacity"
                 aria-label="Change profile picture"
               >
-                <p className="text-white font-semibold">Ubah Foto</p>
+                <p className="text-white font-semibold">Change Photo</p>
               </button>
             </div>
             <h1 className="text-3xl font-bold text-gray-800">
@@ -89,7 +89,7 @@ const ProfilePage = () => {
                   id="uploadModalTitle"
                   className="text-xl font-semibold mb-4 text-gray-800"
                 >
-                  Upload Foto Profil
+                  Upload Profile Picture
                 </h2>
                 <UploadImage onUploadSuccess={handleUploadSuccess} />
                 <button
@@ -99,7 +99,7 @@ const ProfilePage = () => {
                   }
                   className="mt-4 px-4 py-2 bg-gray-500 text-white rounded-lg hover:bg-gray-600 transition-colors"
                 >
-                  Batal
+                  Cancel
                 </button>
               </div>
             </dialog>

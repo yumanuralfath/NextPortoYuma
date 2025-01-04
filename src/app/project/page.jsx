@@ -2,6 +2,23 @@ import Image from "next/image";
 
 export const metadata = {
   title: "Project",
+  description: "Project Portfolio Yuma Nur Alfath",
+  openGraph: {
+    title: "Project Portfolio",
+    description: "Project Portfolio",
+    url: "https://yumana.my.id/project",
+    siteName: "Yuma Nur Alfath Portfolio Website",
+    images: [
+      {
+        url: "https://yumana.my.id/hero_metadata.png",
+        width: 800,
+        height: 600,
+      },
+    ],
+    locale: "en_US",
+    alternateLocale: ["id_ID"],
+    type: "website",
+  },
 };
 
 const ProjectPage = () => {
