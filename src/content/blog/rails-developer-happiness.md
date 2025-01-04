@@ -1,11 +1,11 @@
 ---
-title: "Happiness in Code: Why Developers Love Ruby on Rails 😊"
+title: "Happiness in Code: Why Developers Love Ruby on Rails"
 
 date: "2024-12-30"
 
 category: "Ruby On Rails"
 
-excerpt: "Ruby on Rails is a beloved web framework known for its simplicity✨."
+excerpt: "Ruby on Rails is a beloved web framework known for its simplicity."
 
 image: "/blog/Idolmaster_Cinderella_Girls_Chieri_Holding_Ruby_on_Rails_Tutorial_by_Michael_Hartl.png"
 ---

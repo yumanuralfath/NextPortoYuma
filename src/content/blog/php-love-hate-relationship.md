@@ -1,5 +1,5 @@
 ---
-title: "PHP: The Love-Hate Relationship of Developers ❤️💔"
+title: "PHP: The Love-Hate Relationship of Developers"
 
 date: "2024-12-20"
 
@@ -9,7 +9,6 @@ excerpt: "Explore the love-hate relationship developers have with PHP, its evolu
 
 image: "/blog/Emilia_Holding_Programming_PHP.png"
 ---
-
 <p align="center">
   <img src="/blog/Kanbaru_Holds_Learning_PHP_Portuguese.png" alt="php" />
 </p>

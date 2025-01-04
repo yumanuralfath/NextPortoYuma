@@ -1,5 +1,5 @@
 ---
-title: "Why Python is the Go-To Language for Data Science 🤔"
+title: "Why Python is the Go-To Language for Data Science"
 
 date: "2024-12-23"
 
@@ -9,6 +9,7 @@ excerpt: "Discover why Python is the go-to language for data science! Its simpli
 
 image: "/blog/Sengoku_Nadeko_Learn_Python_The_Hard_Way.jpg"
 ---
+
 <p align="center">
   <img src="/blog/Helena_Blavatsky_Python_data-analytics.png" alt="python" />
 </p>

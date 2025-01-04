@@ -5,7 +5,7 @@ date: "2024-12-01"
 
 category: "About"
 
-excerpt: "Salam kenal, dan salam hangat untuk kedepannya di blog ini 🌟✨"
+excerpt: "salam kenal semua"
 
 image: "/web-app-manifest-512x512.png"
 ---

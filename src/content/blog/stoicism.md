@@ -5,7 +5,7 @@ date: "2024-12-25"
 
 category: "Life"
 
-excerpt: "Stoicism teaches the importance of rationality in facing life's challenges💪"
+excerpt: "Stoicism teaches the importance of rationality in facing life's challenges"
 
 image: "/blog/stoicism.jpg"
 ---
