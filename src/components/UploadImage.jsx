@@ -2,7 +2,6 @@
 
 const BASE_URL = process.env.NEXT_PUBLIC_API_URL;
 
-import { Success, ErrorMessage } from "@/lib/sweetalert";
 import { useState } from "react";
 
 const UploadImage = ({ onUploadSuccess }) => {
@@ -53,10 +52,8 @@ const UploadImage = ({ onUploadSuccess }) => {
 
       // Beri tahu parent bahwa upload berhasil
       onUploadSuccess(imageUrl);
-      Success("Image uploaded successfully");
     } catch (error) {
       console.error("Error uploading image:", error);
-      ErrorMessage("Failed to upload image");
     } finally {
       setUploading(false);
     }

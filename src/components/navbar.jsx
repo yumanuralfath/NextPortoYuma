@@ -4,7 +4,6 @@ import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
 import NavLink from "./NavLink";
-import { usePathname } from "next/navigation";
 import { motion } from "framer-motion";
 
 const links = [
@@ -41,12 +40,8 @@ const socialLinks = [
   },
 ];
 
-const Navbar = ({ dynamicLinks = [] }) => {
+const Navbar = () => {
   const [open, setOpen] = useState(false);
-
-  const pathName = usePathname();
-  const isThreaded = pathName.startsWith("/threaded");
-  const user = JSON.parse(localStorage.getItem("user"));
 
   const topVariants = {
     closed: {
@@ -91,26 +86,18 @@ const Navbar = ({ dynamicLinks = [] }) => {
   };
 
   return (
-    <div
-      className={`fixed top-0 left-0 right-0 z-50 h-16 flex items-center justify-between px-4 sm:px-8 md:px-12 lg:px-20 xl:px-48 text-xl ${
-        isThreaded ? "bg-gray-800 text-white" : "bg-white shadow"
-      }`}
-    >
+    <div className="fixed top-0 left-0 right-0 z-50 h-16 flex items-center justify-between px-4 sm:px-8 md:px-12 lg:px-20 xl:px-48 text-xl bg-white shadow">
       {/* LINKS */}
-      {!isThreaded && (
-        <div className="hidden md:flex gap-4 w-1/3">
-          {links.map((link) => (
-            <NavLink link={link} key={link.title} />
-          ))}
-        </div>
-      )}
+      <div className="hidden md:flex gap-4 w-1/3">
+        {links.map((link) => (
+          <NavLink link={link} key={link.title} />
+        ))}
+      </div>
       {/* Logo */}
       <div className="md:hidden lg:flex xl:w-1/3 xl:justify-center">
         <Link
           href="/"
-          className={`text-sm ${
-            isThreaded ? "bg-slate-700 text-white" : "bg-black text-white"
-          } rounded-md p-1 font-semibold flex items-center justify-center`}
+          className="text-sm bg-black rounded-md p-1 font-semibold flex items-center justify-center"
         >
           <span className="text-white mr-1">Yuma</span>
           <span className="w-12 h-8 rounded bg-white text-black flex items-center justify-center">
@@ -118,20 +105,13 @@ const Navbar = ({ dynamicLinks = [] }) => {
           </span>
         </Link>
       </div>
-      {!isThreaded && (
-        <div className="hidden md:flex gap-4 w-1/3 justify-end">
-          {socialLinks.map((social) => (
-            <Link href={social.url} target="_blank" key={social.alt}>
-              <Image
-                src={social.icon}
-                alt={social.alt}
-                width={24}
-                height={24}
-              />
-            </Link>
-          ))}
-        </div>
-      )}
+      <div className="hidden md:flex gap-4 w-1/3 justify-end">
+        {socialLinks.map((social) => (
+          <Link href={social.url} target="_blank" key={social.alt}>
+            <Image src={social.icon} alt={social.alt} width={24} height={24} />
+          </Link>
+        ))}
+      </div>
       {/* Responsive Menu */}
       <div className="md:hidden">
         {/* Menu Button */}
@@ -142,23 +122,17 @@ const Navbar = ({ dynamicLinks = [] }) => {
           <motion.div
             variants={topVariants}
             animate={open ? "openend" : "closed"}
-            className={`w-10 h-1 ${
-              isThreaded ? "bg-white" : "bg-black"
-            } rounded origin-left`}
+            className="w-10 h-1 bg-black rounded origin-left"
           ></motion.div>
           <motion.div
             variants={centerVariants}
             animate={open ? "openend" : "closed"}
-            className={`w-10 h-1 ${
-              isThreaded ? "bg-white" : "bg-black"
-            } rounded`}
+            className="w-10 h-1 bg-black rounded"
           ></motion.div>
           <motion.div
             variants={bottomVariants}
             animate={open ? "openend" : "closed"}
-            className={`w-10 h-1 ${
-              isThreaded ? "bg-white" : "bg-black"
-            } rounded origin-left`}
+            className="w-10 h-1 bg-black rounded origin-left"
           ></motion.div>
         </button>
         {/* MENU LIST */}
@@ -191,29 +165,6 @@ const Navbar = ({ dynamicLinks = [] }) => {
           </motion.div>
         )}
       </div>
-      {/* Threaded Mode */}
-      {isThreaded && (
-        <div className="flex gap-4 items-center">
-          {dynamicLinks.map((link) => (
-            <Link
-              href={link.url}
-              key={link.title}
-              className="text-white hover:underline"
-            >
-              {link.title}
-            </Link>
-          ))}
-          <Link href="/threaded/profile">
-            <Image
-              src={user.profile_picture_url}
-              alt="Profile Picture"
-              width={32}
-              height={32}
-              className="rounded-full"
-            />
-          </Link>
-        </div>
-      )}
     </div>
   );
 };
