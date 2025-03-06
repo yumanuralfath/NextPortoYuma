@@ -7,7 +7,7 @@ import Navbar from "./navbar";
 const routeContent = {
   "/": "Home",
   "/blog": "Blog",
-  "/codex": "Codex",
+  "/yuma-app": "Yuma App",
 };
 
 const TransitionProvider = ({ children }) => {

@@ -4,12 +4,13 @@ import { useState } from "react";
 import { motion } from "framer-motion";
 import { loginService, registerService } from "../../lib/auth";
 import { useRouter } from "next/navigation";
-import { Success, ErrorMessage } from "@/lib/sweetalert";
+import toast from "react-hot-toast";
+import { setAccessToken } from "@/lib/fetchLib";
 
 const CodexPage = () => {
   const router = useRouter();
   const [isLogin, setIsLogin] = useState(true);
-  const [loading, setLoading] = useState(false);
+  const [loading] = useState(false);
   const [formData, setFormData] = useState({
     email: "",
     password: "",
@@ -25,34 +26,30 @@ const CodexPage = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setLoading(true);
 
-    try {
-      let response;
-      if (isLogin) {
-        const { email, password } = formData;
-        response = await loginService({ email, password });
-        localStorage.setItem("token", response.token);
-        localStorage.setItem("user", JSON.stringify(response.user));
-        Success("Login successfully").then(() => {
+    const request = isLogin
+      ? loginService({
+          email: formData.email,
+          password: formData.password,
+        }).then((response) => {
+          localStorage.setItem("user", JSON.stringify(response.user));
+          setAccessToken(response.token);
           router.push("/threaded/profile");
-        });
-      } else {
-        await registerService(formData);
-        Success("Register successfully").then(() => {
+        })
+      : registerService(formData).then(() => {
           window.location.reload();
         });
-      }
-    } catch (err) {
-      ErrorMessage(err.message);
-    } finally {
-      setLoading(false);
-    }
+
+    toast.promise(request, {
+      loading: isLogin ? "Logging in..." : "Registering...",
+      success: isLogin ? "Login successful!" : "Register successful!",
+      error: "An error occurred. Please try again.",
+    });
   };
 
   const getButtonText = (loading, isLogin) => {
     if (loading) return "loading...";
-    return isLogin ? "Login Codex" : "Register Codex";
+    return isLogin ? "Login" : "Register";
   };
 
   const getButtonClassName = (isCurrentLogin, isLoginButton) => {
@@ -68,10 +65,10 @@ const CodexPage = () => {
     <div className="min-h-screen p-8 pt-24 bg-gradient-to-br from-indigo-50 via-white to-gray-100">
       <div className="max-w-7xl mx-auto flex flex-col items-center">
         <h1 className="text-6xl font-extrabold text-center mb-6 bg-gradient-to-r from-purple-600 to-blue-500 bg-clip-text text-transparent drop-shadow-lg">
-          The Threaded Codex
+          Easy Access to My App
         </h1>
         <p className="text-gray-700 text-center mb-16 text-lg font-medium">
-          Every Word a Page, Every Comment a Chapter.
+          Enjoy hassle-free access to all my applications.
         </p>
 
         <div className="w-full max-w-md">

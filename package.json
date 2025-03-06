@@ -1,6 +1,6 @@
 {
-  "name": "yuma-next-portofolio",
-  "version": "0.1.0",
+  "name": "yuma-nur-alfath-website-portfolio",
+  "version": "0.5.0",
   "private": true,
   "scripts": {
     "dev": "next dev",
@@ -11,23 +11,30 @@
   "dependencies": {
     "@tailwindcss/typography": "^0.5.15",
     "@vercel/analytics": "^1.4.1",
+    "bcrypt": "^5.1.1",
     "cloudinary": "^2.5.1",
     "framer-motion": "^11.15.0",
     "gray-matter": "^4.0.3",
+    "js-cookie": "^3.0.5",
+    "jsonwebtoken": "^9.0.2",
+    "lucide-react": "^0.469.0",
     "marked": "^15.0.4",
     "next": "15.1.3",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
+    "react-hot-toast": "^2.5.1",
     "react-parallax-tilt": "^1.7.269",
     "sharp": "^0.33.5",
     "streamifier": "^0.1.1",
-    "sweetalert2": "^11.15.9"
+    "zustand": "^5.0.2"
   },
   "devDependencies": {
+    "@eslint/js": "^9.21.0",
+    "@next/eslint-plugin-next": "^15.2.0",
     "@types/node": "22.10.3",
     "@types/react": "19.0.2",
     "autoprefixer": "10.0.1",
-    "eslint": "^8.57.1",
+    "eslint": "^9.17.0",
     "eslint-config-next": "14.1.0",
     "postcss": "^8.4.49",
     "tailwindcss": "3.3.0"

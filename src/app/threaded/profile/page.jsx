@@ -3,7 +3,8 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
-import UploadImage from "@/components/UploadImage";
+import UploadImage from "@/components/General/UploadImage";
+import { removeAccessToken } from "@/lib/fetchLib";
 
 const ProfilePage = () => {
   const router = useRouter();
@@ -13,16 +14,16 @@ const ProfilePage = () => {
   useEffect(() => {
     const userData = localStorage.getItem("user");
     if (!userData) {
-      router.push("/codex");
+      router.push("/yuma-app");
       return;
     }
     setUser(JSON.parse(userData));
   }, [router]);
 
   const handleLogout = () => {
-    localStorage.removeItem("token");
     localStorage.removeItem("user");
-    router.push("/codex");
+    removeAccessToken();
+    router.push("/yuma-app");
   };
 
   const handleUploadSuccess = (newImageUrl) => {
@@ -110,7 +111,7 @@ const ProfilePage = () => {
               onClick={() => router.push("/threaded")}
               className="px-6 py-3 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors"
             >
-              Thread
+              App
             </button>
             <button
               onClick={handleLogout}

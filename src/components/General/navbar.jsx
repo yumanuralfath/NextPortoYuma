@@ -9,7 +9,7 @@ import { motion } from "framer-motion";
 const links = [
   { url: "/", title: "Home" },
   { url: "/blog", title: "Blog" },
-  { url: "/codex", title: "Codex" },
+  { url: "/yuma-app", title: "My App" },
 ];
 
 const socialLinks = [

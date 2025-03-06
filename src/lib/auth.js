@@ -1,4 +1,4 @@
-const BASE_URL = process.env.NEXT_PUBLIC_API_URL;
+import BASE_URL from "./baseUrl";
 
 export const loginService = async (credentials) => {
   const response = await fetch(`${BASE_URL}/login`, {

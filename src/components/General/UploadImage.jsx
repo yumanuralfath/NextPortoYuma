@@ -2,6 +2,7 @@
 
 const BASE_URL = process.env.NEXT_PUBLIC_API_URL;
 
+import { getAccessToken } from "@/lib/fetchLib";
 import { useState } from "react";
 
 const UploadImage = ({ onUploadSuccess }) => {
@@ -31,7 +32,7 @@ const UploadImage = ({ onUploadSuccess }) => {
       const { url: imageUrl } = await uploadResponse.json();
 
       // Update Supabase dengan URL baru menggunakan Bearer Token
-      const token = localStorage.getItem("token");
+      const token = getAccessToken();
       if (!token) throw new Error("Token not found");
 
       // Update ke Supabase dengan URL gambar yang baru
