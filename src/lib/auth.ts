@@ -1,6 +1,17 @@
 import BASE_URL from "./baseUrl";
 
-export const loginService = async (credentials) => {
+interface userDataProps {
+  email: string;
+  password: string;
+  username: string;
+}
+
+interface credentialsProps {
+  email: string;
+  password: string;
+}
+
+export const loginService = async (credentials: credentialsProps) => {
   const response = await fetch(`${BASE_URL}/login`, {
     method: 'POST',
     headers: {
@@ -18,7 +29,7 @@ export const loginService = async (credentials) => {
   return data;
 };
 
-export const registerService = async (userData) => {
+export const registerService = async (userData: userDataProps) => {
   const response = await fetch(`${BASE_URL}/register`, {
     method: 'POST',
     headers: {

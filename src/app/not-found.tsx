@@ -1,20 +1,32 @@
 import Image from "next/image";
+import { CSSProperties } from "react";
+
+interface ExtendedCSSProperties extends CSSProperties {
+  ":hover"?: CSSProperties;
+}
+
 export default function NotFound() {
   return (
     <div style={styles.container}>
-      <Image src={"/mythikore-anime-girl.gif"} alt='https://tenor.com/search/anime-404-gifs'
+      <Image
+        src={"/mythikore-anime-girl.gif"}
+        alt="https://tenor.com/search/anime-404-gifs"
         width={200}
         height={200}
         style={{ borderRadius: "50%" }}
       />
       <h1 style={styles.heading}>404</h1>
-      <p style={styles.message}>Oops! The page you’re looking for doesn’t exist.</p>
-      <a href="/" style={styles.link}>Go Back Home</a>
+      <p style={styles.message}>
+        Oops! The page you’re looking for doesn’t exist.
+      </p>
+      <a href="/" style={styles.link}>
+        Go Back Home
+      </a>
     </div>
   );
 }
 
-const styles = {
+const styles: { [key: string]: ExtendedCSSProperties } = {
   container: {
     display: "flex",
     flexDirection: "column",
@@ -47,4 +59,4 @@ const styles = {
   },
 };
 
-styles.link[':hover'] = { backgroundColor: "#005bb5" };
+styles.link[":hover"] = { backgroundColor: "#005bb5" };

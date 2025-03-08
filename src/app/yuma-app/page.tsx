@@ -1,30 +1,36 @@
 "use client";
 
-import { useState } from "react";
+import { useState, ChangeEvent, FormEvent } from "react";
 import { motion } from "framer-motion";
 import { loginService, registerService } from "../../lib/auth";
 import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
 import { setAccessToken } from "@/lib/fetchLib";
 
+interface FormData {
+  email: string;
+  password: string;
+  username: string;
+}
+
 const CodexPage = () => {
   const router = useRouter();
   const [isLogin, setIsLogin] = useState(true);
   const [loading] = useState(false);
-  const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState<FormData>({
     email: "",
     password: "",
     username: "",
   });
 
-  const handleChange = (e) => {
+  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     setFormData({
       ...formData,
       [e.target.id]: e.target.value,
     });
   };
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
 
     const request = isLogin
@@ -47,12 +53,15 @@ const CodexPage = () => {
     });
   };
 
-  const getButtonText = (loading, isLogin) => {
+  const getButtonText = (loading: boolean, isLogin: boolean): string => {
     if (loading) return "loading...";
     return isLogin ? "Login" : "Register";
   };
 
-  const getButtonClassName = (isCurrentLogin, isLoginButton) => {
+  const getButtonClassName = (
+    isCurrentLogin: boolean,
+    isLoginButton: boolean
+  ): string => {
     const isActive = isLoginButton ? isCurrentLogin : !isCurrentLogin;
     return `flex-1 py-4 text-lg font-semibold transition-colors ${
       isActive

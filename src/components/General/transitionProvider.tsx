@@ -3,14 +3,23 @@
 import { AnimatePresence, motion } from "framer-motion";
 import { usePathname } from "next/navigation";
 import Navbar from "./navbar";
+import { ReactNode } from "react";
 
-const routeContent = {
+interface RouteContent {
+  [key: string]: string;
+}
+
+interface TransitionProviderProps {
+  children: ReactNode;
+}
+
+const routeContent: RouteContent = {
   "/": "Home",
   "/blog": "Blog",
   "/yuma-app": "Yuma App",
 };
 
-const TransitionProvider = ({ children }) => {
+const TransitionProvider = ({ children }: TransitionProviderProps) => {
   const pathName = usePathname();
   const content = routeContent[pathName];
   const shouldAnimate = Object.keys(routeContent).includes(pathName);

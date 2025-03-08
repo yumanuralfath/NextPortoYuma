@@ -1,4 +1,4 @@
-import jwt from 'jsonwebtoken';
+import * as jwt from 'jsonwebtoken';
 
 function decodeToken() {
   const token = localStorage.getItem('accessToken');

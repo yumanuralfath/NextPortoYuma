@@ -1,14 +1,20 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, KeyboardEvent } from "react";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 import UploadImage from "@/components/General/UploadImage";
 import { removeAccessToken } from "@/lib/fetchLib";
 
+interface User {
+  username: string;
+  email: string;
+  profile_picture_url: string;
+}
+
 const ProfilePage = () => {
   const router = useRouter();
-  const [user, setUser] = useState(null);
+  const [user, setUser] = useState<User | null>(null);
   const [showUpload, setShowUpload] = useState(false);
 
   useEffect(() => {
@@ -26,18 +32,26 @@ const ProfilePage = () => {
     router.push("/yuma-app");
   };
 
-  const handleUploadSuccess = (newImageUrl) => {
-    setUser((prevUser) => ({
-      ...prevUser,
-      profile_picture_url: newImageUrl,
-    }));
+  const handleUploadSuccess = (newImageUrl: string) => {
+    setUser((prevUser) => {
+      if (!prevUser) return null;
+      return {
+        ...prevUser,
+        profile_picture_url: newImageUrl,
+      };
+    });
 
     const updatedUser = { ...user, profile_picture_url: newImageUrl };
-    localStorage.setItem("user", JSON.stringify(updatedUser));
+    if (updatedUser.profile_picture_url) {
+      localStorage.setItem("user", JSON.stringify(updatedUser));
+    }
     setShowUpload(false);
   };
 
-  const handleKeyDown = (event, action) => {
+  const handleKeyDown = (
+    event: KeyboardEvent<HTMLButtonElement>,
+    action: () => void
+  ) => {
     if (event.key === "Enter" || event.key === " ") {
       event.preventDefault();
       action();

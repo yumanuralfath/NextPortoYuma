@@ -1,15 +1,19 @@
 "use client";
 
-import { useState } from "react";
+import { ChangeEvent, useState } from "react";
 import Image from "next/image";
 
-const UploadWithProgress = () => {
-  const [file, setFile] = useState(null); // Menyimpan file yang dipilih
-  const [progress, setProgress] = useState(0); // Progres upload
-  const [uploadResult, setUploadResult] = useState(null); // Hasil upload
+interface UploadResult {
+  secure_url: string;
+}
 
-  const handleFileChange = (event) => {
-    setFile(event.target.files[0]);
+const UploadWithProgress = () => {
+  const [file, setFile] = useState<File | null>(null);
+  const [progress, setProgress] = useState(0);
+  const [uploadResult, setUploadResult] = useState<UploadResult | null>(null);
+
+  const handleFileChange = (event: ChangeEvent<HTMLInputElement>) => {
+    setFile(event.target.files?.[0] || null);
   };
 
   const handleUpload = async () => {

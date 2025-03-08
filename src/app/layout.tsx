@@ -3,8 +3,13 @@ import "./globals.css";
 import TransitionProvider from "../components/General/transitionProvider";
 import { Analytics } from "@vercel/analytics/next";
 import ToasterProvider from "@/providers/ToastProviders";
+import { ReactNode } from "react";
 
 const inter = Inter({ subsets: ["latin"] });
+
+interface RootLayoutProps {
+  children: ReactNode;
+}
 
 export const metadata = {
   title: {
@@ -39,7 +44,7 @@ export const metadata = {
   },
 };
 
-export default function RootLayout({ children }) {
+export default function RootLayout({ children }: RootLayoutProps) {
   return (
     <html lang="en">
       <meta name="p:domain_verify" content="c801e44222b4e6bc238e8714a4e171de" />

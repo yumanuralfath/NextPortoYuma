@@ -1,6 +1,6 @@
-import fs from "fs";
-import path from "path";
-import matter from "gray-matter";
+import * as fs from "fs";
+import * as path from "path";
+import * as matter from "gray-matter";
 import Link from "next/link";
 import Image from "next/image";
 
@@ -29,15 +29,31 @@ export const metadata = {
   },
 };
 
-export default async function BlogPage(props) {
-  const searchParams = await props.searchParams;
-  // Ambil halaman saat ini dari query parameter
-  const currentPage = parseInt(searchParams.page) || 1;
+interface Post {
+  slug: string;
+  title: string;
+  date: string;
+  excerpt: string;
+  category: string;
+  image: string;
+}
+
+interface SearchParams {
+  page?: string;
+}
+
+interface BlogPageProps {
+  searchParams: SearchParams;
+}
+
+export default async function BlogPage(props: BlogPageProps) {
+  const searchParams = props.searchParams;
+  const currentPage = parseInt(searchParams.page || "1");
 
   const blogDir = path.join(process.cwd(), "src/content/blog");
   const files = fs.readdirSync(blogDir);
 
-  const posts = files.map((filename) => {
+  const posts: Post[] = files.map((filename) => {
     const fileContent = fs.readFileSync(path.join(blogDir, filename), "utf-8");
     const { data: frontMatter } = matter(fileContent);
 
@@ -51,12 +67,20 @@ export default async function BlogPage(props) {
     };
   });
 
-  const sortedPosts = posts.sort((a, b) => new Date(b.date) - new Date(a.date));
+  const sortedPosts = posts.sort((a, b) => {
+    const dateA = new Date(a.date).getTime();
+    const dateB = new Date(b.date).getTime();
 
-  // Hitung jumlah total halaman
+    if (isNaN(dateA) || isNaN(dateB)) {
+      console.error("Invalid date string encountered:", a.date, b.date);
+      return 0;
+    }
+
+    return dateB - dateA;
+  });
+
   const totalPages = Math.ceil(sortedPosts.length / POSTS_PER_PAGE);
 
-  // Ambil data post untuk halaman saat ini
   const currentPosts = sortedPosts.slice(
     (currentPage - 1) * POSTS_PER_PAGE,
     currentPage * POSTS_PER_PAGE
@@ -72,7 +96,6 @@ export default async function BlogPage(props) {
           Random thoughts and ideas about programming and life
         </p>
 
-        {/* Konten blog */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {currentPosts.map((post) => (
             <Link href={`/blog/${post.slug}`} key={post.slug} className="group">
@@ -111,7 +134,6 @@ export default async function BlogPage(props) {
           ))}
         </div>
 
-        {/* Pagination */}
         <div className="mt-8 flex justify-center items-center gap-4">
           {currentPage > 1 && (
             <a

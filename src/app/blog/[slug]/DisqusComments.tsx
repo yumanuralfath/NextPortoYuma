@@ -2,11 +2,15 @@
 
 import { useEffect } from "react";
 
-export default function DisqusComments({ slug }) {
+interface DisqusCommentsProps {
+  slug: string;
+}
+
+export default function DisqusComments({ slug }: DisqusCommentsProps) {
   useEffect(() => {
     const disqusScript = document.createElement("script");
     disqusScript.src = "https://yumana.disqus.com/embed.js";
-    disqusScript.setAttribute("data-timestamp", +new Date());
+    disqusScript.setAttribute("data-timestamp", String(+new Date()));
     document.body.appendChild(disqusScript);
 
     return () => {

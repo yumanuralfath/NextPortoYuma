@@ -1,10 +1,14 @@
-import fs from "fs";
-import path from "path";
-import matter from "gray-matter";
+import * as fs from "fs";
+import * as path from "path";
+import * as matter from "gray-matter";
 import { marked } from "marked";
 import DisqusComments from "./DisqusComments";
 
-export async function generateMetadata({ params }) {
+interface Params {
+  slug: string;
+}
+
+export async function generateMetadata({ params }: { params: Params }) {
   const { slug } = params;
   const filePath = path.join(process.cwd(), "src/content/blog", `${slug}.md`);
   const fileContent = fs.readFileSync(filePath, "utf-8");
@@ -38,7 +42,7 @@ export async function generateMetadata({ params }) {
   };
 }
 
-export default async function BlogPost({ params }) {
+export default async function BlogPost({ params }: { params: Params }) {
   const { slug } = params;
   const filePath = path.join(process.cwd(), "src/content/blog", `${slug}.md`);
   const fileContent = fs.readFileSync(filePath, "utf-8");

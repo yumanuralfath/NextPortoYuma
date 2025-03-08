@@ -1,6 +1,11 @@
 import Image from "next/image";
+import { FaGithub } from "react-icons/fa";
+import { Metadata } from "next";
+import { techIcons } from "@/components/General/icons";
+import { projects } from "@/components/General/projects";
+import GithubDropdown from "@/components/General/GithubDropdown";
 
-export const metadata = {
+export const metadata: Metadata = {
   title: "Project",
   description: "Project Portfolio Yuma Nur Alfath",
   openGraph: {
@@ -21,28 +26,7 @@ export const metadata = {
   },
 };
 
-const ProjectPage = () => {
-  const projects = [
-    {
-      id: 1,
-      title: "Website Portfolio",
-      description: "Website portfolio with Next.js",
-      image: "/website_porto.png",
-      tech: ["Next.js", "Tailwind"],
-      github: "https://github.com/yumanuralfath/NextPortoYuma",
-      demo: "https://www.yumana.my.id/",
-    },
-    {
-      id: 2,
-      title: "Baby and Mom Warehouse",
-      description: "Website warehouse with Next.js",
-      image: "/baby_warehouse.png",
-      tech: ["Next.js", "Tailwind", "Vercel"],
-      github: "https://github.com/BM-Warehouse",
-      demo: "https://www.bmwarehouse.my.id/",
-    },
-  ];
-
+const ProjectPage: React.FC = () => {
   return (
     <div className="min-h-screen p-8 pt-24 bg-gradient-to-br from-blue-50 via-white to-purple-50">
       <div className="max-w-7xl mx-auto">
@@ -56,21 +40,22 @@ const ProjectPage = () => {
           {projects.map((project) => (
             <div
               key={project.id}
-              className="group relative bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2"
+              className="relative bg-white rounded-xl shadow-lg overflow-visible hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2"
             >
               <div className="relative h-48 overflow-hidden">
                 <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent z-10" />
                 <Image
                   src={project.image}
-                  alt={project.title}
+                  alt={`Preview of ${project.title}`}
                   width={400}
                   height={200}
-                  className="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-300"
+                  loading="lazy"
+                  className="w-full h-full object-cover transform hover:scale-110 transition-transform duration-300"
                 />
               </div>
 
               <div className="p-6">
-                <h3 className="text-2xl font-bold mb-3 text-gray-800 group-hover:text-blue-600 transition-colors">
+                <h3 className="text-2xl font-bold mb-3 text-gray-800 hover:text-blue-600 transition-colors">
                   {project.title}
                 </h3>
                 <p className="text-gray-600 mb-4 line-clamp-2">
@@ -79,28 +64,40 @@ const ProjectPage = () => {
 
                 <div className="flex flex-wrap gap-2 mb-6">
                   {project.tech.map((tech) => (
-                    <span
+                    <div
                       key={tech}
-                      className="px-3 py-1 text-sm font-medium bg-gray-100 text-gray-700 rounded-full hover:bg-blue-100 hover:text-blue-700 transition-colors"
+                      className="relative inline-flex items-center"
                     >
-                      {tech}
-                    </span>
+                      <a
+                        href={techIcons[tech].link}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="relative"
+                      >
+                        <span
+                          className="text-gray-700 hover:text-blue-600 transition-colors cursor-pointer"
+                          title={tech}
+                        >
+                          {techIcons[tech].icon}
+                        </span>
+                        <span className="absolute left-1/2 -translate-x-1/2 bottom-full mb-2 px-2 py-1 text-xs text-white bg-gray-800 rounded-md opacity-0 hover:opacity-100">
+                          {tech}
+                        </span>
+                      </a>
+                    </div>
                   ))}
                 </div>
 
-                <div className="flex gap-4">
-                  <a
-                    href={project.github}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="flex-1 px-4 py-2 bg-gray-900 text-white rounded-lg hover:bg-gray-800 transition-colors text-center font-medium"
-                  >
-                    GitHub
-                  </a>
+                <div className="flex flex-col md:flex-row gap-4 items-center">
+                  <GithubDropdown
+                    frontend={project.github.frontend}
+                    backend={project.github.backend}
+                  />
                   <a
                     href={project.demo}
                     target="_blank"
                     rel="noopener noreferrer"
+                    aria-label={`View Live Demo of ${project.title}`}
                     className="flex-1 px-4 py-2 bg-gradient-to-r from-blue-500 to-purple-500 text-white rounded-lg hover:from-blue-600 hover:to-purple-600 transition-colors text-center font-medium"
                   >
                     Live Demo

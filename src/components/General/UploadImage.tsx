@@ -3,13 +3,17 @@
 const BASE_URL = process.env.NEXT_PUBLIC_API_URL;
 
 import { getAccessToken } from "@/lib/fetchLib";
-import { useState } from "react";
+import { ChangeEvent, useState } from "react";
 
-const UploadImage = ({ onUploadSuccess }) => {
+interface UploadImageProps {
+  onUploadSuccess: (imageUrl: string) => void;
+}
+
+const UploadImage = ({ onUploadSuccess }: UploadImageProps) => {
   const [uploading, setUploading] = useState(false);
 
-  const handleFileChange = async (event) => {
-    const file = event.target.files[0];
+  const handleFileChange = async (event: ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
     if (!file) return;
 
     setUploading(true);
