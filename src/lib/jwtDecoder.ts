@@ -1,7 +1,7 @@
-import * as jwt from 'jsonwebtoken';
+import * as jwt from "jsonwebtoken";
 
 function decodeToken() {
-  const token = localStorage.getItem('accessToken');
+  const token = localStorage.getItem("accessToken");
   if (!token) return null;
 
   const user = jwt.decode(token);
@@ -9,4 +9,4 @@ function decodeToken() {
   return user;
 }
 
-export { decodeToken }
+export { decodeToken };

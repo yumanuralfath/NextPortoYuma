@@ -1,11 +1,11 @@
-import Cookies from 'js-cookie';
+import Cookies from "js-cookie";
 
 function getAccessToken(): string | undefined {
-  return Cookies.get('accessToken');
+  return Cookies.get("accessToken");
 }
 
 function setAccessToken(token: string): string | undefined {
-  return Cookies.set('accessToken', token, { expires: 1 });
+  return Cookies.set("accessToken", token, { expires: 1 });
 }
 
 interface FetchOptions extends RequestInit {
@@ -25,7 +25,7 @@ const fetchwithToken = async (
   });
 
 function removeAccessToken(): void {
-  Cookies.remove('accessToken');
+  Cookies.remove("accessToken");
 }
 
 export { getAccessToken, setAccessToken, fetchwithToken, removeAccessToken };

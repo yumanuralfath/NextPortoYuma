@@ -1,17 +1,30 @@
 import * as fs from "fs";
 import * as path from "path";
-import * as matter from "gray-matter";
+import matter from "gray-matter";
 import { marked } from "marked";
 import DisqusComments from "./DisqusComments";
+import { Metadata } from "next";
 
 interface Params {
   slug: string;
 }
 
-export async function generateMetadata({ params }: { params: Params }) {
+export async function generateMetadata({
+  params,
+}: {
+  params: Params;
+}): Promise<Metadata | undefined> {
   const { slug } = params;
   const filePath = path.join(process.cwd(), "src/content/blog", `${slug}.md`);
-  const fileContent = fs.readFileSync(filePath, "utf-8");
+
+  if (!fs.existsSync(filePath)) {
+    return {
+      title: "Post Not Found",
+      description: "The requested blog post does not exist.",
+    };
+  }
+
+  const fileContent = await fs.promises.readFile(filePath, "utf-8");
   const { data: frontMatter } = matter(fileContent);
 
   return {
@@ -22,13 +35,7 @@ export async function generateMetadata({ params }: { params: Params }) {
       description: frontMatter.excerpt,
       url: `https://yumana.my.id/blog/${slug}`,
       siteName: "Yuma Nur Alfath blog Website",
-      images: [
-        {
-          url: frontMatter.image,
-          width: 800,
-          height: 600,
-        },
-      ],
+      images: [{ url: frontMatter.image, width: 800, height: 600 }],
       locale: "en_US",
       alternateLocale: ["id_ID"],
       type: "website",
@@ -42,9 +49,18 @@ export async function generateMetadata({ params }: { params: Params }) {
   };
 }
 
-export default async function BlogPost({ params }: { params: Params }) {
+interface PageProps {
+  params: Awaited<{ slug: string }>;
+}
+
+export default function BlogPost({ params }: PageProps) {
   const { slug } = params;
   const filePath = path.join(process.cwd(), "src/content/blog", `${slug}.md`);
+
+  if (!fs.existsSync(filePath)) {
+    return <p className="text-center text-gray-500">Blog post not found.</p>;
+  }
+
   const fileContent = fs.readFileSync(filePath, "utf-8");
   const { data: frontMatter, content } = matter(fileContent);
   const htmlContent = marked(content);
@@ -70,7 +86,6 @@ export default async function BlogPost({ params }: { params: Params }) {
         />
       </article>
 
-      {/* Disqus Comments Section */}
       <DisqusComments slug={slug} />
     </div>
   );

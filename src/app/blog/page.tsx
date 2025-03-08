@@ -1,6 +1,6 @@
 import * as fs from "fs";
 import * as path from "path";
-import * as matter from "gray-matter";
+import matter from "gray-matter";
 import Link from "next/link";
 import Image from "next/image";
 

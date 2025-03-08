@@ -1,5 +1,4 @@
 import Image from "next/image";
-import { FaGithub } from "react-icons/fa";
 import { Metadata } from "next";
 import { techIcons } from "@/components/General/icons";
 import { projects } from "@/components/General/projects";

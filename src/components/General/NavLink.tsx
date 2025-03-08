@@ -5,8 +5,8 @@ import { usePathname } from "next/navigation";
 
 interface NavLinkProps {
   link: {
-    url: String;
-    title: String;
+    url: string;
+    title: string;
   };
 }
 

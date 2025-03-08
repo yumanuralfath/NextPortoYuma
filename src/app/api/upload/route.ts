@@ -30,9 +30,7 @@ export async function POST(req: NextRequest) {
           },
           (error, result) => {
             if (error)
-              reject(
-                new Error(error.message || "Cloudinary upload error")
-              );
+              reject(new Error(error.message || "Cloudinary upload error"));
             resolve(result as UploadApiResponse);
           }
         );
@@ -44,6 +42,7 @@ export async function POST(req: NextRequest) {
     return new Response(JSON.stringify({ url: uploadResult.secure_url }), {
       status: 200,
     });
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
   } catch (error: any) {
     console.error("Error uploading image:", error);
     return new Response(JSON.stringify({ error: error.message }), {

@@ -4,8 +4,8 @@ export default function robots() {
       {
         userAgent: "*",
         allow: "/",
-      }
+      },
     ],
-    sitemap: `${process.env.NEXT_PUBLIC_BASE_URL}/sitemap.xml`
-  }
+    sitemap: `${process.env.NEXT_PUBLIC_BASE_URL}/sitemap.xml`,
+  };
 }

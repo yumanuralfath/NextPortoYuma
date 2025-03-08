@@ -1,29 +1,27 @@
 import { v2 as cloudinary, UploadApiResponse } from "cloudinary";
-import { NextApiRequest, NextApiResponse } from "next";
+import { NextRequest, NextResponse } from "next/server";
 
 cloudinary.config({
-  cloudinary_url: process.env.CLOUDINARY_URL,
+  cloudinary_url: process.env.CLOUDINARY_URL!,
 });
 
-export default async function handler(
-  req: NextApiRequest,
-  res: NextApiResponse
-) {
-  if (req.method !== "POST") {
-    return res.status(405).json({ error: "Method not allowed" });
-  }
-
+export async function POST(req: NextRequest) {
   try {
-    const { file }: { file: string } = req.body;
+    const body = await req.json();
+    const { file }: { file: string } = body;
     const publicId = `image_assets/${Date.now()}`;
 
     const result: UploadApiResponse = await cloudinary.uploader.upload(file, {
       public_id: publicId,
     });
 
-    return res.status(200).json({ success: true, data: result });
+    return NextResponse.json({ success: true, data: result }, { status: 200 });
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
   } catch (error: any) {
     console.error("Error uploading image:", error);
-    return res.status(500).json({ error: error.message || "Upload failed" });
+    return NextResponse.json(
+      { error: error.message || "Upload failed" },
+      { status: 500 }
+    );
   }
 }
