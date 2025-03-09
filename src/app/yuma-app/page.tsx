@@ -10,16 +10,18 @@ import { setAccessToken } from "@/lib/fetchLib";
 interface FormData {
   email: string;
   password: string;
+  confirmPassword?: string;
   username: string;
 }
 
 const CodexPage = () => {
   const router = useRouter();
   const [isLogin, setIsLogin] = useState(true);
-  const [loading] = useState(false);
+  const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState<FormData>({
     email: "",
     password: "",
+    confirmPassword: "",
     username: "",
   });
 
@@ -32,6 +34,13 @@ const CodexPage = () => {
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
+    setLoading(true);
+
+    if (!isLogin && formData.password !== formData.confirmPassword) {
+      toast.error("Passwords do not match!");
+      setLoading(false);
+      return;
+    }
 
     const request = isLogin
       ? loginService({
@@ -46,28 +55,13 @@ const CodexPage = () => {
           window.location.reload();
         });
 
-    toast.promise(request, {
-      loading: isLogin ? "Logging in..." : "Registering...",
-      success: isLogin ? "Login successful!" : "Register successful!",
-      error: "An error occurred. Please try again.",
-    });
-  };
-
-  const getButtonText = (loading: boolean, isLogin: boolean): string => {
-    if (loading) return "loading...";
-    return isLogin ? "Login" : "Register";
-  };
-
-  const getButtonClassName = (
-    isCurrentLogin: boolean,
-    isLoginButton: boolean
-  ): string => {
-    const isActive = isLoginButton ? isCurrentLogin : !isCurrentLogin;
-    return `flex-1 py-4 text-lg font-semibold transition-colors ${
-      isActive
-        ? "bg-gradient-to-r from-purple-600 to-blue-500 text-white"
-        : "bg-gray-50 text-gray-500 hover:text-gray-700"
-    }`;
+    toast
+      .promise(request, {
+        loading: isLogin ? "Logging in..." : "Registering...",
+        success: isLogin ? "Login successful!" : "Register successful!",
+        error: "An error occurred. Please try again.",
+      })
+      .finally(() => setLoading(false));
   };
 
   return (
@@ -77,21 +71,31 @@ const CodexPage = () => {
           Easy Access to My App
         </h1>
         <p className="text-gray-700 text-center mb-16 text-lg font-medium">
-          Enjoy hassle-free access to all my applications.
+          Enjoy hassle-free access to all my applications
         </p>
 
         <div className="w-full max-w-md">
           <div className="bg-white rounded-2xl shadow-xl overflow-hidden">
             <div className="flex mb-4">
               <button
-                className={getButtonClassName(isLogin, true)}
-                onClick={() => setIsLogin(true)}
+                className={`flex-1 py-4 text-lg font-semibold transition-colors ${
+                  isLogin
+                    ? "bg-gradient-to-r from-purple-600 to-blue-500 text-white"
+                    : "bg-gray-50 text-gray-500 hover:text-gray-700"
+                }`}
+                onClick={() => !loading && setIsLogin(true)}
+                disabled={loading}
               >
                 Login
               </button>
               <button
-                className={getButtonClassName(isLogin, false)}
-                onClick={() => setIsLogin(false)}
+                className={`flex-1 py-4 text-lg font-semibold transition-colors ${
+                  !isLogin
+                    ? "bg-gradient-to-r from-purple-600 to-blue-500 text-white"
+                    : "bg-gray-50 text-gray-500 hover:text-gray-700"
+                }`}
+                onClick={() => !loading && setIsLogin(false)}
+                disabled={loading}
               >
                 Register
               </button>
@@ -118,11 +122,10 @@ const CodexPage = () => {
                       value={formData.username}
                       onChange={handleChange}
                       className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-purple-500 focus:border-transparent outline-none transition-all"
-                      placeholder="Please enter your username"
+                      placeholder="Enter your username"
                     />
                   </div>
                 )}
-
                 <div>
                   <label
                     htmlFor="email"
@@ -136,10 +139,9 @@ const CodexPage = () => {
                     value={formData.email}
                     onChange={handleChange}
                     className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-purple-500 focus:border-transparent outline-none transition-all"
-                    placeholder="Please enter your email"
+                    placeholder="Enter your email"
                   />
                 </div>
-
                 <div>
                   <label
                     htmlFor="password"
@@ -153,16 +155,33 @@ const CodexPage = () => {
                     value={formData.password}
                     onChange={handleChange}
                     className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-purple-500 focus:border-transparent outline-none transition-all"
-                    placeholder="Please enter your password"
+                    placeholder="Enter your password"
                   />
                 </div>
-
+                {!isLogin && (
+                  <div>
+                    <label
+                      htmlFor="confirmPassword"
+                      className="block text-sm font-medium text-gray-700 mb-2"
+                    >
+                      Confirm Password
+                    </label>
+                    <input
+                      id="confirmPassword"
+                      type="password"
+                      value={formData.confirmPassword}
+                      onChange={handleChange}
+                      className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-purple-500 focus:border-transparent outline-none transition-all"
+                      placeholder="Confirm your password"
+                    />
+                  </div>
+                )}
                 <button
                   type="submit"
                   disabled={loading}
                   className="w-full py-3 px-4 bg-gradient-to-r from-purple-600 to-blue-500 text-white rounded-lg font-semibold hover:from-purple-700 hover:to-blue-600 transition-all shadow-md hover:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed"
                 >
-                  {getButtonText(loading, isLogin)}
+                  {loading ? "Loading..." : isLogin ? "Login" : "Register"}
                 </button>
               </form>
             </motion.div>
