@@ -1,7 +1,7 @@
-import BoxApp from "@/components/General/BoxApp";
+import BoxApp from "@/components/App/BoxApp";
 
 const AppPage = () => {
-  return <BoxApp></BoxApp>;
+  return <BoxApp />;
 };
 
 export default AppPage;
