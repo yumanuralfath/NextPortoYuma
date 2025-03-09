@@ -1,30 +1,14 @@
-import * as fs from "fs";
-import * as path from "path";
+/* eslint-disable no-undef */
+import fs from "fs";
+import path from "path";
 import matter from "gray-matter";
 import { marked } from "marked";
 import DisqusComments from "./DisqusComments";
-import { Metadata } from "next";
 
-interface Params {
-  slug: string;
-}
-
-export async function generateMetadata({
-  params,
-}: {
-  params: Params;
-}): Promise<Metadata | undefined> {
+export async function generateMetadata({ params }) {
   const { slug } = params;
   const filePath = path.join(process.cwd(), "src/content/blog", `${slug}.md`);
-
-  if (!fs.existsSync(filePath)) {
-    return {
-      title: "Post Not Found",
-      description: "The requested blog post does not exist.",
-    };
-  }
-
-  const fileContent = await fs.promises.readFile(filePath, "utf-8");
+  const fileContent = fs.readFileSync(filePath, "utf-8");
   const { data: frontMatter } = matter(fileContent);
 
   return {
@@ -35,7 +19,13 @@ export async function generateMetadata({
       description: frontMatter.excerpt,
       url: `https://yumana.my.id/blog/${slug}`,
       siteName: "Yuma Nur Alfath blog Website",
-      images: [{ url: frontMatter.image, width: 800, height: 600 }],
+      images: [
+        {
+          url: frontMatter.image,
+          width: 800,
+          height: 600,
+        },
+      ],
       locale: "en_US",
       alternateLocale: ["id_ID"],
       type: "website",
@@ -49,18 +39,9 @@ export async function generateMetadata({
   };
 }
 
-interface PageProps {
-  params: Awaited<{ slug: string }>;
-}
-
-export default function BlogPost({ params }: PageProps) {
+export default async function BlogPost({ params }) {
   const { slug } = params;
   const filePath = path.join(process.cwd(), "src/content/blog", `${slug}.md`);
-
-  if (!fs.existsSync(filePath)) {
-    return <p className="text-center text-gray-500">Blog post not found.</p>;
-  }
-
   const fileContent = fs.readFileSync(filePath, "utf-8");
   const { data: frontMatter, content } = matter(fileContent);
   const htmlContent = marked(content);
@@ -86,6 +67,7 @@ export default function BlogPost({ params }: PageProps) {
         />
       </article>
 
+      {/* Disqus Comments Section */}
       <DisqusComments slug={slug} />
     </div>
   );
