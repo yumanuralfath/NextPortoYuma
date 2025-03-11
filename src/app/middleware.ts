@@ -3,7 +3,7 @@ import { NextResponse, NextRequest } from "next/server";
 export function middleware(request: NextRequest) {
   const token = request.cookies.get("token");
 
-  if (!token && request.nextUrl.pathname.startsWith("/threaded")) {
+  if (!token && request.nextUrl.pathname.startsWith("/app")) {
     return NextResponse.redirect(new URL("/yuma-app", request.url));
   }
 
@@ -11,5 +11,5 @@ export function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: "/threaded/:path*",
+  matcher: "/app/:path*",
 };
