@@ -10,7 +10,6 @@ const AppCard = ({ name, image, link }: AppCardProps) => {
   return (
     <a
       href={link}
-      target="_blank"
       rel="noopener noreferrer"
       className="block bg-white rounded-lg shadow-md p-4 transition-transform transform hover:scale-105"
     >

@@ -4,9 +4,11 @@ import { useState, useRef, useEffect } from "react";
 import { FaGithub } from "react-icons/fa";
 
 const GithubDropdown = ({
+  main,
   frontend,
   backend,
 }: {
+  main?: string;
   frontend?: string;
   backend?: string;
 }) => {
@@ -41,8 +43,19 @@ const GithubDropdown = ({
       {isOpen && (
         <div
           ref={dropdownRef}
-          className="absolute top-full right-0 left-auto mt-2 bg-gray-800 rounded-md p-2 z-50 min-w-[180px] shadow-xl"
+          className="absolute top-full left-0 right-auto mt-2 bg-gray-800
+          rounded-2xl p-1 z-50 min-w-[90px] shadow-2xl"
         >
+          {main && (
+            <a
+              href={main}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-white hover:text-blue-300 p-2 block"
+            >
+              Main
+            </a>
+          )}
           {frontend && (
             <a
               href={frontend}
@@ -50,7 +63,7 @@ const GithubDropdown = ({
               rel="noopener noreferrer"
               className="text-white hover:text-blue-300 p-2 block"
             >
-              Frontend Repo
+              Frontend
             </a>
           )}
           {backend && (
@@ -60,7 +73,7 @@ const GithubDropdown = ({
               rel="noopener noreferrer"
               className="text-white hover:text-blue-300 p-2 block"
             >
-              Backend Repo
+              Backend
             </a>
           )}
         </div>
