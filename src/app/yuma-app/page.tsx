@@ -49,7 +49,7 @@ const CodexPage = () => {
         }).then((response) => {
           localStorage.setItem("user", JSON.stringify(response.user));
           setAccessToken(response.token);
-          router.push("/app/profile");
+          router.push("/app");
         })
       : registerService(formData).then(() => {
           window.location.reload();
