@@ -4,6 +4,7 @@ import TransitionProvider from "../components/General/transitionProvider";
 import { Analytics } from "@vercel/analytics/next";
 import ToasterProvider from "@/providers/ToastProviders";
 import { ReactNode } from "react";
+// import { usePathname } from "next/navigation";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -45,6 +46,10 @@ export const metadata = {
 };
 
 export default function RootLayout({ children }: RootLayoutProps) {
+  // const pathname = usePathname();
+
+  // const useTransitionProvider = ["/", "/blog", "/yuma-app"].includes(pathname);
+
   return (
     <html lang="en">
       <meta name="p:domain_verify" content="c801e44222b4e6bc238e8714a4e171de" />

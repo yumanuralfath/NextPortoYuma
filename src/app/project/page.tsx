@@ -89,6 +89,7 @@ const ProjectPage: React.FC = () => {
 
                 <div className="flex flex-col md:flex-row gap-4 items-center">
                   <GithubDropdown
+                    main={project.github.main}
                     frontend={project.github.frontend}
                     backend={project.github.backend}
                   />

@@ -5,6 +5,8 @@ import Link from "next/link";
 import { useState } from "react";
 import NavLink from "./NavLink";
 import { motion } from "framer-motion";
+import { usePathname } from "next/navigation";
+import NavbarApp from "../App/NavbarApp";
 
 const links = [
   { url: "/", title: "Home" },
@@ -84,6 +86,12 @@ const Navbar = () => {
       },
     },
   };
+
+  const pathname = usePathname();
+
+  if (pathname?.startsWith("/app")) {
+    return <NavbarApp />;
+  }
 
   return (
     <div className="fixed top-0 left-0 right-0 z-50 h-16 flex items-center justify-between px-4 sm:px-8 md:px-12 lg:px-20 xl:px-48 text-xl bg-white shadow">

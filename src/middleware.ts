@@ -2,7 +2,7 @@ import { NextResponse, NextRequest } from "next/server";
 
 export function middleware(request: NextRequest) {
   const publicPaths = ["/", "/project", "/yuma-app", "/blog", "/blog/:path*"];
-  const protectedPaths = ["/threaded", "/threaded/:path*"];
+  const protectedPaths = ["/app", "/app/:path*"];
 
   const accessToken = request.cookies.get("accessToken")?.value;
 
@@ -35,7 +35,7 @@ export const config = {
     "/yuma-app",
     "/blog",
     "/blog/:path*",
-    "/threaded",
-    "/threaded/:path*",
+    "/app",
+    "/app/:path*",
   ],
 };

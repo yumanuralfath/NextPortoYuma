@@ -9,7 +9,7 @@ interface Project {
 }
 
 interface GithubLinks {
-  main: string;
+  main?: string;
   frontend: string;
   backend: string;
 }
@@ -30,7 +30,6 @@ export const projects: Project[] = [
       "Supabase",
     ],
     github: {
-      main: "https://github.com/yumanuralfath/NextPortoYuma",
       frontend: "https://github.com/yumanuralfath/NextPortoYuma",
       backend: "https://github.com/yumanuralfath/pictoria_api",
     },
