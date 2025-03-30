@@ -35,7 +35,7 @@ jobs:
       - name: Push Changes and Tags
         run: git push --follow-tags origin main
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.PAT_TOKEN }}
 
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v2
