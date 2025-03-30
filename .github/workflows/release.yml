@@ -3,7 +3,7 @@ name: Automated Versioning and Release
 on:
   push:
     branches:
-      - main # Hanya berjalan di branch main
+      - main
 
 jobs:
   release:
@@ -12,7 +12,7 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
         with:
-          fetch-depth: 0 # Diperlukan agar riwayat commit tersedia
+          fetch-depth: 0
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
@@ -22,16 +22,18 @@ jobs:
       - name: Install Dependencies
         run: npm install
 
+      - name: Configure Git Identity
+        run: |
+          git config --global user.name "yumanuralfath"
+          git config --global user.email "yumanuralfath2@gmail.com"
+
       - name: Bump Version & Generate Changelog
         run: npm run release
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Push Changes and Tags
-        run: |
-          git config --global user.name "yumanuralfath"
-          git config --global user.email "yumanuralfath2@gmail.com"
-          git push --follow-tags origin main
+        run: git push --follow-tags origin main
 
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v2
