@@ -27,7 +27,8 @@
     "react-hot-toast": "^2.5.1",
     "react-parallax-tilt": "^1.7.269",
     "sharp": "^0.33.5",
-    "streamifier": "^0.1.1"
+    "streamifier": "^0.1.1",
+    "wavesurfer.js": "^7.9.4"
   },
   "devDependencies": {
     "@eslint/js": "^9.21.0",
