@@ -1,5 +1,4 @@
 "use client";
-
 import AudioRecorder from "@/components/voice/AudioRecorder";
 
 const voicePage = () => {
@@ -10,7 +9,7 @@ const voicePage = () => {
           <h2 className="text-3xl font-bold text-center mb-8 text-gray-800">
             Voice Journal
           </h2>
-          <div className="text-center p-8 max-w-2xl m-auto">
+          <div className="justify-between text-center p-8 max-w-2xl m-auto">
             <AudioRecorder />
           </div>
         </div>

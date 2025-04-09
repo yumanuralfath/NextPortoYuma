@@ -7,6 +7,7 @@ import {
   FaStop,
   FaDownload,
   FaPause,
+  FaUpload,
 } from "react-icons/fa";
 
 const AudioRecorder = () => {
@@ -17,6 +18,7 @@ const AudioRecorder = () => {
   const [recordingBlob, setRecordingBlob] = useState<Blob | null>(null);
   const [recordingTime, setRecordingTime] = useState(0);
   const [volume, setVolume] = useState(0);
+  const [loading, setLoading] = useState(false);
   const waveformRef = useRef<HTMLDivElement | null>(null);
   const wavesurfer = useRef<WaveSurfer | null>(null);
   const audioContext = useRef<AudioContext | null>(null);
@@ -129,64 +131,118 @@ const AudioRecorder = () => {
     URL.revokeObjectURL(url);
   };
 
+  const uploadRecording = async () => {
+    if (!recordingBlob) return;
+
+    const formData = new FormData();
+    formData.append("file", recordingBlob, "recording.webm");
+
+    const user = localStorage.getItem("user");
+    if (user) {
+      formData.append("user", user);
+    }
+
+    const uploadPromise = fetch("/api/upload/audio", {
+      method: "POST",
+      body: formData,
+    }).then(async (res) => {
+      const data = await res.json();
+      if (!res.ok) {
+        throw new Error(data.error || "Upload failed");
+      }
+      return data;
+    });
+
+    setLoading(true);
+    toast
+      .promise(uploadPromise, {
+        loading: "Uploading audio...",
+        success: "Upload successful!",
+        error: "Upload failed. Please try again.",
+      })
+      .catch((err) => {
+        console.error(err);
+      })
+      .finally(() => setLoading(false));
+  };
+
   return (
-    <div>
-      <div style={{ margin: "1rem" }}>
-        <button onClick={isRecording ? stopRecording : startRecording}>
+    <div className="flex flex-col items-center p-6 space-y-6">
+      <div className="flex gap-6 flex-wrap justify-center">
+        <button
+          onClick={isRecording ? stopRecording : startRecording}
+          className="flex flex-col items-center transition hover:scale-105"
+        >
           {isRecording ? (
-            <FaStop size={48} color="red" />
+            <FaStop size={48} className="text-red-500" />
           ) : (
-            <FaMicrophone size={48} color="#61dafb" />
-          )}{" "}
-          {isRecording ? "Stop" : "Start"}
-        </button>{" "}
+            <FaMicrophone size={48} className="text-cyan-400" />
+          )}
+          <span className="mt-1 text-sm font-medium">
+            {isRecording ? "Stop" : "Record"}
+          </span>
+        </button>
+
         {recordingBlob && (
           <>
-            <button onClick={togglePlay}>
+            <button
+              onClick={togglePlay}
+              className="flex flex-col items-center transition hover:scale-105"
+            >
               {isPlaying ? (
-                <FaPause size={48} color="#ed9418" />
+                <FaPause size={48} className="text-orange-400" />
               ) : (
-                <FaPlay size={48} color="#81f760" />
-              )}{" "}
-              {isPlaying ? "Pause" : "Play"}
-            </button>{" "}
-            <button onClick={downloadBlob}>
-              <FaDownload size={48} color="#18edad" /> Download
+                <FaPlay size={48} className="text-green-400" />
+              )}
+              <span className="mt-1 text-sm font-medium">
+                {isPlaying ? "Pause" : "Play"}
+              </span>
+            </button>
+
+            <button
+              onClick={downloadBlob}
+              className="flex flex-col items-center transition hover:scale-105"
+            >
+              <FaDownload size={48} className="text-teal-400" />
+              <span className="mt-1 text-sm font-medium">Download</span>
+            </button>
+
+            <button
+              onClick={uploadRecording}
+              disabled={loading}
+              className="flex flex-col items-center transition hover:scale-105"
+            >
+              <FaUpload size={48} className="text-blue-500" />
+              <span className="mt-1 text-sm font-medium">
+                {loading ? "Uploading..." : "Upload"}
+              </span>
             </button>
           </>
         )}
       </div>
 
       {isRecording && (
-        <>
-          <p>
+        <div className="text-center space-y-2">
+          <p className="text-lg font-medium">
             Recording Time: {Math.floor(recordingTime / 60)}:
             {String(recordingTime % 60).padStart(2, "0")}
           </p>
-          <div
-            style={{
-              width: "100%",
-              height: "10px",
-              background: "#ccc",
-              borderRadius: "5px",
-              margin: "1rem auto",
-              maxWidth: "300px",
-              overflow: "hidden",
-            }}
-          >
+          <div className="w-full max-w-xs h-3 bg-gray-300 rounded overflow-hidden mx-auto">
             <div
+              className={`h-full transition-all duration-100`}
               style={{
-                height: "100%",
                 width: `${Math.min(volume, 100)}%`,
-                background: volume > 60 ? "red" : "#61dafb",
-                transition: "width 0.1s",
+                backgroundColor: volume > 60 ? "red" : "#61dafb",
               }}
             />
           </div>
-        </>
+        </div>
       )}
 
-      <div ref={waveformRef} style={{ marginTop: "30px" }} />
+      <div
+        ref={waveformRef}
+        className="w-full max-w-3xl mt-6 border-t border-gray-200 pt-4"
+      />
     </div>
   );
 };
