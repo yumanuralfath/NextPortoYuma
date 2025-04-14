@@ -1,5 +1,5 @@
 import { removeAccessToken } from "@/lib/fetchLib";
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState, useRef, useCallback } from "react";
 import { useRouter } from "next/navigation";
 
 interface User {
@@ -15,39 +15,53 @@ const NavbarApp = () => {
   const dropdownRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    const userData = localStorage.getItem("user");
-    if (!userData) {
-      router.push("/yuma-app");
-      return;
+    try {
+      const userData = localStorage.getItem("user");
+      if (!userData) {
+        router.replace("/yuma-app");
+        return;
+      }
+      setUser(JSON.parse(userData));
+    } catch (error) {
+      console.error("Error parsing user data:", error);
+      router.replace("/yuma-app");
     }
-    setUser(JSON.parse(userData));
   }, [router]);
 
-  useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      if (
-        dropdownRef.current &&
-        !dropdownRef.current.contains(event.target as Node)
-      ) {
-        setIsDropdownOpen(false);
-      }
-    };
+  const handleClickOutside = useCallback((event: MouseEvent) => {
+    if (
+      dropdownRef.current &&
+      !dropdownRef.current.contains(event.target as Node)
+    ) {
+      setIsDropdownOpen(false);
+    }
+  }, []);
 
+  const handleKeyDown = useCallback((event: KeyboardEvent) => {
+    if (event.key === "Escape") {
+      setIsDropdownOpen(false);
+    }
+  }, []);
+
+  useEffect(() => {
     if (isDropdownOpen) {
       document.addEventListener("mousedown", handleClickOutside);
+      document.addEventListener("keydown", handleKeyDown);
     } else {
       document.removeEventListener("mousedown", handleClickOutside);
+      document.removeEventListener("keydown", handleKeyDown);
     }
 
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
+      document.removeEventListener("keydown", handleKeyDown);
     };
-  }, [isDropdownOpen]);
+  }, [isDropdownOpen, handleClickOutside, handleKeyDown]);
 
   const handleLogout = () => {
     localStorage.removeItem("user");
     removeAccessToken();
-    router.push("/yuma-app");
+    router.replace("/yuma-app");
   };
 
   if (!user) return null;
@@ -75,6 +89,7 @@ const NavbarApp = () => {
             type="button"
             className="flex text-sm bg-gray-800 rounded-full md:me-0 focus:ring-4 focus:ring-gray-300 dark:focus:ring-gray-600"
             id="user-menu-button"
+            aria-controls="user-dropdown"
             aria-expanded={isDropdownOpen}
             onClick={() => setIsDropdownOpen(!isDropdownOpen)}
           >
@@ -112,7 +127,7 @@ const NavbarApp = () => {
                 <li>
                   <button
                     onClick={handleLogout}
-                    className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white"
+                    className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white w-full text-left"
                   >
                     Sign out
                   </button>
