@@ -137,8 +137,8 @@ const AudioRecorder = () => {
   };
 
   const uploadRecording = async () => {
-    if (recordingTime < 30) {
-      toast.error("Minimum Upload 30s Audio Time Length", {
+    if (recordingTime < 20) {
+      toast.error("Minimum Upload 20s Audio Time Length", {
         duration: 1000,
       });
       return;
@@ -256,6 +256,10 @@ const AudioRecorder = () => {
             ref={waveformRef}
             className="w-full max-w-3xl mt-6 border-t border-gray-200 pt-4"
           />
+          <p className="text-lg font-medium">
+            Recording Time: {Math.floor(recordingTime / 60)}:
+            {String(recordingTime % 60).padStart(2, "0")}
+          </p>
           <Transcribe />
         </>
       )}

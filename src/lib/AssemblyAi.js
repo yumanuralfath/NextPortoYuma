@@ -15,6 +15,11 @@ export const transcribeAudio = async (FILE_URL) => {
 
   try {
     const transcript = await client.transcripts.transcribe(data);
+    if (transcript.text === "") {
+      return toast.error(
+        "Sorry, we couldn't hear anything. Please record again."
+      );
+    }
     return transcript.text;
   } catch (error) {
     toast.error(`Transcription error: ${error.message || error}`);
