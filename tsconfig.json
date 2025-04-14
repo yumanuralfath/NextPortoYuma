@@ -24,7 +24,13 @@
       }
     ]
   },
-  "include": ["**/*.ts", "**/*.tsx", "next-env.d.ts", ".next/types/**/*.ts"],
+  "include": [
+    "**/*.ts",
+    "**/*.tsx",
+    "next-env.d.ts",
+    ".next/types/**/*.ts",
+    "src/lib/AssemblyAi.js"
+  ],
   "exclude": [
     "node_modules",
     "src/app/blog/[slug]/page.jsx",

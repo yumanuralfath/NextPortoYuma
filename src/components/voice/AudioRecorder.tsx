@@ -9,6 +9,8 @@ import {
   FaPause,
   FaUpload,
 } from "react-icons/fa";
+import Transcribe from "./Transcribe";
+import useAudioUploadStore from "@/store/audioUploadStore";
 
 const AudioRecorder = () => {
   const [isRecording, setIsRecording] = useState(false);
@@ -25,6 +27,9 @@ const AudioRecorder = () => {
   const analyser = useRef<AnalyserNode | null>(null);
   const volumeInterval = useRef<NodeJS.Timeout | null>(null);
   const timerInterval = useRef<NodeJS.Timeout | null>(null);
+  const setUploadedAudio = useAudioUploadStore(
+    (state) => state.setUploadedAudio
+  );
 
   useEffect(() => {
     if (recordingBlob && waveformRef.current) {
@@ -132,6 +137,12 @@ const AudioRecorder = () => {
   };
 
   const uploadRecording = async () => {
+    if (recordingTime < 30) {
+      toast.error("Minimum Upload 30s Audio Time Length", {
+        duration: 1000,
+      });
+      return;
+    }
     if (!recordingBlob) return;
 
     const formData = new FormData();
@@ -150,7 +161,7 @@ const AudioRecorder = () => {
       if (!res.ok) {
         throw new Error(data.error || "Upload failed");
       }
-      return data;
+      setUploadedAudio(data);
     });
 
     setLoading(true);
@@ -239,10 +250,15 @@ const AudioRecorder = () => {
         </div>
       )}
 
-      <div
-        ref={waveformRef}
-        className="w-full max-w-3xl mt-6 border-t border-gray-200 pt-4"
-      />
+      {recordingBlob && (
+        <>
+          <div
+            ref={waveformRef}
+            className="w-full max-w-3xl mt-6 border-t border-gray-200 pt-4"
+          />
+          <Transcribe />
+        </>
+      )}
     </div>
   );
 };
