@@ -41,7 +41,7 @@ export const registerService = async (userData: userDataProps) => {
   const data = await response.json();
 
   if (!response.ok) {
-    throw new Error(data.message || "Failed Register");
+    throw new Error(data?.error || "Failed Register");
   }
 
   return data;
