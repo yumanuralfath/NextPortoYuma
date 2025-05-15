@@ -42,24 +42,31 @@ const CodexPage = () => {
       return;
     }
 
-    const request = isLogin
-      ? loginService({
-          email: formData.email,
-          password: formData.password,
-        }).then((response) => {
+    const request = (async () => {
+      try {
+        if (isLogin) {
+          const response = await loginService({
+            email: formData.email,
+            password: formData.password,
+          });
           localStorage.setItem("user", JSON.stringify(response.user));
           setAccessToken(response.token);
           router.push("/app");
-        })
-      : registerService(formData).then(() => {
+        } else {
+          await registerService(formData);
           window.location.reload();
-        });
+        }
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      } catch (err: any) {
+        throw new Error(err.message || "An error occurred");
+      }
+    })();
 
     toast
       .promise(request, {
         loading: isLogin ? "Logging in..." : "Registering...",
         success: isLogin ? "Login successful!" : "Register successful!",
-        error: "An error occurred. Please try again.",
+        error: (err) => err.message || "An error occurred. Please try again.",
       })
       .finally(() => setLoading(false));
   };
