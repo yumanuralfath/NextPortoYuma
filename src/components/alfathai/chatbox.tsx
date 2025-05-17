@@ -6,6 +6,7 @@ import toast from "react-hot-toast";
 import ReactMarkdown from "react-markdown";
 import Image from "next/image";
 
+
 interface PromptInput {
   prompt: string;
 }
@@ -70,6 +71,7 @@ const ChatboxPage = () => {
         <button
           type="submit"
           disabled={loading}
+
           className="bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 disabled:opacity-50 transition-all duration-150"
         >
           {loading ? "Mengirim..." : "Kirim"}
