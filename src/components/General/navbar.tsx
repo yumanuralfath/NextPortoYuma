@@ -44,11 +44,10 @@ const socialLinks = [
 
 const Navbar = () => {
   const [open, setOpen] = useState(false);
+  const pathname = usePathname();
 
   const topVariants = {
-    closed: {
-      rotate: 0,
-    },
+    closed: { rotate: 0 },
     openend: {
       rotate: 45,
       backgroundColor: "rgb(255,255,255)",
@@ -56,18 +55,12 @@ const Navbar = () => {
   };
 
   const centerVariants = {
-    closed: {
-      opacity: 1,
-    },
-    openend: {
-      opacity: 0,
-    },
+    closed: { opacity: 1 },
+    openend: { opacity: 0 },
   };
 
   const bottomVariants = {
-    closed: {
-      rotate: 0,
-    },
+    closed: { rotate: 0 },
     openend: {
       rotate: -45,
       backgroundColor: "rgb(255,255,255)",
@@ -75,9 +68,7 @@ const Navbar = () => {
   };
 
   const listVariants = {
-    closed: {
-      x: "100vw",
-    },
+    closed: { x: "100vw" },
     openend: {
       x: 0,
       transition: {
@@ -87,32 +78,33 @@ const Navbar = () => {
     },
   };
 
-  const pathname = usePathname();
-
   if (pathname?.startsWith("/app")) {
     return <NavbarApp />;
   }
 
   return (
-    <div className="fixed top-0 left-0 right-0 z-50 h-16 flex items-center justify-between px-4 sm:px-8 md:px-12 lg:px-20 xl:px-48 text-xl bg-white shadow">
+    <div className="fixed top-0 left-0 right-0 z-50 h-16 flex items-center justify-between px-4 sm:px-8 md:px-12 lg:px-20 xl:px-48 text-xl bg-black text-white shadow">
       {/* LINKS */}
       <div className="hidden md:flex gap-4 w-1/3">
         {links.map((link) => (
           <NavLink link={link} key={link.title} />
         ))}
       </div>
-      {/* Logo */}
+
+      {/* LOGO */}
       <div className="md:hidden lg:flex xl:w-1/3 xl:justify-center">
         <Link
           href="/"
-          className="text-sm bg-black rounded-md p-1 font-semibold flex items-center justify-center"
+          className="text-sm bg-white rounded-md p-1 font-semibold flex items-center justify-center"
         >
-          <span className="text-white mr-1">Yuma</span>
-          <span className="w-12 h-8 rounded bg-white text-black flex items-center justify-center">
+          <span className="text-black mr-1">Yuma</span>
+          <span className="w-12 h-8 rounded bg-black text-white flex items-center justify-center">
             Na
           </span>
         </Link>
       </div>
+
+      {/* SOCIAL */}
       <div className="hidden md:flex gap-4 w-1/3 justify-end">
         {socialLinks.map((social) => (
           <Link href={social.url} target="_blank" key={social.alt}>
@@ -120,9 +112,9 @@ const Navbar = () => {
           </Link>
         ))}
       </div>
-      {/* Responsive Menu */}
+
+      {/* RESPONSIVE MENU */}
       <div className="md:hidden">
-        {/* Menu Button */}
         <button
           className="w-10 h-8 flex flex-col justify-between z-50 relative"
           onClick={() => setOpen((prev) => !prev)}
@@ -130,19 +122,20 @@ const Navbar = () => {
           <motion.div
             variants={topVariants}
             animate={open ? "openend" : "closed"}
-            className="w-10 h-1 bg-black rounded origin-left"
+            className="w-10 h-1 bg-white rounded origin-left"
           ></motion.div>
           <motion.div
             variants={centerVariants}
             animate={open ? "openend" : "closed"}
-            className="w-10 h-1 bg-black rounded"
+            className="w-10 h-1 bg-white rounded"
           ></motion.div>
           <motion.div
             variants={bottomVariants}
             animate={open ? "openend" : "closed"}
-            className="w-10 h-1 bg-black rounded origin-left"
+            className="w-10 h-1 bg-white rounded origin-left"
           ></motion.div>
         </button>
+
         {/* MENU LIST */}
         {open && (
           <motion.div

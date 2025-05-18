@@ -1,12 +1,22 @@
 "use client";
 
+import { useEffect, useRef } from "react";
 import Image from "next/image";
 import Tilt from "react-parallax-tilt";
 import Link from "next/link";
+import { runDecodeEffect } from "@/lib/runDecodeEffect";
 
 const Homepage = () => {
+  const titleRef = useRef<HTMLHeadingElement>(null);
+
+  useEffect(() => {
+    if (titleRef.current) {
+      runDecodeEffect(titleRef.current, "Welcome to My Personal Website", 50);
+    }
+  }, []);
+
   return (
-    <div className="min-h-screen flex flex-col lg:flex-row px-4 sm:px-8 md:px-12 lg:px-20 xl:px-48 justify-center items-center pt-16 bg-gray-50">
+    <div className="min-h-screen flex flex-col lg:flex-row px-4 sm:px-8 md:px-12 lg:px-20 xl:px-48 justify-center items-center pt-16 bg-black text-white font-mono">
       {/* IMAGE CONTAINER */}
       <Tilt>
         <div className="lg:w-1/2 xl:w-2/5 mb-8 lg:mb-0 flex justify-center lg:justify-start">
@@ -22,25 +32,29 @@ const Homepage = () => {
           </div>
         </div>
       </Tilt>
+
       {/* TEXT CONTAINER */}
       <div className="h-full lg:w-1/2 flex flex-col gap-8 items-center lg:items-start justify-center text-center lg:text-left">
         {/* TITLE */}
-        <h1 className="text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold text-gray-800 leading-tight">
-          Welcome to My{" "}
-          <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-500 to-purple-500">
-            Personal Website
-          </span>
+        <h1
+          ref={titleRef}
+          className="text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold text-cyan-400 leading-tight"
+        >
+          {/* decode text injected via JS */}
         </h1>
-        <p className="text-lg md:text-xl text-gray-600">
-          Hi there! I'm excited to share my projects and ideas with you. Let's
-          connect and collaborate!
+
+        {/* PARAGRAPH */}
+        <p className="text-lg md:text-xl text-purple-300 min-h-[4rem]">
+          I'm excited to share my projects and ideas with you. Let's connect and
+          collaborate!
         </p>
+
         {/* BUTTON */}
         <div className="w-full flex flex-col lg:flex-row gap-4 justify-center lg:justify-start">
-          <button className="p-4 px-6 rounded-lg ring-1 ring-gray-300 bg-gradient-to-r from-blue-500 to-purple-500 text-white font-semibold hover:from-purple-500 hover:to-blue-500 hover:ring-gray-400 transition-all shadow-md hover:shadow-lg">
+          <button className="p-4 px-6 rounded-lg ring-1 ring-cyan-500 bg-gradient-to-r from-cyan-500 to-pink-500 text-white font-semibold hover:from-pink-500 hover:to-cyan-500 hover:ring-pink-400 transition-all shadow-md hover:shadow-lg">
             <Link href="/project">View My Projects</Link>
           </button>
-          <button className="p-4 px-6 rounded-lg ring-1 ring-gray-300 bg-white text-gray-800 font-semibold hover:bg-gray-100 hover:ring-gray-400 transition-all shadow-md hover:shadow-lg">
+          <button className="p-4 px-6 rounded-lg ring-1 ring-cyan-300 bg-white text-black font-semibold hover:bg-gray-100 hover:ring-pink-400 transition-all shadow-md hover:shadow-lg">
             <Link href="https://wa.me/6282268975635">Contact Me</Link>
           </button>
         </div>

@@ -1,3 +1,61 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@keyframes decode {
+  0% {
+    content: '';
+  }
+  100% {
+    content: attr(data-text);
+  }
+}
+
+.decode-text::before {
+  content: attr(data-text);
+  display: inline-block;
+  overflow: hidden;
+  white-space: nowrap;
+  animation: none;
+}
+
+.decode-text.active::before {
+  animation: decoding 2s steps(30, end) forwards;
+}
+
+@keyframes decoding {
+  0% {
+    content: "";
+  }
+  5% {
+    content: "A";
+  }
+  10% {
+    content: "Az";
+  }
+  15% {
+    content: "Azq";
+  }
+  20% {
+    content: "AzqW";
+  }
+  100% {
+    content: attr(data-text);
+  }
+}
+
+@keyframes cyberFlicker {
+  0%   { opacity: 0.1; color: #0ff; }
+  5%   { opacity: 1; color: #f0f; }
+  10%  { opacity: 0.2; color: #0f0; }
+  20%  { opacity: 0.9; color: #0ff; }
+  30%  { opacity: 0.3; color: #f0f; }
+  50%  { opacity: 1; color: #fff; }
+  70%  { opacity: 0.2; color: #ff0; }
+  90%  { opacity: 1; color: #0ff; }
+  100% { opacity: 1; color: #fff; }
+}
+
+.cyber-flicker {
+  animation: cyberFlicker 0.3s infinite;
+}

@@ -72,7 +72,7 @@ const CodexPage = () => {
   };
 
   return (
-    <div className="min-h-screen p-8 pt-24 bg-gradient-to-br from-indigo-50 via-white to-gray-100">
+    <div className="min-h-screen p-8 pt-24  bg-black text-white font-mono from-indigo-50 via-white to-gray-100">
       <div className="max-w-7xl mx-auto flex flex-col items-center">
         <h1 className="text-6xl font-extrabold text-center mb-6 bg-gradient-to-r from-purple-600 to-blue-500 bg-clip-text text-transparent drop-shadow-lg">
           Easy Access to My App
