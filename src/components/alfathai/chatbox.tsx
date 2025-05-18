@@ -1,7 +1,14 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
-import { promptService, createThread, createComment } from "@/lib/alfathai";
-import { useState, ChangeEvent, FormEvent } from "react";
+import {
+  promptService,
+  createThread,
+  createComment,
+  getRandomThreads,
+  getCommentbyThreadID,
+} from "@/lib/alfathai";
+import { useEffect, useState, ChangeEvent, FormEvent } from "react";
 import toast from "react-hot-toast";
 import ReactMarkdown from "react-markdown";
 import Image from "next/image";
@@ -10,19 +17,34 @@ interface PromptInput {
   prompt: string;
 }
 
-const ChatboxPage = () => {
-  const [promptInput, setPromptInput] = useState<PromptInput>({
-    prompt: "",
-  });
+interface Thread {
+  id: number;
+  content: string;
+}
 
+const ChatboxPage = () => {
+  const [promptInput, setPromptInput] = useState<PromptInput>({ prompt: "" });
   const [response, setResponse] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(false);
+  const [threads, setThreads] = useState<Thread[]>([]);
+  const [selectedThread, setSelectedThread] = useState<Thread | null>(null);
+  const [selectedComment, setSelectedComment] = useState<string>("");
+
+  useEffect(() => {
+    const fetchThreads = async () => {
+      try {
+        const res = await getRandomThreads();
+        setThreads(res.threads.slice(0, 4));
+      } catch (error: any) {
+        toast.error(`Gagal memuat thread acak: ${error}`, error);
+      }
+    };
+
+    fetchThreads();
+  }, []);
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
-    setPromptInput({
-      ...promptInput,
-      [e.target.id]: e.target.value,
-    });
+    setPromptInput({ ...promptInput, [e.target.id]: e.target.value });
   };
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
@@ -35,15 +57,15 @@ const ChatboxPage = () => {
 
     setLoading(true);
     setResponse("");
+    setSelectedComment("");
+    setSelectedThread(null);
 
     try {
       const thread = await createThread(promptInput.prompt);
       const threadId = thread.id;
-
       const data = await promptService(promptInput);
       const aiResponse = data?.content || "Tidak ada respons dari AI";
       setResponse(aiResponse);
-
       await createComment(threadId, aiResponse);
     } catch (error) {
       if (error instanceof Error) {
@@ -56,8 +78,44 @@ const ChatboxPage = () => {
     }
   };
 
+  const handleThreadClick = async (thread: Thread) => {
+    setLoading(true);
+    setSelectedComment("");
+    setSelectedThread(thread);
+    setResponse("");
+
+    try {
+      const res = await getCommentbyThreadID(thread.id);
+      const comment =
+        res.comments?.[0]?.content || "Tidak ada response silahkan chat ulang";
+      setSelectedComment(comment);
+    } catch (error: any) {
+      toast.error(`Gagal memuat thread acak: ${error}`, error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <div className="max-w-xl mx-auto px-4 py-6 sm:px-6 lg:px-8">
+      {/* Threads */}
+      <div className="flex flex-wrap gap-2 mb-6">
+        {threads.map((thread) => (
+          <button
+            key={thread.id}
+            onClick={() => handleThreadClick(thread)}
+            className={`px-4 py-2 rounded-full border text-sm transition-all ${
+              selectedThread?.id === thread.id
+                ? "bg-blue-600 text-white"
+                : "bg-gray-200 hover:bg-gray-300 text-gray-800"
+            }`}
+          >
+            {thread.content}
+          </button>
+        ))}
+      </div>
+
+      {/* Form */}
       <form onSubmit={handleSubmit} className="flex flex-col space-y-4">
         <input
           id="prompt"
@@ -70,12 +128,13 @@ const ChatboxPage = () => {
         <button
           type="submit"
           disabled={loading}
-          className="bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 disabled:opacity-50 transition-all duration-150"
+          className="bg-slate-800 text-white py-2 px-4 rounded-md hover:bg-slate-950 disabled:opacity-50 transition-all duration-150"
         >
           {loading ? "Mengirim..." : "Kirim"}
         </button>
       </form>
 
+      {/* Loading */}
       {loading && (
         <div className="mt-6 flex flex-col items-center justify-center text-center space-y-3">
           <Image
@@ -91,11 +150,12 @@ const ChatboxPage = () => {
         </div>
       )}
 
-      {response && !loading && (
+      {/* AI Response */}
+      {!loading && (response || selectedComment) && (
         <div className="mt-6 p-4 border rounded-md bg-gray-50 shadow-sm">
           <h2 className="text-lg font-semibold mb-2 text-gray-800">Respons:</h2>
           <div className="prose prose-sm max-w-none text-gray-700">
-            <ReactMarkdown>{response}</ReactMarkdown>
+            <ReactMarkdown>{response || selectedComment}</ReactMarkdown>
           </div>
         </div>
       )}

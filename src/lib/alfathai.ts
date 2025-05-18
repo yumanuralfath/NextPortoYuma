@@ -117,3 +117,75 @@ export const createComment = async (threadId: string, content: string) => {
 
   return data;
 };
+
+export const getRandomThreads = async () => {
+  if (!token) {
+    throw new Error("Token tidak ditemukan. Silahkan login.");
+  }
+
+  const response = await fetch(`${BASE_URL}/threads`, {
+    method: "GET",
+    headers: {
+      "content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+  });
+
+  const contentType = response.headers.get("content-type");
+  let data: any = null;
+
+  if (contentType && contentType.includes("application/json")) {
+    try {
+      data = await response.json();
+    } catch {
+      throw new Error("Gagal parsing respons JSON dari server.");
+    }
+  } else {
+    const text = await response.text();
+    throw new Error(`${text}`);
+  }
+
+  if (!response.ok) {
+    throw new Error(
+      data?.error || data?.message || "Gagal menyimpan komentar."
+    );
+  }
+
+  return data;
+};
+
+export const getCommentbyThreadID = async (threadId: number) => {
+  if (!token) {
+    throw new Error("Token tidak ditemukan. Silahkan login.");
+  }
+
+  const response = await fetch(`${BASE_URL}/comments/${threadId}`, {
+    method: "GET",
+    headers: {
+      "content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+  });
+
+  const contentType = response.headers.get("content-type");
+  let data: any = null;
+
+  if (contentType && contentType.includes("application/json")) {
+    try {
+      data = await response.json();
+    } catch {
+      throw new Error("Gagal parsing respons JSON dari server.");
+    }
+  } else {
+    const text = await response.text();
+    throw new Error(`${text}`);
+  }
+
+  if (!response.ok) {
+    throw new Error(
+      data?.error || data?.message || "Gagal menyimpan komentar."
+    );
+  }
+
+  return data;
+};
