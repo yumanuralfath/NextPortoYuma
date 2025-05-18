@@ -63,9 +63,11 @@ const ChatboxPage = () => {
     try {
       const thread = await createThread(promptInput.prompt);
       const threadId = thread.id;
+      
       const data = await promptService(promptInput);
       const aiResponse = data?.content || "Tidak ada respons dari AI";
       setResponse(aiResponse);
+        
       await createComment(threadId, aiResponse);
     } catch (error) {
       if (error instanceof Error) {
@@ -156,6 +158,7 @@ const ChatboxPage = () => {
           <h2 className="text-lg font-semibold mb-2 text-gray-800">Respons:</h2>
           <div className="prose prose-sm max-w-none text-gray-700">
             <ReactMarkdown>{response || selectedComment}</ReactMarkdown>
+
           </div>
         </div>
       )}
