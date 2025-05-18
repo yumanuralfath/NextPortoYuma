@@ -29,12 +29,13 @@ const ChatboxPage = () => {
   const [threads, setThreads] = useState<Thread[]>([]);
   const [selectedThread, setSelectedThread] = useState<Thread | null>(null);
   const [selectedComment, setSelectedComment] = useState<string>("");
+  const [expandedThreadId, setExpandedThreadId] = useState<number | null>(null);
 
   useEffect(() => {
     const fetchThreads = async () => {
       try {
         const res = await getRandomThreads();
-        setThreads(res.threads.slice(0, 4));
+        setThreads(res.threads.slice(0, 6));
       } catch (error: any) {
         toast.error(`Gagal memuat thread acak: ${error}`, error);
       }
@@ -70,11 +71,11 @@ const ChatboxPage = () => {
         
       await createComment(threadId, aiResponse);
     } catch (error) {
-      if (error instanceof Error) {
-        toast.error(error.message);
-      } else {
-        toast.error("Terjadi kesalahan yang tidak diketahui");
-      }
+      toast.error(
+        error instanceof Error
+          ? error.message
+          : "Terjadi kesalahan yang tidak diketahui"
+      );
     } finally {
       setLoading(false);
     }
@@ -92,33 +93,45 @@ const ChatboxPage = () => {
         res.comments?.[0]?.content || "Tidak ada response silahkan chat ulang";
       setSelectedComment(comment);
     } catch (error: any) {
-      toast.error(`Gagal memuat thread acak: ${error}`, error);
+      toast.error(`Gagal memuat komentar thread: ${error}`, error);
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <div className="max-w-xl mx-auto px-4 py-6 sm:px-6 lg:px-8">
+    <div className="w-full max-w-xl mx-auto px-4 py-4 sm:px-6 md:py-6">
       {/* Threads */}
-      <div className="flex flex-wrap gap-2 mb-6">
+      <div className="flex flex-wrap gap-2 mb-4 sm:mb-6">
         {threads.map((thread) => (
-          <button
-            key={thread.id}
-            onClick={() => handleThreadClick(thread)}
-            className={`px-4 py-2 rounded-full border text-sm transition-all ${
-              selectedThread?.id === thread.id
-                ? "bg-blue-600 text-white"
-                : "bg-gray-200 hover:bg-gray-300 text-gray-800"
-            }`}
-          >
-            {thread.content}
-          </button>
+          <div key={thread.id} className="flex flex-col items-start">
+            <button
+              onClick={() => {
+                handleThreadClick(thread);
+                setExpandedThreadId((prev) =>
+                  prev === thread.id ? null : thread.id
+                );
+              }}
+              className={`max-w-[150px] truncate px-4 py-2 rounded-full border text-sm transition-all ${
+                selectedThread?.id === thread.id
+                  ? "bg-slate-800 text-white"
+                  : "bg-gray-200 hover:bg-gray-300 text-gray-800"
+              }`}
+            >
+              {thread.content}
+            </button>
+
+            {expandedThreadId === thread.id && (
+              <div className="mt-1 text-sm text-gray-600 max-w-xs break-words bg-white border rounded shadow px-3 py-2">
+                {thread.content}
+              </div>
+            )}
+          </div>
         ))}
       </div>
 
       {/* Form */}
-      <form onSubmit={handleSubmit} className="flex flex-col space-y-4">
+      <form onSubmit={handleSubmit} className="flex flex-col space-y-3">
         <input
           id="prompt"
           type="text"
@@ -156,7 +169,7 @@ const ChatboxPage = () => {
       {!loading && (response || selectedComment) && (
         <div className="mt-6 p-4 border rounded-md bg-gray-50 shadow-sm">
           <h2 className="text-lg font-semibold mb-2 text-gray-800">Respons:</h2>
-          <div className="prose prose-sm max-w-none text-gray-700">
+          <div className="prose prose-sm max-w-none text-gray-700 break-words">
             <ReactMarkdown>{response || selectedComment}</ReactMarkdown>
 
           </div>
