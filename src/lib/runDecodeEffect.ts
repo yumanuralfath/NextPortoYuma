@@ -1,7 +1,7 @@
 export const runDecodeEffect = (
   el: HTMLElement,
   finalText: string,
-  speed = 80
+  speed = 100
 ) => {
   const chars =
     "ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890!@#$%^&*()_+-=[]{}|;:,.<>?";

@@ -67,7 +67,7 @@ const NavbarApp = () => {
   if (!user) return null;
 
   return (
-    <nav className="bg-white border-gray-200 dark:bg-gray-900">
+    <nav className="bg-[#0f0f1b] border-b border-purple-500 shadow-[0_4px_10px_rgba(255,0,255,0.3)] font-mono">
       <div className="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
         {/* Logo */}
         <a
@@ -75,7 +75,7 @@ const NavbarApp = () => {
           className="flex items-center space-x-3 rtl:space-x-reverse"
         >
           <img src="/navbar.png" className="h-8" alt="Logo" />
-          <span className="self-center text-2xl font-semibold whitespace-nowrap dark:text-white">
+          <span className="self-center text-2xl font-bold text-cyan-400 drop-shadow-[0_0_6px_#00ffff]">
             Portfolio App
           </span>
         </a>
@@ -87,7 +87,7 @@ const NavbarApp = () => {
         >
           <button
             type="button"
-            className="flex text-sm bg-gray-800 rounded-full md:me-0 focus:ring-4 focus:ring-gray-300 dark:focus:ring-gray-600"
+            className="flex text-sm bg-black border border-cyan-500 rounded-full p-1 hover:shadow-cyan-500/30"
             id="user-menu-button"
             aria-controls="user-dropdown"
             aria-expanded={isDropdownOpen}
@@ -104,14 +104,14 @@ const NavbarApp = () => {
           {/* Dropdown Menu */}
           {isDropdownOpen && (
             <div
-              className="z-50 absolute top-12 right-4 my-4 text-base list-none bg-white divide-y divide-gray-100 rounded-lg shadow dark:bg-gray-700 dark:divide-gray-600"
+              className="z-50 absolute top-12 right-4 my-4 text-base list-none bg-[#1a1a2e] border border-cyan-500 rounded-lg shadow-lg"
               id="user-dropdown"
             >
               <div className="px-4 py-3">
-                <span className="block text-sm text-gray-900 dark:text-white">
+                <span className="block text-sm text-cyan-300">
                   {user.username}
                 </span>
-                <span className="block text-sm text-gray-500 truncate dark:text-gray-400">
+                <span className="block text-sm text-purple-300 truncate">
                   {user.email}
                 </span>
               </div>
@@ -119,7 +119,7 @@ const NavbarApp = () => {
                 <li>
                   <a
                     href="/app/profile"
-                    className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white"
+                    className="block px-4 py-2 text-sm text-cyan-200 hover:bg-cyan-700/20 hover:text-white"
                   >
                     Settings
                   </a>
@@ -127,7 +127,7 @@ const NavbarApp = () => {
                 <li>
                   <button
                     onClick={handleLogout}
-                    className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white w-full text-left"
+                    className="block px-4 py-2 text-sm text-pink-300 hover:bg-pink-700/20 hover:text-white w-full text-left"
                   >
                     Sign out
                   </button>

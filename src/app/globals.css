@@ -59,3 +59,66 @@
 .cyber-flicker {
   animation: cyberFlicker 0.3s infinite;
 }
+
+.neon-border {
+  border: 2px solid #0ff;
+  box-shadow: 0 0 10px #0ff, 0 0 20px #0ff;
+}
+
+.text-neon {
+  color: #39ff14;
+}
+.shadow-cyberpunk {
+  box-shadow: 0 0 20px #0ff, 0 0 30px #f0f, 0 0 40px #0ff;
+}
+.drop-shadow-glow {
+  filter: drop-shadow(0 0 6px #f0f);
+}
+.bg-cyber {
+  background: linear-gradient(135deg, #111, #1a0033);
+}
+.border-neon {
+  border-color: #ff00ff;
+}
+
+.bg-cyberpunk-panel {
+  background: linear-gradient(145deg, #0f0f0f, #1a1a1a);
+  border: 1px solid #00f0ff;
+  box-shadow: 0 0 10px #00f0ff66, 0 0 20px #aa00ff33;
+}
+
+.text-neon-blue {
+  color: #00f0ff;
+  text-shadow: 0 0 5px #00f0ff, 0 0 10px #00f0ff88;
+}
+
+.text-neon-purple {
+  color: #aa00ff;
+  text-shadow: 0 0 5px #aa00ff, 0 0 10px #aa00ff88;
+}
+
+.btn-cyber {
+  background: #0f0f0f;
+  border: 1px solid #00f0ff;
+  color: #00f0ff;
+  box-shadow: 0 0 5px #00f0ff66;
+  transition: all 0.3s ease-in-out;
+}
+
+.btn-cyber:hover {
+  background: #00f0ff;
+  color: black;
+  box-shadow: 0 0 10px #00f0ffcc;
+}
+
+.input-cyber {
+  background-color: #0d0d0d;
+  color: #00f0ff;
+  border: 1px solid #aa00ff;
+  outline: none;
+  box-shadow: inset 0 0 5px #aa00ff88;
+}
+
+.panel-shadow {
+  box-shadow: inset 0 0 10px #00f0ff33;
+}

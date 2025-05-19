@@ -61,48 +61,45 @@ const ProfilePage = () => {
   if (!user) return null;
 
   return (
-    <div className="min-h-screen p-8 pt-24 bg-gradient-to-br from-purple-50 via-white to-blue-50">
+    <div className="min-h-screen p-8 pt-24 bg-gradient-to-br from-black via-gray-900 to-purple-950 text-neon-green">
       <div className="max-w-4xl mx-auto">
-        <div className="bg-white rounded-2xl shadow-xl p-8">
+        <div className="bg-gray-900 border border-purple-700 rounded-2xl shadow-[0_0_25px_#8e2de2] p-8">
           <div className="flex flex-col items-center mb-8">
             <div className="relative w-32 h-32 mb-4 group">
-              {/* Profile Picture */}
               <Image
                 src={user.profile_picture_url}
                 alt="Profile Picture"
                 fill
-                className="rounded-full object-cover"
+                className="rounded-full object-cover border-4 border-purple-500"
               />
-              {/* Overlay Upload */}
               <button
                 type="button"
                 onClick={() => setShowUpload(true)}
                 onKeyDown={(event) =>
                   handleKeyDown(event, () => setShowUpload(true))
                 }
-                className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-50 rounded-full opacity-0 group-hover:opacity-100 transition-opacity"
+                className="absolute inset-0 flex items-center justify-center bg-purple-700 bg-opacity-50 rounded-full opacity-0 group-hover:opacity-100 transition-opacity"
                 aria-label="Change profile picture"
               >
-                <p className="text-white font-semibold">Change Photo</p>
+                <p className="text-neon-green font-semibold">Change</p>
               </button>
             </div>
-            <h1 className="text-3xl font-bold text-gray-800">
+            <h1 className="text-3xl font-bold text-purple-500 tracking-wide drop-shadow-[0_0_5px_#0ff]">
               {user.username}
             </h1>
-            <p className="text-gray-600">{user.email}</p>
+            <p className="text-purple-300">{user.email}</p>
           </div>
 
-          {/* Upload Overlay */}
           {showUpload && (
             <dialog
-              className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50"
+              className="fixed inset-0 bg-black bg-opacity-80 flex items-center justify-center z-50"
               aria-labelledby="uploadModalTitle"
               aria-modal="true"
             >
-              <div className="bg-white rounded-lg p-6 w-96">
+              <div className="bg-gray-800 border border-purple-500 rounded-lg p-6 w-96 shadow-[0_0_20px_#0ff]">
                 <h2
                   id="uploadModalTitle"
-                  className="text-xl font-semibold mb-4 text-gray-800"
+                  className="text-xl font-semibold mb-4 text-neon-green"
                 >
                   Upload Profile Picture
                 </h2>
@@ -112,7 +109,7 @@ const ProfilePage = () => {
                   onKeyDown={(event) =>
                     handleKeyDown(event, () => setShowUpload(false))
                   }
-                  className="mt-4 px-4 py-2 bg-gray-500 text-white rounded-lg hover:bg-gray-600 transition-colors"
+                  className="mt-4 px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors"
                 >
                   Cancel
                 </button>
@@ -123,13 +120,13 @@ const ProfilePage = () => {
           <div className="flex justify-between pt-6">
             <button
               onClick={() => router.push("/app")}
-              className="px-6 py-3 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors"
+              className="px-6 py-3 bg-cyan-600 text-white rounded-lg hover:bg-cyan-700 transition-colors shadow-[0_0_10px_#00ffff]"
             >
               App
             </button>
             <button
               onClick={handleLogout}
-              className="px-6 py-3 bg-red-500 text-white rounded-lg hover:bg-red-600 transition-colors"
+              className="px-6 py-3 bg-pink-600 text-white rounded-lg hover:bg-pink-700 transition-colors shadow-[0_0_10px_#ff00ff]"
             >
               Logout
             </button>

@@ -3,7 +3,6 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
-import NavLink from "./NavLink";
 import { motion } from "framer-motion";
 import { usePathname } from "next/navigation";
 import NavbarApp from "../App/NavbarApp";
@@ -50,7 +49,7 @@ const Navbar = () => {
     closed: { rotate: 0 },
     openend: {
       rotate: 45,
-      backgroundColor: "rgb(255,255,255)",
+      backgroundColor: "rgb(255, 0, 255)",
     },
   };
 
@@ -63,7 +62,7 @@ const Navbar = () => {
     closed: { rotate: 0 },
     openend: {
       rotate: -45,
-      backgroundColor: "rgb(255,255,255)",
+      backgroundColor: "rgb(255, 0, 255)",
     },
   };
 
@@ -83,11 +82,21 @@ const Navbar = () => {
   }
 
   return (
-    <div className="fixed top-0 left-0 right-0 z-50 h-16 flex items-center justify-between px-4 sm:px-8 md:px-12 lg:px-20 xl:px-48 text-xl bg-black text-white shadow">
+    <div className="fixed top-0 left-0 right-0 z-50 h-16 flex items-center justify-between px-4 sm:px-8 md:px-12 lg:px-20 xl:px-48 text-xl bg-[#0f0f1a] text-[#00ffe1] shadow-lg font-mono border-b border-[#00ffe1]">
       {/* LINKS */}
-      <div className="hidden md:flex gap-4 w-1/3">
+      <div className="hidden md:flex gap-6 w-1/3">
         {links.map((link) => (
-          <NavLink link={link} key={link.title} />
+          <Link
+            href={link.url}
+            key={link.title}
+            className={`hover:text-pink-500 transition duration-300 ${
+              pathname === link.url
+                ? "bg-[#00ffe1] text-black px-3 py-1 rounded shadow-md shadow-cyan-500"
+                : ""
+            }`}
+          >
+            {link.title}
+          </Link>
         ))}
       </div>
 
@@ -95,10 +104,10 @@ const Navbar = () => {
       <div className="md:hidden lg:flex xl:w-1/3 xl:justify-center">
         <Link
           href="/"
-          className="text-sm bg-white rounded-md p-1 font-semibold flex items-center justify-center"
+          className="text-sm bg-gradient-to-r from-cyan-500  to-purple-400 text-black rounded-md px-3 py-1 font-bold shadow-lg shadow-purple-500/50"
         >
-          <span className="text-black mr-1">Yuma</span>
-          <span className="w-12 h-8 rounded bg-black text-white flex items-center justify-center">
+          <span className="mr-1">Yuma</span>
+          <span className="bg-[#0f0f1a] text-[#00ffe1] px-2 py-1 rounded shadow-cyan-500/50 shadow">
             Na
           </span>
         </Link>
@@ -122,17 +131,17 @@ const Navbar = () => {
           <motion.div
             variants={topVariants}
             animate={open ? "openend" : "closed"}
-            className="w-10 h-1 bg-white rounded origin-left"
+            className="w-10 h-1 bg-[#00ffe1] rounded origin-left"
           ></motion.div>
           <motion.div
             variants={centerVariants}
             animate={open ? "openend" : "closed"}
-            className="w-10 h-1 bg-white rounded"
+            className="w-10 h-1 bg-[#00ffe1] rounded"
           ></motion.div>
           <motion.div
             variants={bottomVariants}
             animate={open ? "openend" : "closed"}
-            className="w-10 h-1 bg-white rounded origin-left"
+            className="w-10 h-1 bg-[#00ffe1] rounded origin-left"
           ></motion.div>
         </button>
 
@@ -142,11 +151,19 @@ const Navbar = () => {
             variants={listVariants}
             initial="closed"
             animate="openend"
-            className="fixed top-0 left-0 w-screen h-screen bg-black text-white flex flex-col items-center justify-center gap-8 text-4xl z-40"
+            className="fixed top-0 left-0 w-screen h-screen bg-[#0f0f1a] text-[#00ffe1] flex flex-col items-center justify-center gap-8 text-4xl z-40"
           >
             {links.map((link) => (
               <motion.div variants={listVariants} key={link.title}>
-                <Link href={link.url} onClick={() => setOpen(false)}>
+                <Link
+                  href={link.url}
+                  onClick={() => setOpen(false)}
+                  className={`${
+                    pathname === link.url
+                      ? "text-black bg-[#00ffe1] px-4 py-2 rounded shadow-lg"
+                      : "hover:text-pink-500 transition duration-300"
+                  }`}
+                >
                   {link.title}
                 </Link>
               </motion.div>

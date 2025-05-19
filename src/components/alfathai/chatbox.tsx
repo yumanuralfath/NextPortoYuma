@@ -100,9 +100,9 @@ const ChatboxPage = () => {
   };
 
   return (
-    <div className="w-full max-w-xl mx-auto px-4 py-4 sm:px-6 md:py-6">
+    <div className="w-full max-w-xl mx-auto px-4 py-6">
       {/* Threads */}
-      <div className="flex flex-wrap gap-2 mb-4 sm:mb-6">
+      <div className="flex flex-wrap gap-2 mb-6">
         {threads.map((thread) => (
           <div key={thread.id} className="flex flex-col items-start">
             <button
@@ -112,17 +112,15 @@ const ChatboxPage = () => {
                   prev === thread.id ? null : thread.id
                 );
               }}
-              className={`max-w-[150px] truncate px-4 py-2 rounded-full border text-sm transition-all ${
-                selectedThread?.id === thread.id
-                  ? "bg-slate-800 text-white"
-                  : "bg-gray-200 hover:bg-gray-300 text-gray-800"
+              className={`truncate px-4 py-2 text-sm rounded-full btn-cyber ${
+                selectedThread?.id === thread.id ? "bg-cyan-400 text-black" : ""
               }`}
             >
               {thread.content}
             </button>
 
             {expandedThreadId === thread.id && (
-              <div className="mt-1 text-sm text-gray-600 max-w-xs break-words bg-white border rounded shadow px-3 py-2">
+              <div className="mt-1 text-sm text-cyan-300 max-w-xs break-words bg-cyberpunk-panel panel-shadow px-3 py-2 rounded">
                 {thread.content}
               </div>
             )}
@@ -131,21 +129,21 @@ const ChatboxPage = () => {
       </div>
 
       {/* Form */}
-      <form onSubmit={handleSubmit} className="flex flex-col space-y-3">
+      <form onSubmit={handleSubmit} className="flex flex-col space-y-4">
         <input
           id="prompt"
           type="text"
           value={promptInput.prompt}
           onChange={handleChange}
-          placeholder="Ketik prompt di sini..."
-          className="p-3 border border-gray-300 rounded-md text-base focus:outline-none focus:ring-2 focus:ring-blue-500"
+          placeholder="Masukkan prompt disini..."
+          className="p-3 rounded-md input-cyber"
         />
         <button
           type="submit"
           disabled={loading}
-          className="bg-slate-800 text-white py-2 px-4 rounded-md hover:bg-slate-950 disabled:opacity-50 transition-all duration-150"
+          className="btn-cyber py-2 px-4 rounded-md disabled:opacity-40"
         >
-          {loading ? "Mengirim..." : "Kirim"}
+          {loading ? "Membuka kanal AI..." : "Kirim ke AI"}
         </button>
       </form>
 
@@ -155,21 +153,23 @@ const ChatboxPage = () => {
           <Image
             src="/loading.gif"
             alt="Loading..."
-            width={280}
-            height={280}
+            width={220}
+            height={220}
             className="mx-auto"
           />
-          <p className="text-sm text-gray-600">
-            Silahkan menunggu antara 1 - 2 menit, terima kasih.
+          <p className="text-sm text-neon-purple">
+            Memanggil AI dari dimensi lain...
           </p>
         </div>
       )}
 
       {/* AI Response */}
       {!loading && (response || selectedComment) && (
-        <div className="mt-6 p-4 border rounded-md bg-gray-50 shadow-sm">
-          <h2 className="text-lg font-semibold mb-2 text-gray-800">Respons:</h2>
-          <div className="prose prose-sm max-w-none text-gray-700 break-words">
+        <div className="mt-6 p-4 rounded-md bg-cyberpunk-panel panel-shadow">
+          <h2 className="text-lg font-bold mb-2 text-neon-purple">
+            💬 Respons AI:
+          </h2>
+          <div className="prose prose-sm text-neon-blue max-w-none break-words">
             <ReactMarkdown>{response || selectedComment}</ReactMarkdown>
           </div>
         </div>

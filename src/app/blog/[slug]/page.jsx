@@ -47,27 +47,28 @@ export default async function BlogPost({ params }) {
   const htmlContent = marked(content);
 
   return (
-    <div className="min-h-screen p-4 pt-20 bg-gradient-to-br from-blue-50 via-white to-purple-50 overflow-y-auto">
-      <article className="max-w-6xl mx-auto bg-white rounded-xl shadow-lg p-8 mt-8 mb-16">
-        <div className="sticky top-0 bg-white z-10 pb-4 border-b border-gray-100">
-          <h1 className="text-4xl font-bold mb-4">{frontMatter.title}</h1>
-          <div className="flex items-center gap-4">
-            <span className="px-3 py-1 text-sm font-medium bg-blue-100 text-blue-700 rounded-full">
+    <div className="min-h-screen p-6 pt-24 bg-black text-cyan-200 font-mono">
+      <article className="max-w-5xl mx-auto bg-[#111827] border border-cyan-500 rounded-2xl shadow-xl p-8 mt-8 mb-16 transition-all duration-300 hover:shadow-cyan-500/30">
+        <div className="top-0 bg-[#111827] z-10 pb-4 border-b border-cyan-700">
+          <h1 className="text-5xl font-extrabold text-cyan-400 drop-shadow-lg mb-3">
+            {frontMatter.title}
+          </h1>
+          <div className="flex items-center gap-3 text-sm">
+            <span className="px-3 py-1 font-semibold bg-pink-600 text-white rounded-full shadow-md">
               {frontMatter.category}
             </span>
-            <span className="text-gray-500">
+            <span className="text-cyan-400 opacity-80">
               {new Date(frontMatter.date).toLocaleDateString()}
             </span>
           </div>
         </div>
 
         <div
-          className="prose prose-lg max-w-none mt-8"
+          className="prose prose-invert prose-lg max-w-none mt-8 text-cyan-100"
           dangerouslySetInnerHTML={{ __html: htmlContent }}
         />
       </article>
 
-      {/* Disqus Comments Section */}
       <DisqusComments slug={slug} />
     </div>
   );
