@@ -116,7 +116,9 @@ const ChatboxPage = () => {
                 selectedThread?.id === thread.id ? "bg-cyan-400 text-black" : ""
               }`}
             >
-              {thread.content}
+              {thread.content.length > 15
+                ? `${thread.content.slice(0, 15)}...`
+                : thread.content}
             </button>
 
             {expandedThreadId === thread.id && (
