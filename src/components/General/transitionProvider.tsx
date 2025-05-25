@@ -4,6 +4,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import { usePathname } from "next/navigation";
 import Navbar from "./navbar";
 import { ReactNode } from "react";
+import { Footer } from "./footer";
 
 interface RouteContent {
   [key: string]: string;
@@ -51,6 +52,7 @@ const TransitionProvider = ({ children }: TransitionProviderProps) => {
       ) : null}
       <div className="relative z-10 w-full h-full overflow-y-auto">
         {children}
+        <Footer />
       </div>
     </div>
   );

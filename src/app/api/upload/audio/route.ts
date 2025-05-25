@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { v2 as cloudinary, UploadApiResponse } from "cloudinary";
 import * as streamifier from "streamifier";
 import { NextRequest, NextResponse } from "next/server";
@@ -52,8 +53,125 @@ export async function POST(req: NextRequest) {
       { success: true, url: result.secure_url },
       { status: 200 }
     );
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
   } catch (error: any) {
     return NextResponse.json({ error: error.message }, { status: 500 });
+  }
+}
+
+export async function GET(req: NextRequest) {
+  const { searchParams } = new URL(req.url);
+  const userID = searchParams.get("userID");
+  const dateParam = searchParams.get("date");
+
+  if (!userID) {
+    return NextResponse.json(
+      { error: "Missing userID query parameter" },
+      { status: 400 }
+    );
+  }
+
+  let startDate: Date;
+  let endDate: Date;
+
+  if (dateParam) {
+    const parsedDate = new Date(dateParam);
+    if (isNaN(parsedDate.getTime())) {
+      return NextResponse.json(
+        { error: "Invalid date format. Use YYYY-MM-DD." },
+        { status: 400 }
+      );
+    }
+
+    startDate = new Date(parsedDate);
+    startDate.setUTCHours(0, 0, 0, 0);
+
+    endDate = new Date(parsedDate);
+    endDate.setUTCHours(23, 59, 59, 999);
+  } else {
+    startDate = new Date();
+    startDate.setUTCHours(0, 0, 0, 0);
+
+    endDate = new Date();
+    endDate.setUTCHours(23, 59, 59, 999);
+  }
+
+  try {
+    const result = await cloudinary.search
+      .expression(
+        `resource_type:video AND folder:voice_uploads/${userID} AND uploaded_at>=${startDate
+          .toISOString()
+          .slice(0, 10)} AND uploaded_at<=${endDate.toISOString().slice(0, 10)}`
+      )
+      .sort_by("uploaded_at", "desc")
+      .max_results(30)
+      .execute();
+
+    return NextResponse.json(
+      { success: true, audios: result.resources },
+      { status: 200 }
+    );
+  } catch (error: any) {
+    console.error("Cloudinary search error:", error);
+    return NextResponse.json(
+      { error: "Failed to retrieve audio files" },
+      { status: 500 }
+    );
+  }
+}
+
+export async function DELETE(req: NextRequest) {
+  const { searchParams } = new URL(req.url);
+  const userID = searchParams.get("userID");
+  const dateParam = searchParams.get("date");
+
+  if (!userID) {
+    return NextResponse.json(
+      { error: "Missing userID query parameter" },
+      { status: 400 }
+    );
+  }
+
+  let dateStr: string;
+
+  if (dateParam) {
+    const parsedDate = new Date(dateParam);
+    if (isNaN(parsedDate.getTime())) {
+      return NextResponse.json(
+        { error: "Invalid date format. Use YYYY-MM-DD." },
+        { status: 400 }
+      );
+    }
+    dateStr = parsedDate.toISOString().split("T")[0];
+  } else {
+    const today = new Date();
+    dateStr = today.toISOString().split("T")[0];
+  }
+
+  try {
+    const result = await cloudinary.search
+      .expression(
+        `resource_type:video AND folder:voice_uploads/${userID} AND uploaded_at>=${dateStr} AND uploaded_at<=${dateStr}`
+      )
+      .sort_by("uploaded_at", "desc")
+      .max_results(100)
+      .execute();
+
+    const deleteResults = await Promise.all(
+      (result.resources.map((r: any) => r.public_id) as string[]).map(
+        (id: string) =>
+          cloudinary.uploader.destroy(id, { resource_type: "video" })
+      )
+    );
+
+    return NextResponse.json(
+      { success: true, deleted: deleteResults.length },
+      { status: 200 }
+    );
+  } catch (error: any) {
+    console.error("Cloudinary delete error:", error);
+    return NextResponse.json(
+      { error: "Failed to delete audio files" },
+      { status: 500 }
+    );
   }
 }

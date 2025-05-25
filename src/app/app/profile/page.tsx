@@ -5,12 +5,8 @@ import { useRouter } from "next/navigation";
 import Image from "next/image";
 import UploadImage from "@/components/General/UploadImage";
 import { removeAccessToken } from "@/lib/fetchLib";
-
-interface User {
-  username: string;
-  email: string;
-  profile_picture_url: string;
-}
+import { getCurrentUser } from "@/lib/auth";
+import { User } from "@/types";
 
 const ProfilePage = () => {
   const router = useRouter();
@@ -18,33 +14,28 @@ const ProfilePage = () => {
   const [showUpload, setShowUpload] = useState(false);
 
   useEffect(() => {
-    const userData = localStorage.getItem("user");
-    if (!userData) {
-      router.push("/yuma-app");
-      return;
-    }
-    setUser(JSON.parse(userData));
+    const fetchUser = async () => {
+      try {
+        const response = await getCurrentUser();
+        setUser(response.user);
+      } catch (error) {
+        console.error("Failed to fetch user", error);
+        router.push("/yuma-app");
+      }
+    };
+
+    fetchUser();
   }, [router]);
 
   const handleLogout = () => {
-    localStorage.removeItem("user");
     removeAccessToken();
     router.push("/yuma-app");
   };
 
   const handleUploadSuccess = (newImageUrl: string) => {
-    setUser((prevUser) => {
-      if (!prevUser) return null;
-      return {
-        ...prevUser,
-        profile_picture_url: newImageUrl,
-      };
-    });
-
-    const updatedUser = { ...user, profile_picture_url: newImageUrl };
-    if (updatedUser.profile_picture_url) {
-      localStorage.setItem("user", JSON.stringify(updatedUser));
-    }
+    setUser((prevUser) =>
+      prevUser ? { ...prevUser, profile_picture_url: newImageUrl } : null
+    );
     setShowUpload(false);
   };
 

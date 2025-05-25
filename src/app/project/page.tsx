@@ -27,22 +27,22 @@ export const metadata: Metadata = {
 
 const ProjectPage: React.FC = () => {
   return (
-    <div className="min-h-screen flex flex-col lg:flex-row px-4 sm:px-8 md:px-12 lg:px-20 xl:px-48 pt-16 bg-black text-white font-mono">
+    <div className="min-h-screen bg-gradient-to-br from-black via-[#0f0c29] to-[#302b63] px-4 sm:px-8 md:px-12 lg:px-20 xl:px-48 pt-16 text-white font-mono">
       <div className="max-w-7xl mx-auto">
-        <h1 className="text-5xl font-bold text-center mb-4 bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
-          My Projects
+        <h1 className="text-5xl font-bold text-center mb-4 bg-gradient-to-r from-pink-500 via-purple-500 to-blue-500 bg-clip-text text-transparent drop-shadow-neon">
+          MY PROJECTS
         </h1>
-        <p className="text-gray-600 text-center mb-12 text-lg">
+        <p className="text-gray-300 text-center mb-12 text-lg tracking-wide">
           Some projects that I have worked on
         </p>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {projects.map((project) => (
             <div
               key={project.id}
-              className="relative bg-white rounded-xl shadow-lg overflow-visible hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2"
+              className="relative bg-[#1a1a2e] border border-[#3a0ca3] rounded-xl shadow-[0_0_15px_rgba(173,0,255,0.4)] hover:shadow-[0_0_25px_rgba(0,255,255,0.6)] transition-all duration-300 transform hover:-translate-y-2"
             >
               <div className="relative h-48 overflow-hidden">
-                <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent z-10" />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent z-10" />
                 <Image
                   src={project.image}
                   alt={`Preview of ${project.title}`}
@@ -54,10 +54,10 @@ const ProjectPage: React.FC = () => {
               </div>
 
               <div className="p-6">
-                <h3 className="text-2xl font-bold mb-3 text-gray-800 hover:text-blue-600 transition-colors">
+                <h3 className="text-2xl font-bold mb-3 text-cyan-300 hover:text-pink-500 transition-colors">
                   {project.title}
                 </h3>
-                <p className="text-gray-600 mb-4 line-clamp-2">
+                <p className="text-gray-400 mb-4 line-clamp-2">
                   {project.description}
                 </p>
 
@@ -74,12 +74,12 @@ const ProjectPage: React.FC = () => {
                         className="relative"
                       >
                         <span
-                          className="text-gray-700 hover:text-blue-600 transition-colors cursor-pointer"
+                          className="text-purple-400 hover:text-pink-400 transition-colors cursor-pointer"
                           title={tech}
                         >
                           {techIcons[tech].icon}
                         </span>
-                        <span className="absolute left-1/2 -translate-x-1/2 bottom-full mb-2 px-2 py-1 text-xs text-white bg-gray-800 rounded-md opacity-0 hover:opacity-100">
+                        <span className="absolute left-1/2 -translate-x-1/2 bottom-full mb-2 px-2 py-1 text-xs text-white bg-black/80 border border-cyan-400 rounded-md opacity-0 hover:opacity-100 z-20">
                           {tech}
                         </span>
                       </a>
@@ -98,9 +98,9 @@ const ProjectPage: React.FC = () => {
                     target="_blank"
                     rel="noopener noreferrer"
                     aria-label={`View Live Demo of ${project.title}`}
-                    className="flex-1 px-4 py-2 bg-gradient-to-r from-blue-500 to-purple-500 text-white rounded-lg hover:from-blue-600 hover:to-purple-600 transition-colors text-center font-medium"
+                    className="flex-1 px-4 py-2 bg-gradient-to-r from-pink-500 to-cyan-500 text-white rounded-lg shadow-lg hover:from-pink-600 hover:to-cyan-600 transition-all text-center font-semibold"
                   >
-                    Live Demo
+                    🚀 Live Demo
                   </a>
                 </div>
               </div>

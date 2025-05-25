@@ -1,12 +1,7 @@
 import { removeAccessToken } from "@/lib/fetchLib";
 import { useEffect, useState, useRef, useCallback } from "react";
 import { useRouter } from "next/navigation";
-
-interface User {
-  username: string;
-  email: string;
-  profile_picture_url: string;
-}
+import { User } from "@/types";
 
 const NavbarApp = () => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);

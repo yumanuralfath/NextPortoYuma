@@ -1,15 +1,12 @@
 import BASE_URL from "./baseUrl";
+import { useAuthStore } from "@/store/useAuthStore";
+import {
+  credentialsProps,
+  userDataProps,
+  GetCurrentUserResponse,
+} from "@/types";
 
-interface userDataProps {
-  email: string;
-  password: string;
-  username: string;
-}
-
-interface credentialsProps {
-  email: string;
-  password: string;
-}
+const token = useAuthStore.getState().accessToken;
 
 export const loginService = async (credentials: credentialsProps) => {
   const response = await fetch(`${BASE_URL}/login`, {
@@ -42,6 +39,23 @@ export const registerService = async (userData: userDataProps) => {
 
   if (!response.ok) {
     throw new Error(data?.error || "Failed Register");
+  }
+
+  return data;
+};
+
+export const getCurrentUser = async (): Promise<GetCurrentUserResponse> => {
+  const response = await fetch(`${BASE_URL}/me`, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+  });
+
+  const data = await response.json();
+  if (!response.ok) {
+    throw new Error(data?.error || "Failed get User");
   }
 
   return data;

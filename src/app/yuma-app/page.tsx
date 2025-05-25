@@ -7,13 +7,7 @@ import { loginService, registerService } from "../../lib/auth";
 import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
 import { setAccessToken } from "@/lib/fetchLib";
-
-interface FormData {
-  email: string;
-  password: string;
-  confirmPassword?: string;
-  username: string;
-}
+import { FormData } from "@/types";
 
 const CodexPage = () => {
   const router = useRouter();
@@ -129,7 +123,7 @@ const CodexPage = () => {
                       value={formData.username}
                       onChange={handleChange}
                       className="w-full px-4 py-3 rounded bg-gray-900 border border-[#0ff] focus:ring-2 focus:ring-pink-500 text-white placeholder-gray-500"
-                      placeholder="NeoUserX"
+                      placeholder="Username"
                     />
                   </div>
                 )}
@@ -146,7 +140,7 @@ const CodexPage = () => {
                     value={formData.email}
                     onChange={handleChange}
                     className="w-full px-4 py-3 rounded bg-gray-900 border border-[#0ff] focus:ring-2 focus:ring-pink-500 text-white placeholder-gray-500"
-                    placeholder="alfath@cyber.net"
+                    placeholder="email@mailer.com"
                   />
                 </div>
                 <div>
