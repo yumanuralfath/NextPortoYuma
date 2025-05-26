@@ -46,6 +46,6 @@ export const projects: Project[] = [
       frontend: "https://github.com/BM-Warehouse/Client",
       backend: "https://github.com/BM-Warehouse/Server",
     },
-    demo: "https://www.bmwarehouse.my.id/",
+    demo: "https://bmwarehouse-git-main-bmwarehouses-projects.vercel.app/#Home",
   },
 ];

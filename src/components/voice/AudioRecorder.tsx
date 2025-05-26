@@ -10,6 +10,7 @@ import {
   FaPause,
   FaUpload,
 } from "react-icons/fa";
+import { ImSpinner2 } from "react-icons/im";
 import Transcribe from "./Transcribe";
 import useAudioUploadStore from "@/store/audioUploadStore";
 import { GetCurrentUserResponse } from "@/types";
@@ -20,6 +21,7 @@ import { CloudinaryAudioResource } from "@/types";
 const AudioRecorder = () => {
   const [isRecording, setIsRecording] = useState(false);
   const [isPlaying, setIsPlaying] = useState(false);
+  const [isUploading, setIsUploading] = useState(false);
   const [stream, setStream] = useState<MediaStream | null>(null);
   const [recorder, setRecorder] = useState<MediaRecorder | null>(null);
   const [recordingBlob, setRecordingBlob] = useState<Blob | null>(null);
@@ -39,6 +41,38 @@ const AudioRecorder = () => {
   const setUploadedAudio = useAudioUploadStore(
     (state) => state.setUploadedAudio
   );
+
+  const doUpload = async () => {
+    const formData = new FormData();
+    formData.append("file", recordingBlob as Blob, "recording.webm");
+
+    const userData = user?.user;
+    if (userData) {
+      formData.append("user", JSON.stringify(userData));
+    }
+
+    const uploadPromise = fetch("/api/upload/audio", {
+      method: "POST",
+      body: formData,
+    }).then(async (res) => {
+      const data = await res.json();
+      if (!res.ok) {
+        throw new Error(data.error || "Upload failed");
+      }
+      setUploadedAudio(data);
+    });
+
+    setLoading(true);
+    await fetchUserAndVoices();
+    toast
+      .promise(uploadPromise, {
+        loading: "Uploading audio...",
+        success: "Upload successful!",
+        error: "Upload failed. Please try again.",
+      })
+      .catch((err) => console.error(err))
+      .finally(() => setLoading(false));
+  };
 
   const formatTime = (seconds: number): string => {
     const m = Math.floor(seconds / 60);
@@ -76,31 +110,40 @@ const AudioRecorder = () => {
         const currentTime = wavesurfer.current?.getCurrentTime() || 0;
         setPlaybackTime(currentTime);
       });
+
+      wavesurfer.current.on("ready", () => {
+        const currentTime = wavesurfer.current?.getCurrentTime() || 0;
+        setPlaybackTime(currentTime);
+      });
     }
   }, [recordingBlob]);
 
-  useEffect(() => {
-    const fetchUserAndVoices = async () => {
-      setVoicesLoading(true);
-
+  const fetchUserAndVoices = async () => {
+    setVoicesLoading(true);
+    if (voices.length == 0) {
       const promise = (async () => {
-        const userData = await getCurrentUser();
-        setUser(userData);
         const today = new Date().toISOString().slice(0, 10);
-
-        const response = await getVoices(userData.user.id.toString(), today);
-        setVoices(response);
+        if (!user) {
+          const userData = await getCurrentUser();
+          setUser(userData);
+          const response = await getVoices(userData.user.id.toString(), today);
+          setVoices(response);
+        } else {
+          const response = await getVoices(user.user.id.toString(), today);
+          setVoices(response);
+        }
       })();
-
-      toast.promise(promise, {
-        loading: "Fetching your voice data...",
-        success: "Voice data loaded!",
-        error: "Failed to load user or voice data.",
-      });
-
+      //tidak perlu karena nyepam
+      // toast.promise(promise, {
+      //   loading: "Fetching your voice data...",
+      //   success: "Voice data loaded!",
+      //   error: "Failed to load user or voice data.",
+      // });
       promise.finally(() => setVoicesLoading(false));
-    };
+    }
+  };
 
+  useEffect(() => {
     fetchUserAndVoices();
   }, []);
 
@@ -136,7 +179,7 @@ const AudioRecorder = () => {
                     toast.dismiss(t.id);
                     toast.success(
                       `Recording deleted (${deleted})! You may now record again.`,
-                      { duration: 1500 }
+                      { duration: 500 }
                     );
                     setVoices([]);
                   } catch (error: any) {
@@ -156,6 +199,89 @@ const AudioRecorder = () => {
         { duration: 1000 }
       );
       return;
+    }
+
+    if (recordingBlob) {
+      toast.custom(
+        (t) => (
+          <div
+            className={`${
+              t.visible ? "animate-enter" : "animate-leave"
+            } fixed top-4 right-50 z-50`}
+          >
+            <div className="flex flex-col space-y-4 p-4 bg-[#1a001a] border-2 border-pink-600 rounded-xl shadow-[0_0_20px_#ff00ff] text-pink-300 font-mono w-96 max-w-[90vw]">
+              <span className="text-pink-400 text-sm text-center">
+                ⚠️ You already have a recorded audio.
+              </span>
+              {recordingTime >= 20 ? (
+                <>
+                  <span className="text-sm text-center">
+                    Do you want to upload the current recording or discard it
+                    and record again?
+                  </span>
+                  <div className="flex justify-around">
+                    <button
+                      onClick={() => {
+                        toast.dismiss(t.id);
+                        uploadRecording(); // attempt to upload
+                      }}
+                      className="bg-green-500 text-black font-bold px-4 py-2 rounded hover:bg-green-400 transition duration-300 shadow-[0_0_10px_#00ff00]"
+                    >
+                      Upload
+                    </button>
+                    <button
+                      onClick={() => {
+                        setRecordingBlob(null);
+                        setRecordingTime(0);
+                        setPlaybackTime(0);
+                        if (wavesurfer.current) {
+                          wavesurfer.current.destroy();
+                          wavesurfer.current = null;
+                        }
+                        toast.dismiss(t.id);
+                      }}
+                      className="bg-pink-600 text-black font-bold px-4 py-2 rounded hover:bg-pink-500 transition duration-300 shadow-[0_0_10px_#ff00ff]"
+                    >
+                      Re-record
+                    </button>
+                  </div>
+                </>
+              ) : (
+                <>
+                  <span className="text-sm text-center">
+                    Starting a new recording will delete the current one.
+                    Continue?
+                  </span>
+                  <div className="flex justify-center">
+                    <button
+                      onClick={() => {
+                        setRecordingBlob(null);
+                        setRecordingTime(0);
+                        setPlaybackTime(0);
+                        if (wavesurfer.current) {
+                          wavesurfer.current.destroy();
+                          wavesurfer.current = null;
+                        }
+                        toast.dismiss(t.id);
+                      }}
+                      className="bg-pink-600 text-black font-bold px-4 py-2 rounded hover:bg-pink-500 transition duration-300 shadow-[0_0_10px_#ff00ff]"
+                    >
+                      Re-record
+                    </button>
+                  </div>
+                </>
+              )}
+            </div>
+          </div>
+        ),
+        { duration: 1000 }
+      );
+      return;
+    }
+
+    if (recordingTime >= 300) {
+      stopRecording();
+      toast("Maximum recording time reached", { icon: "⏱️", duration: 1000 });
     }
 
     try {
@@ -221,7 +347,9 @@ const AudioRecorder = () => {
     setVolume(0);
   };
 
-  const togglePlay = () => {
+  const togglePlay = async () => {
+    if (!recordingBlob) return;
+
     if (!wavesurfer.current) return;
     wavesurfer.current.playPause();
     setIsPlaying(!isPlaying);
@@ -241,6 +369,8 @@ const AudioRecorder = () => {
   };
 
   const uploadRecording = async () => {
+    if (isUploading) return;
+
     if (recordingTime < 20) {
       toast.error("Minimum Upload 20s Audio Time Length", {
         duration: 1000,
@@ -250,36 +380,84 @@ const AudioRecorder = () => {
 
     if (!recordingBlob) return;
 
-    const formData = new FormData();
-    formData.append("file", recordingBlob, "recording.webm");
-
-    const user = localStorage.getItem("user");
-    if (user) {
-      formData.append("user", user);
+    if (voices.length == 0) {
+      setIsUploading(true);
+      try {
+        await doUpload();
+      } finally {
+        setIsUploading(false);
+      }
+      return;
     }
 
-    const uploadPromise = fetch("/api/upload/audio", {
-      method: "POST",
-      body: formData,
-    }).then(async (res) => {
-      const data = await res.json();
-      if (!res.ok) {
-        throw new Error(data.error || "Upload failed");
-      }
-      setUploadedAudio(data);
-    });
+    toast.custom((t) => (
+      <div
+        className={`${
+          t.visible ? "animate-enter" : "animate-leave"
+        } fixed top-4 right-50 z-50`}
+      >
+        <div className="flex flex-col space-y-4 p-4 bg-[#1a001a] border-2 border-pink-600 rounded-xl shadow-[0_0_20px_#ff00ff] text-pink-300 font-mono w-96 max-w-[90vw]">
+          <span className="text-pink-400 text-sm text-center">
+            ⚠️ You already uploaded a voice recording today.
+          </span>
+          <span className="text-sm text-center">
+            Do you want to delete it and upload this new recording?
+          </span>
+          <div className="flex justify-around">
+            <button
+              disabled={isUploading}
+              onClick={async () => {
+                if (isUploading) return;
 
-    setLoading(true);
-    toast
-      .promise(uploadPromise, {
-        loading: "Uploading audio...",
-        success: "Upload successful!",
-        error: "Upload failed. Please try again.",
-      })
-      .catch((err) => {
-        console.error(err);
-      })
-      .finally(() => setLoading(false));
+                try {
+                  setIsUploading(true);
+
+                  if (!user) {
+                    toast.error("User not found", { duration: 1000 });
+                    setIsUploading(false);
+                    return;
+                  }
+
+                  const createdAt = new Date(voices[0].created_at);
+                  const date = createdAt.toISOString().split("T")[0];
+
+                  const deleted = await deleteVoices(
+                    user.user.id.toString(),
+                    date
+                  );
+
+                  setVoices([]);
+                  toast.dismiss(t.id);
+                  toast.success(`Deleted (${deleted}). Uploading new...`, {
+                    duration: 1500,
+                  });
+
+                  await doUpload();
+                } catch (error: any) {
+                  setIsUploading(false);
+                  toast.error(
+                    `Failed to delete previous recording. ${
+                      error.message || error
+                    }`
+                  );
+                }
+              }}
+              className={`${
+                isUploading ? "opacity-50 cursor-not-allowed" : ""
+              } bg-pink-600 text-black font-bold px-4 py-2 rounded hover:bg-pink-500 transition duration-300 shadow-[0_0_10px_#ff00ff]`}
+            >
+              Delete & Upload
+            </button>
+            <button
+              onClick={() => toast.dismiss(t.id)}
+              className="bg-gray-600 text-white font-bold px-4 py-2 rounded hover:bg-gray-500 transition duration-300"
+            >
+              Cancel
+            </button>
+          </div>
+        </div>
+      </div>
+    ));
   };
 
   return (
@@ -298,13 +476,15 @@ const AudioRecorder = () => {
             voicesLoading ? "opacity-50 cursor-not-allowed" : ""
           }`}
         >
-          {isRecording ? (
+          {voicesLoading ? (
+            <ImSpinner2 size={48} className="text-gray-400 animate-spin" />
+          ) : isRecording ? (
             <FaStop size={48} className="text-red-500" />
           ) : (
             <FaMicrophone size={48} className="text-cyan-400" />
           )}
           <span className="mt-1 text-sm font-medium">
-            {isRecording ? "Stop" : "Record"}
+            {voicesLoading ? "Loading..." : isRecording ? "Stop" : "Record"}
           </span>
         </button>
 
@@ -348,7 +528,7 @@ const AudioRecorder = () => {
 
       {isRecording && (
         <div className="text-center space-y-2">
-          <div className="text-3xl font-mono text-cyan-300 bg-gray-900 px-4 py-2 rounded-lg shadow-md inline-block">
+          <div className="text-3xl font-mono text-cyan-300 bg-gray-900 px-3 py-2 rounded-lg shadow-md inline-block">
             {formatTime(recordingTime)}
           </div>
           <div className="w-full max-w-xs h-3 bg-gray-300 rounded overflow-hidden mx-auto">
@@ -369,7 +549,7 @@ const AudioRecorder = () => {
             ref={waveformRef}
             className="w-full max-w-3xl mt-6 border-t border-gray-200 pt-4"
           />
-          <div className="text-3xl font-mono text-green-300 bg-gray-900 px-4 py-2 rounded-lg shadow-md inline-block mt-2">
+          <div className="text-3xl font-mono text-green-300 bg-gray-900 px-3 py-2 rounded-lg shadow-md inline-block mt-2">
             {formatTime(playbackTime)}
           </div>
           <Transcribe />
