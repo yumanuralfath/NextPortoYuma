@@ -1,16 +1,17 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import BASE_URL from "./baseUrl";
-import { useAuthStore } from "@/store/useAuthStore";
+// import { useAuthStore } from "@/store/useAuthStore";
 import { getAccessToken } from "./fetchLib";
 
 interface UserPrompt {
   prompt: string;
 }
 
-const token = useAuthStore.getState().accessToken;
+// const token = useAuthStore.getState().accessToken;
 
 export const promptService = async (prompts: UserPrompt) => {
   const token = getAccessToken();
+
   if (!token) {
     throw new Error("Token tidak ditemukan. Silakan login.");
   }
@@ -49,6 +50,7 @@ export const promptService = async (prompts: UserPrompt) => {
 };
 
 export const createThread = async (content: string) => {
+  const token = getAccessToken();
   if (!token) {
     throw new Error("Token tidak ditemukan. Silakan login.");
   }
@@ -84,6 +86,7 @@ export const createThread = async (content: string) => {
 };
 
 export const createComment = async (threadId: string, content: string) => {
+  const token = getAccessToken();
   if (!token) {
     throw new Error("Token tidak ditemukan. Silakan login.");
   }

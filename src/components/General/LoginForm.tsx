@@ -22,10 +22,8 @@ const LoginForm = ({ onSuccess }: Props) => {
         const response = await loginService({ email, password });
         localStorage.setItem("user", JSON.stringify(response.user));
         setAccessToken(response.token);
-        // Panggil onSuccess di sini setelah berhasil login
         onSuccess?.();
       } catch (err: any) {
-        // Pastikan error yang dilempar adalah instance dari Error
         throw new Error(err.message || "An error occurred");
       }
     })();
@@ -54,7 +52,6 @@ const LoginForm = ({ onSuccess }: Props) => {
           type="email"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
-          // Kelas untuk tema cyberpunk
           className="w-full px-4 py-3 rounded-lg bg-black/50 border border-[#00f0ff] text-[#00f0ff] placeholder-[#00f0ff]/50 focus:outline-none focus:ring-2 focus:ring-[#00f0ff] shadow-[0_0_5px_#00f0ff66]"
           placeholder="email@mailer.com"
         />
