@@ -11,7 +11,12 @@ const Homepage = () => {
 
   useEffect(() => {
     if (titleRef.current) {
-      runDecodeEffect(titleRef.current, "Welcome to My Personal Website", 50);
+      runDecodeEffect(
+        titleRef.current,
+        `I'm excited to share my projects and ideas with you. Let's connect and
+          collaborate!`,
+        50
+      );
     }
   }, []);
 
@@ -36,18 +41,15 @@ const Homepage = () => {
       {/* TEXT CONTAINER */}
       <div className="h-full lg:w-1/2 flex flex-col gap-8 items-center lg:items-start justify-center text-center lg:text-left">
         {/* TITLE */}
-        <h1
-          ref={titleRef}
-          className="text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold text-cyan-400 leading-tight"
-        >
-          {/* decode text injected via JS */}
+        <h1 className="text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold text-cyan-400 leading-tight">
+          Welcome to My Personal Website
         </h1>
 
         {/* PARAGRAPH */}
-        <p className="text-lg md:text-xl text-purple-300 min-h-[4rem]">
-          I'm excited to share my projects and ideas with you. Let's connect and
-          collaborate!
-        </p>
+        <p
+          className="text-lg md:text-xl text-purple-300 min-h-[4rem]"
+          ref={titleRef}
+        ></p>
 
         {/* BUTTON */}
         <div className="w-full flex flex-col lg:flex-row gap-4 justify-center lg:justify-start">

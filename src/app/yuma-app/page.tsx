@@ -1,12 +1,12 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
-import { useState, ChangeEvent, FormEvent } from "react";
+import { useState, ChangeEvent, FormEvent, useEffect } from "react";
 import { motion } from "framer-motion";
 import { loginService, registerService } from "../../lib/auth";
 import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
-import { setAccessToken } from "@/lib/fetchLib";
+import { getAccessToken, setAccessToken } from "@/lib/fetchLib";
 import { FormData } from "@/types";
 
 const CodexPage = () => {
@@ -19,6 +19,13 @@ const CodexPage = () => {
     confirmPassword: "",
     username: "",
   });
+
+  useEffect(() => {
+    const token = getAccessToken();
+    if (token) {
+      router.push("/app");
+    }
+  }, [router]);
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     setFormData({
@@ -68,11 +75,11 @@ const CodexPage = () => {
   return (
     <div className="min-h-screen p-8 pt-24 bg-black text-[#00ffe7] font-mono">
       <div className="max-w-7xl mx-auto flex flex-col items-center">
-        <h1 className="text-6xl font-extrabold text-center mb-6 bg-gradient-to-r from-pink-500 via-purple-500 to-blue-500 bg-clip-text text-transparent drop-shadow-[0_0_10px_#0ff]">
-          👾 CYBERPORTAL 👾
+        <h1 className="text-5xl font-extrabold text-center mb-6 bg-gradient-to-r from-pink-500 via-purple-500 to-blue-500 bg-clip-text text-transparent drop-shadow-[0_0_10px_#0ff]">
+          👾My App👾
         </h1>
         <p className="text-center mb-16 text-lg font-medium text-[#39ff14]">
-          Jack in. Secure. Access the grid.
+          Thanks for using My App!
         </p>
 
         <div className="w-full max-w-md neon-border p-1 rounded-xl">

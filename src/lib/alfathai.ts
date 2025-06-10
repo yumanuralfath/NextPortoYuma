@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import BASE_URL from "./baseUrl";
 import { useAuthStore } from "@/store/useAuthStore";
+import { getAccessToken } from "./fetchLib";
 
 interface UserPrompt {
   prompt: string;
@@ -9,6 +10,7 @@ interface UserPrompt {
 const token = useAuthStore.getState().accessToken;
 
 export const promptService = async (prompts: UserPrompt) => {
+  const token = getAccessToken();
   if (!token) {
     throw new Error("Token tidak ditemukan. Silakan login.");
   }
@@ -119,15 +121,10 @@ export const createComment = async (threadId: string, content: string) => {
 };
 
 export const getRandomThreads = async () => {
-  if (!token) {
-    throw new Error("Token tidak ditemukan. Silahkan login.");
-  }
-
   const response = await fetch(`${BASE_URL}/threads`, {
     method: "GET",
     headers: {
       "content-Type": "application/json",
-      Authorization: `Bearer ${token}`,
     },
   });
 
@@ -155,15 +152,10 @@ export const getRandomThreads = async () => {
 };
 
 export const getCommentbyThreadID = async (threadId: number) => {
-  if (!token) {
-    throw new Error("Token tidak ditemukan. Silahkan login.");
-  }
-
   const response = await fetch(`${BASE_URL}/comments/${threadId}`, {
     method: "GET",
     headers: {
       "content-Type": "application/json",
-      Authorization: `Bearer ${token}`,
     },
   });
 

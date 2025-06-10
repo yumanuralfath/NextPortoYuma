@@ -1,7 +1,8 @@
 export const runDecodeEffect = (
   el: HTMLElement,
   finalText: string,
-  speed = 100
+  speed = 100,
+  chunkSize = 4
 ) => {
   const chars =
     "ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890!@#$%^&*()_+-=[]{}|;:,.<>?";
@@ -26,6 +27,6 @@ export const runDecodeEffect = (
       el.textContent = finalText;
     }
 
-    iterations += 1 / 3;
+    iterations += Math.floor(chunkSize * (0.8 + Math.random() * 0.4));
   }, speed);
 };

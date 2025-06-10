@@ -3,6 +3,7 @@
 import { AnimatePresence, motion } from "framer-motion";
 import { usePathname } from "next/navigation";
 import Navbar from "./navbar";
+import Chatbot from "./chatbot";
 import { ReactNode } from "react";
 import { Footer } from "./footer";
 
@@ -18,6 +19,7 @@ const routeContent: RouteContent = {
   "/": "Home",
   "/blog": "Blog",
   "/yuma-app": "Yuma App",
+  "/project": "My Project",
 };
 
 const TransitionProvider = ({ children }: TransitionProviderProps) => {
@@ -51,6 +53,7 @@ const TransitionProvider = ({ children }: TransitionProviderProps) => {
         </AnimatePresence>
       ) : null}
       <div className="relative z-10 w-full h-full overflow-y-auto">
+        <Chatbot />
         {children}
         <Footer />
       </div>

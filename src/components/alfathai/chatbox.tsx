@@ -8,10 +8,12 @@ import {
   getRandomThreads,
   getCommentbyThreadID,
 } from "@/lib/alfathai";
-import { useEffect, useState, ChangeEvent, FormEvent } from "react";
+import { useEffect, useState, ChangeEvent, FormEvent, useRef } from "react"; // Tambahkan useRef
 import toast from "react-hot-toast";
 import ReactMarkdown from "react-markdown";
 import Image from "next/image";
+import AuthModal from "../General/AuthModal";
+import { getAccessToken } from "@/lib/fetchLib";
 
 interface PromptInput {
   prompt: string;
@@ -30,6 +32,10 @@ const ChatboxPage = () => {
   const [selectedThread, setSelectedThread] = useState<Thread | null>(null);
   const [selectedComment, setSelectedComment] = useState<string>("");
   const [expandedThreadId, setExpandedThreadId] = useState<number | null>(null);
+  const [showAuthModal, setShowAuthModal] = useState(false);
+  const [authMode, setAuthMode] = useState<"login" | "register">("login");
+  const [awaitingAuth, setAwaitingAuth] = useState<boolean>(false);
+  const lastPromptRef = useRef<string | null>(null);
 
   useEffect(() => {
     const fetchThreads = async () => {
@@ -37,48 +43,95 @@ const ChatboxPage = () => {
         const res = await getRandomThreads();
         setThreads(res.threads.slice(0, 6));
       } catch (error: any) {
-        toast.error(`Gagal memuat thread acak: ${error}`, error);
+        toast.error(`Gagal memuat thread acak: ${error.message || error}`);
       }
     };
 
     fetchThreads();
   }, []);
 
+  // // Efek untuk memicu pengiriman ulang setelah otentikasi berhasil
+  // useEffect(() => {
+  //   // Jika modal ditutup (showAuthModal false) dan kita sedang menunggu auth, dan ada prompt yang disimpan
+  //   if (!showAuthModal && awaitingAuth && lastPromptRef.current) {
+  //     setAwaitingAuth(false); // Reset status menunggu auth
+  //     // Panggil kembali handleSubmit (simulasi submit form)
+  //     // Kita perlu membuat fungsi async terpisah karena useEffect tidak bisa langsung async
+  //     const reattemptSubmit = async () => {
+  //       const promptToResubmit = lastPromptRef.current;
+  //       lastPromptRef.current = null; // Hapus prompt yang disimpan
+
+  //       if (promptToResubmit) {
+  //         // Atur kembali promptInput dan panggil handleSubmit
+  //         setPromptInput({ prompt: promptToResubmit });
+  //         // Kita tidak bisa langsung memanggil handleSubmit(e) karena tidak ada event.
+  //         // Kita akan memanggil logika inti handleSubmit secara manual.
+  //         await handleActualSubmit(promptToResubmit);
+  //       }
+  //     };
+  //     reattemptSubmit();
+  //   }
+  // }, [showAuthModal, awaitingAuth]);
+
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     setPromptInput({ ...promptInput, [e.target.id]: e.target.value });
+  };
+
+  const handleActualSubmit = async (promptContent: string) => {
+    setLoading(true);
+    setResponse("");
+    setSelectedComment("");
+    setSelectedThread(null);
+    setPromptInput({ prompt: promptContent });
+
+    try {
+      const thread = await createThread(promptContent);
+      const threadId = thread.id;
+
+      const data = await promptService({ prompt: promptContent });
+      const aiResponse = data?.content || "Tidak ada respons dari AI";
+      setResponse(aiResponse);
+      setPromptInput({ prompt: "" });
+
+      await createComment(threadId, aiResponse);
+    } catch (error: any) {
+      const errorMessage =
+        error instanceof Error
+          ? error.message
+          : "Terjadi kesalahan yang tidak diketahui";
+
+      toast.error(errorMessage);
+
+      if (errorMessage.includes("Token tidak ditemukan. Silakan login.")) {
+        lastPromptRef.current = promptContent;
+        setAwaitingAuth(true);
+        setAuthMode("login");
+        setShowAuthModal(true);
+      }
+    } finally {
+      setLoading(false);
+    }
   };
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     if (!promptInput.prompt.trim()) {
-      toast.error("Prompt tidak boleh kosong");
+      toast.error("Please input Something bro");
+      return;
+    }
+    const token = getAccessToken();
+    if (!token) {
+      lastPromptRef.current = promptInput.prompt;
+      setAuthMode("login");
+      setShowAuthModal(true);
+      setAwaitingAuth(true);
       return;
     }
 
-    setLoading(true);
-    setResponse("");
-    setSelectedComment("");
-    setSelectedThread(null);
+    if (awaitingAuth) return;
 
-    try {
-      const thread = await createThread(promptInput.prompt);
-      const threadId = thread.id;
-
-      const data = await promptService(promptInput);
-      const aiResponse = data?.content || "Tidak ada respons dari AI";
-      setResponse(aiResponse);
-
-      await createComment(threadId, aiResponse);
-    } catch (error) {
-      toast.error(
-        error instanceof Error
-          ? error.message
-          : "Terjadi kesalahan yang tidak diketahui"
-      );
-    } finally {
-      setLoading(false);
-    }
+    await handleActualSubmit(promptInput.prompt);
   };
 
   const handleThreadClick = async (thread: Thread) => {
@@ -86,6 +139,7 @@ const ChatboxPage = () => {
     setSelectedComment("");
     setSelectedThread(thread);
     setResponse("");
+    setPromptInput({ prompt: "" });
 
     try {
       const res = await getCommentbyThreadID(thread.id);
@@ -93,7 +147,7 @@ const ChatboxPage = () => {
         res.comments?.[0]?.content || "Tidak ada response silahkan chat ulang";
       setSelectedComment(comment);
     } catch (error: any) {
-      toast.error(`Gagal memuat komentar thread: ${error}`, error);
+      toast.error(`Gagal memuat komentar thread: ${error.message || error}`);
     } finally {
       setLoading(false);
     }
@@ -101,6 +155,29 @@ const ChatboxPage = () => {
 
   return (
     <div className="w-full max-w-xl mx-auto px-4 py-6">
+      {showAuthModal && (
+        <AuthModal
+          mode={authMode}
+          onClose={() => {
+            setShowAuthModal(false);
+            if (awaitingAuth && !lastPromptRef.current) {
+              setAwaitingAuth(false);
+            }
+          }}
+          onSuccessLogin={() => {
+            setShowAuthModal(false);
+            const promptToResubmit = lastPromptRef.current;
+            lastPromptRef.current = null;
+            setAwaitingAuth(false);
+
+            if (promptToResubmit) {
+              handleActualSubmit(promptToResubmit);
+            }
+          }}
+          onSwitchMode={(mode) => setAuthMode(mode)}
+        />
+      )}
+
       {/* Threads */}
       <div className="flex flex-wrap gap-2 mb-6">
         {threads.map((thread) => (
@@ -137,15 +214,19 @@ const ChatboxPage = () => {
           type="text"
           value={promptInput.prompt}
           onChange={handleChange}
-          placeholder="Masukkan prompt disini..."
+          placeholder="Please Input here..."
           className="p-3 rounded-md input-cyber"
         />
         <button
           type="submit"
-          disabled={loading}
+          disabled={loading || awaitingAuth}
           className="btn-cyber py-2 px-4 rounded-md disabled:opacity-40"
         >
-          {loading ? "Membuka kanal AI..." : "Kirim ke AI"}
+          {loading
+            ? "Loading..."
+            : awaitingAuth
+            ? "Menunggu Login..."
+            : "Kirim"}
         </button>
       </form>
 
@@ -159,9 +240,7 @@ const ChatboxPage = () => {
             height={220}
             className="mx-auto"
           />
-          <p className="text-sm text-neon-purple">
-            Memanggil AI dari dimensi lain...
-          </p>
+          <p className="text-sm text-neon-purple">Please Wait Brother...</p>
         </div>
       )}
 
@@ -169,7 +248,7 @@ const ChatboxPage = () => {
       {!loading && (response || selectedComment) && (
         <div className="mt-6 p-4 rounded-md bg-cyberpunk-panel panel-shadow">
           <h2 className="text-lg font-bold mb-2 text-neon-purple">
-            💬 Respons AI:
+            💬 Respons:
           </h2>
           <div className="prose prose-sm text-neon-blue max-w-none break-words">
             <ReactMarkdown>{response || selectedComment}</ReactMarkdown>
