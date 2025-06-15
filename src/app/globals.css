@@ -122,3 +122,33 @@
 .panel-shadow {
   box-shadow: inset 0 0 10px #00f0ff33;
 }
+
+@keyframes wave-glow {
+  0% {
+    box-shadow: 0 0 4px #ff00ff66, 0 0 8px #ff00ff66;
+  }
+  50% {
+    box-shadow: 0 0 12px #ff00ffaa, 0 0 24px #ff00ffaa;
+  }
+  100% {
+    box-shadow: 0 0 4px #ff00ff66, 0 0 8px #ff00ff66;
+  }
+}
+
+.animate-wave-glow {
+  animation: wave-glow 2s ease-in-out infinite;
+}
+
+@keyframes pulse-border {
+  0%, 100% {
+    border-color: #ff00ff;
+  }
+  50% {
+    border-color: #00ffff;
+  }
+}
+
+.animate-border-pulse {
+  animation: pulse-border 2s infinite;
+}
+
