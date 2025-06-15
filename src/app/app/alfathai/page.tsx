@@ -1,7 +1,7 @@
 "use client";
 import ChatboxPage from "@/components/alfathai/chatbox";
 
-const VoicePage = () => {
+const ChatAIPage = () => {
   return (
     <div className="min-h-screen p-4 pt-12 bg-gradient-to-br from-black via-purple-900 to-indigo-900 text-neon">
       <div className="max-w-6xl mx-auto">
@@ -18,4 +18,4 @@ const VoicePage = () => {
   );
 };
 
-export default VoicePage;
+export default ChatAIPage;

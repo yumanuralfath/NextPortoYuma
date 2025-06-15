@@ -1,11 +1,15 @@
 import { v2 as cloudinary, UploadApiResponse } from "cloudinary";
 import { NextRequest, NextResponse } from "next/server";
+import { ValidateWithToken } from "@/lib/checkTokenAPI";
 
 cloudinary.config({
   cloudinary_url: process.env.CLOUDINARY_URL!,
 });
 
 export async function POST(req: NextRequest) {
+  const authResponse = await ValidateWithToken();
+  if (authResponse) return authResponse;
+
   try {
     const body = await req.json();
     const { file }: { file: string } = body;

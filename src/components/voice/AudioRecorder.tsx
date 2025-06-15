@@ -12,11 +12,13 @@ import {
 } from "react-icons/fa";
 import { ImSpinner2 } from "react-icons/im";
 import Transcribe from "./Transcribe";
+import ReRecordToastContent from "./ReRecordToastContent";
 import useAudioUploadStore from "@/store/audioUploadStore";
-import { GetCurrentUserResponse } from "@/types";
+import { User } from "@/types";
 import { getVoices, deleteVoices } from "@/lib/voice";
-import { getCurrentUser } from "@/lib/auth";
 import { CloudinaryAudioResource } from "@/types";
+import DeleteReRecordToast from "./DeleteRecordToast";
+import { useUserStore } from "@/store/useUserStore";
 
 const AudioRecorder = () => {
   const [isRecording, setIsRecording] = useState(false);
@@ -28,10 +30,11 @@ const AudioRecorder = () => {
   const [recordingTime, setRecordingTime] = useState(0);
   const [volume, setVolume] = useState(0);
   const [loading, setLoading] = useState(false);
-  const [user, setUser] = useState<GetCurrentUserResponse | null>(null);
+  const [user, setUser] = useState<User | null>(null);
   const [voicesLoading, setVoicesLoading] = useState(true);
   const [voices, setVoices] = useState<CloudinaryAudioResource[]>([]);
   const [playbackTime, setPlaybackTime] = useState(0);
+  const [hasUploadedToday, setHasUploadedToday] = useState(false);
   const waveformRef = useRef<HTMLDivElement | null>(null);
   const wavesurfer = useRef<WaveSurfer | null>(null);
   const audioContext = useRef<AudioContext | null>(null);
@@ -42,43 +45,49 @@ const AudioRecorder = () => {
     (state) => state.setUploadedAudio
   );
 
-  const doUpload = async () => {
-    const formData = new FormData();
-    formData.append("file", recordingBlob as Blob, "recording.webm");
-
-    const userData = user?.user;
-    if (userData) {
-      formData.append("user", JSON.stringify(userData));
-    }
-
-    const uploadPromise = fetch("/api/upload/audio", {
-      method: "POST",
-      body: formData,
-    }).then(async (res) => {
-      const data = await res.json();
-      if (!res.ok) {
-        throw new Error(data.error || "Upload failed");
-      }
-      setUploadedAudio(data);
-    });
-
-    setLoading(true);
-    await fetchUserAndVoices();
-    toast
-      .promise(uploadPromise, {
-        loading: "Uploading audio...",
-        success: "Upload successful!",
-        error: "Upload failed. Please try again.",
-      })
-      .catch((err) => console.error(err))
-      .finally(() => setLoading(false));
-  };
-
   const formatTime = (seconds: number): string => {
     const m = Math.floor(seconds / 60);
     const s = Math.floor(seconds % 60);
     return `${String(m).padStart(2, "0")}:${String(s).padStart(2, "0")}`;
   };
+
+  const fetchUserAndVoices = async () => {
+    setVoicesLoading(true);
+    try {
+      let userData = user;
+      if (!userData) {
+        const fetchedUser = useUserStore.getState().user;
+        if (!fetchedUser) throw new Error("User not found");
+        setUser(fetchedUser);
+        userData = fetchedUser;
+      }
+      if (!userData) throw new Error("User data is null");
+      const today = new Date().toISOString().slice(0, 10);
+      const response = await getVoices(userData.id.toString(), today);
+      setVoices(response);
+      setHasUploadedToday(response.length > 0);
+      if (response.length > 0) {
+        localStorage.setItem("lastUploadDate", today);
+      } else {
+        localStorage.removeItem("lastUploadDate");
+      }
+    } catch (err) {
+      console.error("Error fetching voices:", err);
+    } finally {
+      setVoicesLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    const stored = localStorage.getItem("lastUploadDate");
+    const todayStr = new Date().toISOString().slice(0, 10);
+    if (stored === todayStr) {
+      setHasUploadedToday(true);
+      fetchUserAndVoices();
+    } else {
+      fetchUserAndVoices();
+    }
+  }, []);
 
   useEffect(() => {
     if (recordingBlob && waveformRef.current) {
@@ -118,85 +127,66 @@ const AudioRecorder = () => {
     }
   }, [recordingBlob]);
 
-  const fetchUserAndVoices = async () => {
-    setVoicesLoading(true);
-    if (voices.length == 0) {
-      const promise = (async () => {
-        const today = new Date().toISOString().slice(0, 10);
-        if (!user) {
-          const userData = await getCurrentUser();
-          setUser(userData);
-          const response = await getVoices(userData.user.id.toString(), today);
-          setVoices(response);
-        } else {
-          const response = await getVoices(user.user.id.toString(), today);
-          setVoices(response);
-        }
-      })();
-      //tidak perlu karena nyepam
-      // toast.promise(promise, {
-      //   loading: "Fetching your voice data...",
-      //   success: "Voice data loaded!",
-      //   error: "Failed to load user or voice data.",
-      // });
-      promise.finally(() => setVoicesLoading(false));
+  const handleUploadSuccess = () => {
+    const today = new Date().toISOString().slice(0, 10);
+    localStorage.setItem("lastUploadDate", today);
+    setHasUploadedToday(true);
+  };
+
+  const doUpload = async () => {
+    if (!recordingBlob) throw new Error("No recording to upload");
+    const formData = new FormData();
+    formData.append("file", recordingBlob as Blob, "recording.webm");
+    if (user) {
+      formData.append("user", JSON.stringify(user));
+    }
+
+    setLoading(true);
+    try {
+      const res = await fetch("/api/upload/audio", {
+        method: "POST",
+        body: formData,
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || "Upload failed");
+      setUploadedAudio(data);
+      await fetchUserAndVoices();
+      handleUploadSuccess();
+    } catch (err: any) {
+      console.error(err);
+      throw err;
+    } finally {
+      setLoading(false);
     }
   };
 
-  useEffect(() => {
-    fetchUserAndVoices();
-  }, []);
-
   const startRecording = async () => {
-    if (voices.length !== 0) {
+    if (hasUploadedToday) {
       toast.custom(
         (t) => (
-          <div
-            className={`${
-              t.visible ? "animate-enter" : "animate-leave"
-            } fixed top-4 right-50 z-50`}
-          >
-            <div className="flex flex-col space-y-4 p-4 bg-[#1a001a] border-2 border-pink-600 rounded-xl shadow-[0_0_20px_#ff00ff] text-pink-300 font-mono w-80 max-w-[90vw]">
-              <span className="text-pink-400 text-sm text-center">
-                ⚠️ You've already recorded your voice today.
-              </span>
-              <button
-                onClick={async () => {
-                  try {
-                    if (!user) {
-                      toast.error("User not found", { duration: 1000 });
-                      return;
-                    }
-
-                    const createdAt = new Date(voices[0].created_at);
-                    const date = createdAt.toISOString().split("T")[0];
-
-                    const deleted = await deleteVoices(
-                      user.user.id.toString(),
-                      date
-                    );
-
-                    toast.dismiss(t.id);
-                    toast.success(
-                      `Recording deleted (${deleted})! You may now record again.`,
-                      { duration: 500 }
-                    );
-                    setVoices([]);
-                  } catch (error: any) {
-                    toast.error(
-                      `Failed to delete recording. ${error.message || error}`,
-                      { duration: 1500 }
-                    );
-                  }
-                }}
-                className="bg-pink-600 text-black font-bold px-4 py-2 rounded hover:bg-pink-500 transition duration-300 shadow-[0_0_10px_#ff00ff]"
-              >
-                Delete & Re-record
-              </button>
-            </div>
-          </div>
+          <DeleteReRecordToast
+            t={t}
+            user={user}
+            onSuccess={() => {
+              setVoices([]);
+              setHasUploadedToday(false);
+            }}
+          />
         ),
-        { duration: 1000 }
+        {
+          style: {
+            border: "2px solid #ff00ff",
+            padding: "16px",
+            color: "#00ffff",
+            background: "#1a001a",
+            boxShadow: "0 0 20px #ff00ff",
+            fontFamily: "monospace",
+          },
+          iconTheme: {
+            primary: "#00ffff",
+            secondary: "#ff00ff",
+          },
+        }
       );
       return;
     }
@@ -204,84 +194,38 @@ const AudioRecorder = () => {
     if (recordingBlob) {
       toast.custom(
         (t) => (
-          <div
-            className={`${
-              t.visible ? "animate-enter" : "animate-leave"
-            } fixed top-4 right-50 z-50`}
-          >
-            <div className="flex flex-col space-y-4 p-4 bg-[#1a001a] border-2 border-pink-600 rounded-xl shadow-[0_0_20px_#ff00ff] text-pink-300 font-mono w-96 max-w-[90vw]">
-              <span className="text-pink-400 text-sm text-center">
-                ⚠️ You already have a recorded audio.
-              </span>
-              {recordingTime >= 20 ? (
-                <>
-                  <span className="text-sm text-center">
-                    Do you want to upload the current recording or discard it
-                    and record again?
-                  </span>
-                  <div className="flex justify-around">
-                    <button
-                      onClick={() => {
-                        toast.dismiss(t.id);
-                        uploadRecording(); // attempt to upload
-                      }}
-                      className="bg-green-500 text-black font-bold px-4 py-2 rounded hover:bg-green-400 transition duration-300 shadow-[0_0_10px_#00ff00]"
-                    >
-                      Upload
-                    </button>
-                    <button
-                      onClick={() => {
-                        setRecordingBlob(null);
-                        setRecordingTime(0);
-                        setPlaybackTime(0);
-                        if (wavesurfer.current) {
-                          wavesurfer.current.destroy();
-                          wavesurfer.current = null;
-                        }
-                        toast.dismiss(t.id);
-                      }}
-                      className="bg-pink-600 text-black font-bold px-4 py-2 rounded hover:bg-pink-500 transition duration-300 shadow-[0_0_10px_#ff00ff]"
-                    >
-                      Re-record
-                    </button>
-                  </div>
-                </>
-              ) : (
-                <>
-                  <span className="text-sm text-center">
-                    Starting a new recording will delete the current one.
-                    Continue?
-                  </span>
-                  <div className="flex justify-center">
-                    <button
-                      onClick={() => {
-                        setRecordingBlob(null);
-                        setRecordingTime(0);
-                        setPlaybackTime(0);
-                        if (wavesurfer.current) {
-                          wavesurfer.current.destroy();
-                          wavesurfer.current = null;
-                        }
-                        toast.dismiss(t.id);
-                      }}
-                      className="bg-pink-600 text-black font-bold px-4 py-2 rounded hover:bg-pink-500 transition duration-300 shadow-[0_0_10px_#ff00ff]"
-                    >
-                      Re-record
-                    </button>
-                  </div>
-                </>
-              )}
-            </div>
-          </div>
+          <ReRecordToastContent
+            t={t}
+            canUpload={recordingTime >= 20}
+            onUpload={uploadRecording}
+            onReRecord={() => {
+              setRecordingBlob(null);
+              setRecordingTime(0);
+              setPlaybackTime(0);
+              if (wavesurfer.current) {
+                wavesurfer.current.destroy();
+                wavesurfer.current = null;
+              }
+            }}
+          />
         ),
-        { duration: 1000 }
+        {
+          duration: 1000,
+          style: {
+            border: "2px solid #ff00ff",
+            padding: "16px",
+            color: "#00ffff",
+            background: "#1a001a",
+            boxShadow: "0 0 20px #ff00ff",
+            fontFamily: "monospace",
+          },
+          iconTheme: {
+            primary: "#00ffff",
+            secondary: "#ff00ff",
+          },
+        }
       );
       return;
-    }
-
-    if (recordingTime >= 300) {
-      stopRecording();
-      toast("Maximum recording time reached", { icon: "⏱️", duration: 1000 });
     }
 
     try {
@@ -331,7 +275,20 @@ const AudioRecorder = () => {
         setRecordingTime((prev) => prev + 1);
       }, 1000);
     } catch (err) {
-      toast.error(`Microphone access denied: ${err}.`);
+      toast.error(`Microphone access denied: ${err}.`, {
+        style: {
+          border: "2px solid #ff00ff",
+          padding: "16px",
+          color: "#00ffff",
+          background: "#1a001a",
+          boxShadow: "0 0 20px #ff00ff",
+          fontFamily: "monospace",
+        },
+        iconTheme: {
+          primary: "#00ffff",
+          secondary: "#ff00ff",
+        },
+      });
     }
   };
 
@@ -349,7 +306,6 @@ const AudioRecorder = () => {
 
   const togglePlay = async () => {
     if (!recordingBlob) return;
-
     if (!wavesurfer.current) return;
     wavesurfer.current.playPause();
     setIsPlaying(!isPlaying);
@@ -357,7 +313,6 @@ const AudioRecorder = () => {
 
   const downloadBlob = () => {
     if (!recordingBlob) return;
-
     const url = URL.createObjectURL(recordingBlob);
     const a = document.createElement("a");
     a.href = url;
@@ -370,94 +325,171 @@ const AudioRecorder = () => {
 
   const uploadRecording = async () => {
     if (isUploading) return;
-
     if (recordingTime < 20) {
       toast.error("Minimum Upload 20s Audio Time Length", {
         duration: 1000,
+        style: {
+          border: "2px solid #ff00ff",
+          padding: "16px",
+          color: "#00ffff",
+          background: "#1a001a",
+          boxShadow: "0 0 20px #ff00ff",
+          fontFamily: "monospace",
+        },
+        iconTheme: {
+          primary: "#00ffff",
+          secondary: "#ff00ff",
+        },
       });
       return;
     }
-
     if (!recordingBlob) return;
-
-    if (voices.length == 0) {
-      setIsUploading(true);
-      try {
-        await doUpload();
-      } finally {
-        setIsUploading(false);
-      }
+    if (hasUploadedToday) {
+      toast.custom((t) => (
+        <div
+          className={`${
+            t.visible ? "animate-enter" : "animate-leave"
+          } fixed top-4 right-50 z-50`}
+        >
+          <div className="flex flex-col space-y-4 p-4 bg-[#1a001a] border-2 border-pink-600 rounded-xl shadow-[0_0_20px_#ff00ff] text-pink-300 font-mono w-96 max-w-[90vw]">
+            <span className="text-pink-400 text-sm text-center">
+              ⚠️ You already uploaded a voice recording today.
+            </span>
+            <span className="text-sm text-center">
+              Do you want to delete it and re-record?
+            </span>
+            <div className="flex justify-around">
+              <button
+                disabled={isUploading}
+                onClick={async () => {
+                  if (isUploading) return;
+                  try {
+                    setIsUploading(true);
+                    if (!user) {
+                      toast.error("User not found", {
+                        duration: 1000,
+                        style: {
+                          border: "2px solid #ff00ff",
+                          padding: "16px",
+                          color: "#00ffff",
+                          background: "#1a001a",
+                          boxShadow: "0 0 20px #ff00ff",
+                          fontFamily: "monospace",
+                        },
+                        iconTheme: {
+                          primary: "#00ffff",
+                          secondary: "#ff00ff",
+                        },
+                      });
+                      return;
+                    }
+                    const createdAt = new Date(voices[0].created_at);
+                    const date = createdAt.toISOString().split("T")[0];
+                    const deleted = await deleteVoices(
+                      user.id.toString(),
+                      date
+                    );
+                    setVoices([]);
+                    setHasUploadedToday(false);
+                    localStorage.removeItem("lastUploadDate");
+                    toast.dismiss(t.id);
+                    toast.success(
+                      `Recording deleted (${deleted}). You can now record again.`,
+                      {
+                        duration: 1500,
+                        style: {
+                          border: "2px solid #ff00ff",
+                          padding: "16px",
+                          color: "#00ffff",
+                          background: "#1a001a",
+                          boxShadow: "0 0 20px #ff00ff",
+                          fontFamily: "monospace",
+                        },
+                        iconTheme: {
+                          primary: "#00ffff",
+                          secondary: "#ff00ff",
+                        },
+                      }
+                    );
+                    // Reset blob/playback if needed:
+                    setRecordingBlob(null);
+                    setRecordingTime(0);
+                    setPlaybackTime(0);
+                    if (wavesurfer.current) {
+                      wavesurfer.current.destroy();
+                      wavesurfer.current = null;
+                    }
+                  } catch (error: any) {
+                    console.error(error);
+                    toast.error(
+                      `Failed to delete previous recording. ${
+                        error.message || error
+                      }`,
+                      {
+                        style: {
+                          border: "2px solid #ff00ff",
+                          padding: "16px",
+                          color: "#00ffff",
+                          background: "#1a001a",
+                          boxShadow: "0 0 20px #ff00ff",
+                          fontFamily: "monospace",
+                        },
+                        iconTheme: {
+                          primary: "#00ffff",
+                          secondary: "#ff00ff",
+                        },
+                      }
+                    );
+                  } finally {
+                    setIsUploading(false);
+                  }
+                }}
+                className={`${
+                  isUploading ? "opacity-50 cursor-not-allowed" : ""
+                } bg-pink-600 text-black font-bold px-4 py-2 rounded hover:bg-pink-500 transition duration-300 shadow-[0_0_10px_#ff00ff]`}
+              >
+                {isUploading ? "Deleting..." : "Delete & Re-record"}
+              </button>
+              <button
+                onClick={() => toast.dismiss(t.id)}
+                className="bg-gray-600 text-white font-bold px-4 py-2 rounded hover:bg-gray-500 transition duration-300"
+              >
+                Cancel
+              </button>
+            </div>
+          </div>
+        </div>
+      ));
       return;
     }
 
-    toast.custom((t) => (
-      <div
-        className={`${
-          t.visible ? "animate-enter" : "animate-leave"
-        } fixed top-4 right-50 z-50`}
-      >
-        <div className="flex flex-col space-y-4 p-4 bg-[#1a001a] border-2 border-pink-600 rounded-xl shadow-[0_0_20px_#ff00ff] text-pink-300 font-mono w-96 max-w-[90vw]">
-          <span className="text-pink-400 text-sm text-center">
-            ⚠️ You already uploaded a voice recording today.
-          </span>
-          <span className="text-sm text-center">
-            Do you want to delete it and upload this new recording?
-          </span>
-          <div className="flex justify-around">
-            <button
-              disabled={isUploading}
-              onClick={async () => {
-                if (isUploading) return;
-
-                try {
-                  setIsUploading(true);
-
-                  if (!user) {
-                    toast.error("User not found", { duration: 1000 });
-                    setIsUploading(false);
-                    return;
-                  }
-
-                  const createdAt = new Date(voices[0].created_at);
-                  const date = createdAt.toISOString().split("T")[0];
-
-                  const deleted = await deleteVoices(
-                    user.user.id.toString(),
-                    date
-                  );
-
-                  setVoices([]);
-                  toast.dismiss(t.id);
-                  toast.success(`Deleted (${deleted}). Uploading new...`, {
-                    duration: 1500,
-                  });
-
-                  await doUpload();
-                } catch (error: any) {
-                  setIsUploading(false);
-                  toast.error(
-                    `Failed to delete previous recording. ${
-                      error.message || error
-                    }`
-                  );
-                }
-              }}
-              className={`${
-                isUploading ? "opacity-50 cursor-not-allowed" : ""
-              } bg-pink-600 text-black font-bold px-4 py-2 rounded hover:bg-pink-500 transition duration-300 shadow-[0_0_10px_#ff00ff]`}
-            >
-              Delete & Upload
-            </button>
-            <button
-              onClick={() => toast.dismiss(t.id)}
-              className="bg-gray-600 text-white font-bold px-4 py-2 rounded hover:bg-gray-500 transition duration-300"
-            >
-              Cancel
-            </button>
-          </div>
-        </div>
-      </div>
-    ));
+    setIsUploading(true);
+    toast
+      .promise(
+        doUpload(),
+        {
+          loading: "Uploading audio...",
+          success: "Upload successful!",
+          error: "Upload failed. Please try again.",
+        },
+        {
+          style: {
+            border: "2px solid #ff00ff",
+            padding: "16px",
+            color: "#00ffff",
+            background: "#1a001a",
+            boxShadow: "0 0 20px #ff00ff",
+            fontFamily: "monospace",
+          },
+          iconTheme: {
+            primary: "#00ffff",
+            secondary: "#ff00ff",
+          },
+        }
+      )
+      .finally(() => {
+        setIsUploading(false);
+      });
   };
 
   return (
@@ -473,7 +505,9 @@ const AudioRecorder = () => {
           }
           disabled={voicesLoading}
           className={`flex flex-col items-center transition hover:scale-105 ${
-            voicesLoading ? "opacity-50 cursor-not-allowed" : ""
+            voicesLoading || hasUploadedToday
+              ? "opacity-50 cursor-not-allowed"
+              : ""
           }`}
         >
           {voicesLoading ? (
@@ -484,7 +518,13 @@ const AudioRecorder = () => {
             <FaMicrophone size={48} className="text-cyan-400" />
           )}
           <span className="mt-1 text-sm font-medium">
-            {voicesLoading ? "Loading..." : isRecording ? "Stop" : "Record"}
+            {voicesLoading
+              ? "Loading..."
+              : isRecording
+              ? "Stop"
+              : hasUploadedToday
+              ? "Recorded"
+              : "Record"}
           </span>
         </button>
 
@@ -514,7 +554,9 @@ const AudioRecorder = () => {
 
             <button
               onClick={uploadRecording}
-              disabled={loading}
+              disabled={
+                loading || isUploading || voicesLoading || hasUploadedToday
+              }
               className="flex flex-col items-center transition hover:scale-105"
             >
               <FaUpload size={48} className="text-blue-500" />

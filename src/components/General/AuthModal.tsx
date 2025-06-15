@@ -46,7 +46,7 @@ const AuthModal = ({
               Sudah punya akun?{" "}
               <button
                 onClick={() => onSwitchMode("login")}
-                className="text-blue-500 underline"
+                className="text-white underline"
               >
                 Login
               </button>

@@ -1,12 +1,16 @@
 import { v2 as cloudinary, UploadApiResponse } from "cloudinary";
 import * as streamifier from "streamifier";
 import { NextRequest } from "next/server";
+import { ValidateWithToken } from "@/lib/checkTokenAPI";
 
 cloudinary.config({
   cloudinary_url: process.env.CLOUDINARY_URL,
 });
 
 export async function POST(req: NextRequest) {
+  const authResponse = await ValidateWithToken();
+  if (authResponse) return authResponse;
+
   try {
     const formData = await req.formData();
     const file = formData.get("file") as File | null; // Ambil file dari form-data

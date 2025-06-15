@@ -2,12 +2,16 @@
 import { v2 as cloudinary, UploadApiResponse } from "cloudinary";
 import * as streamifier from "streamifier";
 import { NextRequest, NextResponse } from "next/server";
+import { ValidateWithToken } from "@/lib/checkTokenAPI";
 
 cloudinary.config({
   cloudinary_url: process.env.CLOUDINARY_URL!,
 });
 
 export async function POST(req: NextRequest) {
+  const authResponse = await ValidateWithToken();
+  if (authResponse) return authResponse;
+
   let userID: string | undefined;
 
   try {
@@ -59,6 +63,9 @@ export async function POST(req: NextRequest) {
 }
 
 export async function GET(req: NextRequest) {
+  const authResponse = await ValidateWithToken();
+  if (authResponse) return authResponse;
+
   const { searchParams } = new URL(req.url);
   const userID = searchParams.get("userID");
   const dateParam = searchParams.get("date");
@@ -120,6 +127,9 @@ export async function GET(req: NextRequest) {
 }
 
 export async function DELETE(req: NextRequest) {
+  const authResponse = await ValidateWithToken();
+  if (authResponse) return authResponse;
+
   const { searchParams } = new URL(req.url);
   const userID = searchParams.get("userID");
   const dateParam = searchParams.get("date");

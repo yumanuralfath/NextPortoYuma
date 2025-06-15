@@ -6,7 +6,7 @@ import { motion } from "framer-motion";
 import { loginService, registerService } from "../../lib/auth";
 import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
-import { getAccessToken, setAccessToken } from "@/lib/fetchLib";
+import { getAccessToken } from "@/lib/fetchLib";
 import { FormData } from "@/types";
 
 const CodexPage = () => {
@@ -39,7 +39,20 @@ const CodexPage = () => {
     setLoading(true);
 
     if (!isLogin && formData.password !== formData.confirmPassword) {
-      toast.error("Passwords do not match!");
+      toast.error("Passwords do not match!", {
+        style: {
+          border: "2px solid #ff00ff",
+          padding: "16px",
+          color: "#00ffff",
+          background: "#1a001a",
+          boxShadow: "0 0 20px #ff00ff",
+          fontFamily: "monospace",
+        },
+        iconTheme: {
+          primary: "#00ffff",
+          secondary: "#ff00ff",
+        },
+      });
       setLoading(false);
       return;
     }
@@ -47,12 +60,10 @@ const CodexPage = () => {
     const request = (async () => {
       try {
         if (isLogin) {
-          const response = await loginService({
+          await loginService({
             email: formData.email,
             password: formData.password,
           });
-          localStorage.setItem("user", JSON.stringify(response.user));
-          setAccessToken(response.token);
           router.push("/app");
         } else {
           await registerService(formData);
@@ -64,11 +75,28 @@ const CodexPage = () => {
     })();
 
     toast
-      .promise(request, {
-        loading: isLogin ? "Logging in..." : "Registering...",
-        success: isLogin ? "Login successful!" : "Register successful!",
-        error: (err) => err.message || "An error occurred. Please try again.",
-      })
+      .promise(
+        request,
+        {
+          loading: isLogin ? "Logging in..." : "Registering...",
+          success: isLogin ? "Login successful!" : "Register successful!",
+          error: (err) => err.message || "An error occurred. Please try again.",
+        },
+        {
+          style: {
+            border: "2px solid #ff00ff",
+            padding: "16px",
+            color: "#00ffff",
+            background: "#1a001a",
+            boxShadow: "0 0 20px #ff00ff",
+            fontFamily: "monospace",
+          },
+          iconTheme: {
+            primary: "#00ffff",
+            secondary: "#ff00ff",
+          },
+        }
+      )
       .finally(() => setLoading(false));
   };
 

@@ -1,7 +1,8 @@
-import { removeAccessToken } from "@/lib/fetchLib";
 import { useEffect, useState, useRef, useCallback } from "react";
 import { useRouter } from "next/navigation";
 import { User } from "@/types";
+import { removeUser } from "@/lib/removeUserAfterLogout";
+import { useUserStore } from "@/store/useUserStore";
 
 const NavbarApp = () => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
@@ -11,12 +12,12 @@ const NavbarApp = () => {
 
   useEffect(() => {
     try {
-      const userData = localStorage.getItem("user");
+      const userData = useUserStore.getState().user;
       if (!userData) {
         router.replace("/yuma-app");
         return;
       }
-      setUser(JSON.parse(userData));
+      setUser(userData);
     } catch (error) {
       console.error("Error parsing user data:", error);
       router.replace("/yuma-app");
@@ -54,8 +55,7 @@ const NavbarApp = () => {
   }, [isDropdownOpen, handleClickOutside, handleKeyDown]);
 
   const handleLogout = () => {
-    localStorage.removeItem("user");
-    removeAccessToken();
+    removeUser();
     router.replace("/yuma-app");
   };
 
@@ -69,7 +69,7 @@ const NavbarApp = () => {
           href="/app"
           className="flex items-center space-x-3 rtl:space-x-reverse"
         >
-          <img src="/navbar.png" className="h-8" alt="Logo" />
+          <img src="/navbar.png" className="h-14" alt="Logo" />
           <span className="self-center text-2xl font-bold text-cyan-400 drop-shadow-[0_0_6px_#00ffff]">
             Portfolio App
           </span>

@@ -4,9 +4,9 @@ import { useEffect, useState, KeyboardEvent } from "react";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 import UploadImage from "@/components/General/UploadImage";
-import { removeAccessToken } from "@/lib/fetchLib";
 import { getCurrentUser } from "@/lib/auth";
 import { User } from "@/types";
+import { removeUser } from "@/lib/removeUserAfterLogout";
 
 const ProfilePage = () => {
   const router = useRouter();
@@ -28,7 +28,7 @@ const ProfilePage = () => {
   }, [router]);
 
   const handleLogout = () => {
-    removeAccessToken();
+    removeUser();
     router.push("/yuma-app");
   };
 

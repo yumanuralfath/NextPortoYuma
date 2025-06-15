@@ -64,3 +64,37 @@ export interface GetVoicesResponse {
   success: boolean;
   audios: CloudinaryAudioResource[];
 }
+
+export interface GetVOicelogbyDate {
+  data: {
+    created_at: string;
+    id: number;
+    updated_at: string;
+    user_id: number;
+    voices_journal: string;
+  };
+  status: string;
+  message: string;
+}
+
+export interface deleteVoiceJournalbyID {
+  error: string;
+  Message: string;
+}
+
+export interface getVoiceWeeklyJournal {
+  id: number;
+  user_id: number;
+  voice_week_journal: string;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface getVoiceMonthlyJournal {
+  id: number;
+  user_id: number;
+  voice_month_journal: string;
+  month: string;
+  created_at: string;
+  updated_at: string;
+}

@@ -1,9 +1,11 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
 const BASE_URL = process.env.NEXT_PUBLIC_API_URL;
 
 import { getAccessToken } from "@/lib/fetchLib";
 import { ChangeEvent, useState } from "react";
+import toast from "react-hot-toast";
 
 interface UploadImageProps {
   onUploadSuccess: (imageUrl: string) => void;
@@ -16,52 +18,77 @@ const UploadImage = ({ onUploadSuccess }: UploadImageProps) => {
     const file = event.target.files?.[0];
     if (!file) return;
 
-    setUploading(true);
+    const uploadLogic = async () => {
+      setUploading(true);
 
-    try {
-      // Buat form data
-      const formData = new FormData();
-      formData.append("file", file);
+      try {
+        // Buat form data
+        const formData = new FormData();
+        formData.append("file", file);
 
-      // Upload ke API lokal (/api/upload)
-      const uploadResponse = await fetch("/api/upload", {
-        method: "POST",
-        body: formData,
-      });
+        // Upload ke API lokal
+        const uploadResponse = await fetch("/api/upload", {
+          method: "POST",
+          body: formData,
+        });
 
-      if (!uploadResponse.ok) {
-        throw new Error("Failed to upload image");
+        if (!uploadResponse.ok) {
+          throw new Error("Failed to upload image");
+        }
+
+        const { url: imageUrl } = await uploadResponse.json();
+
+        // Ambil token
+        const token = getAccessToken();
+        if (!token) throw new Error("Token not found");
+
+        // Update profil Supabase
+        const updateResponse = await fetch(`${BASE_URL}/user`, {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify({
+            profile_picture_url: imageUrl,
+          }),
+        });
+
+        if (!updateResponse.ok) {
+          throw new Error("Failed to update user profile picture");
+        }
+
+        // Beri tahu parent
+        onUploadSuccess(imageUrl);
+      } finally {
+        setUploading(false);
       }
+    };
 
-      const { url: imageUrl } = await uploadResponse.json();
-
-      // Update Supabase dengan URL baru menggunakan Bearer Token
-      const token = getAccessToken();
-      if (!token) throw new Error("Token not found");
-
-      // Update ke Supabase dengan URL gambar yang baru
-      const updateResponse = await fetch(`${BASE_URL}/user`, {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
+    await toast.promise(
+      uploadLogic(),
+      {
+        loading: "Uploading image...",
+        success: "Image uploaded successfully!",
+        error: (err: any) =>
+          typeof err?.message === "string" ? err.message : "Upload failed",
+      },
+      {
+        duration: 2000,
+        style: {
+          border: "2px solid #ff00ff",
+          padding: "16px",
+          color: "#00ffff",
+          background: "#1a001a",
+          boxShadow: "0 0 20px #ff00ff",
+          fontFamily: "monospace",
         },
-        body: JSON.stringify({
-          profile_picture_url: imageUrl,
-        }),
-      });
-
-      if (!updateResponse.ok) {
-        throw new Error("Failed to update user profile picture");
+        iconTheme: {
+          primary: "#00ffff",
+          secondary: "#ff00ff",
+        },
       }
-
-      // Beri tahu parent bahwa upload berhasil
-      onUploadSuccess(imageUrl);
-    } catch (error) {
-      console.error("Error uploading image:", error);
-    } finally {
-      setUploading(false);
-    }
+    );
   };
 
   return (

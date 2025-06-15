@@ -1,7 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { useState } from "react";
 import { loginService } from "@/lib/auth";
-import { setAccessToken } from "@/lib/fetchLib";
 import toast from "react-hot-toast";
 
 interface Props {
@@ -19,9 +18,7 @@ const LoginForm = ({ onSuccess }: Props) => {
 
     const request = (async () => {
       try {
-        const response = await loginService({ email, password });
-        localStorage.setItem("user", JSON.stringify(response.user));
-        setAccessToken(response.token);
+        await loginService({ email, password });
         onSuccess?.();
       } catch (err: any) {
         throw new Error(err.message || "An error occurred");
@@ -29,11 +26,28 @@ const LoginForm = ({ onSuccess }: Props) => {
     })();
 
     toast
-      .promise(request, {
-        loading: "Logging in...",
-        success: "Login successful!",
-        error: (err) => err.message || "Login failed.",
-      })
+      .promise(
+        request,
+        {
+          loading: "Logging in...",
+          success: "Login successful!",
+          error: (err) => err.message || "Login failed.",
+        },
+        {
+          style: {
+            border: "2px solid #ff00ff",
+            padding: "16px",
+            color: "#00ffff",
+            background: "#1a001a",
+            boxShadow: "0 0 20px #ff00ff",
+            fontFamily: "monospace",
+          },
+          iconTheme: {
+            primary: "#00ffff",
+            secondary: "#ff00ff",
+          },
+        }
+      )
       .finally(() => setLoading(false));
   };
 
@@ -70,7 +84,6 @@ const LoginForm = ({ onSuccess }: Props) => {
           type="password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
-          // Kelas untuk tema cyberpunk
           className="w-full px-4 py-3 rounded-lg bg-black/50 border border-[#00f0ff] text-[#00f0ff] placeholder-[#00f0ff]/50 focus:outline-none focus:ring-2 focus:ring-[#00f0ff] shadow-[0_0_5px_#00f0ff66]"
           placeholder="••••••••"
         />

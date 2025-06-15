@@ -1,62 +1,37 @@
 import BASE_URL from "./baseUrl";
-import { useAuthStore } from "@/store/useAuthStore";
 import {
   credentialsProps,
   userDataProps,
   GetCurrentUserResponse,
 } from "@/types";
-
-const token = useAuthStore.getState().accessToken;
+import { useUserStore } from "@/store/useUserStore";
+import {
+  getJsonWithToken,
+  postJsonWithToken,
+  setAccessToken,
+} from "./fetchLib";
+import { withErrorHandler } from "./withErrorHandler";
 
 export const loginService = async (credentials: credentialsProps) => {
-  const response = await fetch(`${BASE_URL}/login`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(credentials),
-  });
+  const response = await withErrorHandler(
+    () => postJsonWithToken(`${BASE_URL}/login`, credentials, false),
+    "Failed to login"
+  );
 
-  const data = await response.json();
-
-  if (!response.ok) {
-    throw new Error(data.message || "Login Failed");
-  }
-
-  return data;
+  setAccessToken(response?.token);
+  useUserStore.getState().setUser(response?.user);
 };
 
 export const registerService = async (userData: userDataProps) => {
-  const response = await fetch(`${BASE_URL}/register`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(userData),
-  });
-
-  const data = await response.json();
-
-  if (!response.ok) {
-    throw new Error(data?.error || "Failed Register");
-  }
-
-  return data;
+  await withErrorHandler(
+    () => postJsonWithToken(`${BASE_URL}/register`, userData, false),
+    "Failed to Register"
+  );
 };
 
 export const getCurrentUser = async (): Promise<GetCurrentUserResponse> => {
-  const response = await fetch(`${BASE_URL}/me`, {
-    method: "GET",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${token}`,
-    },
-  });
-
-  const data = await response.json();
-  if (!response.ok) {
-    throw new Error(data?.error || "Failed get User");
-  }
-
-  return data;
+  return await withErrorHandler(
+    () => getJsonWithToken(`${BASE_URL}/me`),
+    "Failed to Get Current User"
+  );
 };

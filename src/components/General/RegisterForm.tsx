@@ -29,7 +29,20 @@ const RegisterForm = ({ onSuccess }: Props) => {
     setLoading(true);
 
     if (formData.password !== formData.confirmPassword) {
-      toast.error("Passwords do not match!");
+      toast.error("Passwords do not match!", {
+        style: {
+          border: "2px solid #ff00ff",
+          padding: "16px",
+          color: "#00ffff",
+          background: "#1a001a",
+          boxShadow: "0 0 20px #ff00ff",
+          fontFamily: "monospace",
+        },
+        iconTheme: {
+          primary: "#00ffff",
+          secondary: "#ff00ff",
+        },
+      });
       setLoading(false);
       return;
     }
@@ -37,20 +50,35 @@ const RegisterForm = ({ onSuccess }: Props) => {
     const request = (async () => {
       try {
         await registerService(formData);
-        // Panggil onSuccess di sini setelah berhasil register
         onSuccess?.();
       } catch (err: any) {
-        // Pastikan error yang dilempar adalah instance dari Error
         throw new Error(err.message || "Registration failed");
       }
     })();
 
     toast
-      .promise(request, {
-        loading: "Registering...",
-        success: "Registration successful!",
-        error: (err) => err.message || "Register failed.",
-      })
+      .promise(
+        request,
+        {
+          loading: "Registering...",
+          success: "Registration successful!",
+          error: (err) => err.message || "Register failed.",
+        },
+        {
+          style: {
+            border: "2px solid #ff00ff",
+            padding: "16px",
+            color: "#00ffff",
+            background: "#1a001a",
+            boxShadow: "0 0 20px #ff00ff",
+            fontFamily: "monospace",
+          },
+          iconTheme: {
+            primary: "#00ffff",
+            secondary: "#ff00ff",
+          },
+        }
+      )
       .finally(() => setLoading(false));
   };
 
@@ -69,7 +97,6 @@ const RegisterForm = ({ onSuccess }: Props) => {
           type="text"
           value={formData.username}
           onChange={handleChange}
-          // Kelas untuk tema cyberpunk
           className="w-full px-4 py-3 rounded-lg bg-black/50 border border-[#00f0ff] text-[#00f0ff] placeholder-[#00f0ff]/50 focus:outline-none focus:ring-2 focus:ring-[#00f0ff] shadow-[0_0_5px_#00f0ff66]"
           placeholder="Username"
         />
@@ -88,7 +115,6 @@ const RegisterForm = ({ onSuccess }: Props) => {
           type="email"
           value={formData.email}
           onChange={handleChange}
-          // Kelas untuk tema cyberpunk
           className="w-full px-4 py-3 rounded-lg bg-black/50 border border-[#00f0ff] text-[#00f0ff] placeholder-[#00f0ff]/50 focus:outline-none focus:ring-2 focus:ring-[#00f0ff] shadow-[0_0_5px_#00f0ff66]"
           placeholder="email@domain.com"
         />
@@ -107,7 +133,6 @@ const RegisterForm = ({ onSuccess }: Props) => {
           type="password"
           value={formData.password}
           onChange={handleChange}
-          // Kelas untuk tema cyberpunk
           className="w-full px-4 py-3 rounded-lg bg-black/50 border border-[#00f0ff] text-[#00f0ff] placeholder-[#00f0ff]/50 focus:outline-none focus:ring-2 focus:ring-[#00f0ff] shadow-[0_0_5px_#00f0ff66]"
           placeholder="••••••••"
         />
@@ -126,7 +151,6 @@ const RegisterForm = ({ onSuccess }: Props) => {
           type="password"
           value={formData.confirmPassword}
           onChange={handleChange}
-          // Kelas untuk tema cyberpunk
           className="w-full px-4 py-3 rounded-lg bg-black/50 border border-[#00f0ff] text-[#00f0ff] placeholder-[#00f0ff]/50 focus:outline-none focus:ring-2 focus:ring-[#00f0ff] shadow-[0_0_5px_#00f0ff66]"
           placeholder="••••••••"
         />

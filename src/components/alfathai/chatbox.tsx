@@ -43,7 +43,20 @@ const ChatboxPage = () => {
         const res = await getRandomThreads();
         setThreads(res.threads.slice(0, 6));
       } catch (error: any) {
-        toast.error(`Gagal memuat thread acak: ${error.message || error}`);
+        toast.error(`Gagal memuat thread acak: ${error.message || error}`, {
+          style: {
+            border: "2px solid #ff00ff",
+            padding: "16px",
+            color: "#00ffff",
+            background: "#1a001a",
+            boxShadow: "0 0 20px #ff00ff",
+            fontFamily: "monospace",
+          },
+          iconTheme: {
+            primary: "#00ffff",
+            secondary: "#ff00ff",
+          },
+        });
       }
     };
 
@@ -100,7 +113,20 @@ const ChatboxPage = () => {
           ? error.message
           : "Terjadi kesalahan yang tidak diketahui";
 
-      toast.error(errorMessage);
+      toast.error(errorMessage, {
+        style: {
+          border: "2px solid #ff00ff",
+          padding: "16px",
+          color: "#00ffff",
+          background: "#1a001a",
+          boxShadow: "0 0 20px #ff00ff",
+          fontFamily: "monospace",
+        },
+        iconTheme: {
+          primary: "#00ffff",
+          secondary: "#ff00ff",
+        },
+      });
 
       if (errorMessage.includes("Token tidak ditemukan. Silakan login.")) {
         lastPromptRef.current = promptContent;
@@ -117,7 +143,20 @@ const ChatboxPage = () => {
     e.preventDefault();
 
     if (!promptInput.prompt.trim()) {
-      toast.error("Please input Something bro");
+      toast.error("Please input Something bro", {
+        style: {
+          border: "2px solid #ff00ff",
+          padding: "16px",
+          color: "#00ffff",
+          background: "#1a001a",
+          boxShadow: "0 0 20px #ff00ff",
+          fontFamily: "monospace",
+        },
+        iconTheme: {
+          primary: "#00ffff",
+          secondary: "#ff00ff",
+        },
+      });
       return;
     }
     const token = getAccessToken();
@@ -147,7 +186,20 @@ const ChatboxPage = () => {
         res.comments?.[0]?.content || "Tidak ada response silahkan chat ulang";
       setSelectedComment(comment);
     } catch (error: any) {
-      toast.error(`Gagal memuat komentar thread: ${error.message || error}`);
+      toast.error(`Gagal memuat komentar thread: ${error.message || error}`, {
+        style: {
+          border: "2px solid #ff00ff",
+          padding: "16px",
+          color: "#00ffff",
+          background: "#1a001a",
+          boxShadow: "0 0 20px #ff00ff",
+          fontFamily: "monospace",
+        },
+        iconTheme: {
+          primary: "#00ffff",
+          secondary: "#ff00ff",
+        },
+      });
     } finally {
       setLoading(false);
     }

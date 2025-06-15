@@ -122,3 +122,48 @@
 .panel-shadow {
   box-shadow: inset 0 0 10px #00f0ff33;
 }
+
+
+/* Override latar belakang dan teks kalender */
+.react-calendar {
+  background-color: #0f001f !important;
+  color: #f9a8d4 !important; /* pink-300 */
+  border-radius: 0.75rem;
+  border: 2px solid #ff00ff;
+  font-family: monospace;
+}
+
+/* Style tile umum */
+.react-calendar__tile {
+  background: transparent !important;
+  color: #f9a8d4 !important;
+  transition: all 0.2s ease;
+  border-radius: 0.5rem;
+}
+
+/* Hover efek cyberpunk */
+.react-calendar__tile:hover {
+  background-color: #2a0033 !important;
+  color: #00ffff !important;
+}
+
+/* Hari ini */
+.react-calendar__tile--now {
+  background-color: #ff00ff20 !important;
+  border: 1px solid #ff00ff;
+}
+
+/* Tanggal dipilih */
+.react-calendar__tile--active {
+  background-color: #00ffff !important;
+  color: black !important;
+  font-weight: bold;
+  box-shadow: 0 0 10px #00ffff;
+}
+
+/* Disabled */
+.react-calendar__tile:disabled {
+  background: #444 !important;
+  color: #888 !important;
+}
+
