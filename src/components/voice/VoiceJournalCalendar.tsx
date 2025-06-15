@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { useEffect, useState } from "react";
 import Calendar from "react-calendar";
-import "react-calendar/dist/Calendar.css";
+// import "react-calendar/dist/Calendar.css";
 import toast from "react-hot-toast";
 import { getVoiceJournalbyDate, getVoices } from "@/lib/voice";
 import { CloudinaryAudioResource } from "@/types";
@@ -17,6 +17,13 @@ const VoiceJournalCalendar = () => {
   const [cache, setCache] = useState<
     Record<string, { journal: string; audio: string }>
   >({});
+
+  function toLocalIsoString(date: Date): string {
+    const year = date.getFullYear();
+    const month = `${date.getMonth() + 1}`.padStart(2, "0");
+    const day = `${date.getDate()}`.padStart(2, "0");
+    return `${year}-${month}-${day}`;
+  }
 
   const fetchVoiceLog = async (date: Date) => {
     const isoDate = toLocalDateStringIso(date);
@@ -38,7 +45,7 @@ const VoiceJournalCalendar = () => {
         getVoices(UserID, isoDate),
       ]);
 
-      if (!journalData.data) throw new Error("No voice journal added Today");
+      if (!journalData.data) throw new Error("No voice journal added");
 
       const journalText = journalData.data.voices_journal;
       const audio = voices.length > 0 ? voices[0].secure_url : "";
@@ -78,10 +85,12 @@ const VoiceJournalCalendar = () => {
 
     const UserID = userData.id.toString();
     try {
-      const today = new Date().toISOString().slice(0, 10);
+      const today = new Date().toLocaleDateString("sv-SE").slice(0, 10);
       const res = await getVoices(UserID, today.slice(0, 7));
       setLoggedDates(
-        res.map((v: CloudinaryAudioResource) => v.created_at.split("T")[0])
+        res.map((v: CloudinaryAudioResource) =>
+          toLocalIsoString(new Date(v.created_at))
+        )
       );
     } catch (err) {
       console.error("Failed to fetch logged dates", err);
@@ -97,7 +106,7 @@ const VoiceJournalCalendar = () => {
   }, []);
 
   const isDateLogged = (date: Date) => {
-    const iso = date.toISOString().split("T")[0];
+    const iso = toLocalIsoString(date);
     return loggedDates.includes(iso);
   };
 
@@ -105,10 +114,6 @@ const VoiceJournalCalendar = () => {
     const test = new Date(date);
     test.setDate(test.getDate() + 1);
     return test.getDate() === 1;
-  };
-
-  const isSunday = (date: Date) => {
-    return date.getDay() === 0;
   };
 
   return (
@@ -121,26 +126,40 @@ const VoiceJournalCalendar = () => {
           onChange={(date) => setSelectedDate(date as Date)}
           value={selectedDate}
           calendarType="gregory"
-          className="rounded-xl p-4 bg-[#0f001f] text-pink-200 shadow-[0_0_20px_#ff00ff] font-mono border border-pink-500"
+          className={`react-calendar 
+                      w-full max-w-[95vw] sm:max-w-md
+                      bg-[#0f001f] text-pink-200
+                      rounded-xl p-2 sm:p-4 
+                      border border-pink-500 shadow-[0_0_20px_#ff00ff]
+                      font-mono text-[12px] sm:text-base`}
           tileClassName={({ date }) => {
             const isToday = date.toDateString() === new Date().toDateString();
             const isLogged = isDateLogged(date);
-            const sunday = isSunday(date);
             const endMonth = isLastDayOfMonth(date);
             const isSelected =
               selectedDate &&
               date.toDateString() === selectedDate.toDateString();
 
+            const day = date.getDay();
+            const dayColorClass =
+              day === 0
+                ? "text-blue-400"
+                : day === 5
+                ? "text-green-400"
+                : day === 6
+                ? "text-purple-400"
+                : "";
+
             return [
-              "transition-all duration-150 rounded-lg px-2 py-1",
+              "rounded-lg transition-all duration-150 px-1 py-[6px] sm:px-2 sm:py-1 text-xs sm:text-sm",
               isToday &&
                 !isSelected &&
-                "bg-pink-600 text-black font-bold shadow-[0_0_10px_#ff00ff]",
+                "bg-pink-600 text-black font-bold shadow-[0_0_6px_#ff00ff]",
               isLogged && "ring-2 ring-pink-400",
               isSelected &&
                 "bg-cyan-600 text-black font-bold shadow-[0_0_10px_#00ffff]",
-              sunday && "text-blue-400",
               endMonth && "text-yellow-400",
+              dayColorClass,
             ]
               .filter(Boolean)
               .join(" ");
