@@ -9,14 +9,23 @@ export function humanReadableDate(isoDateString: string): string {
   const date = new Date(cleaned);
 
   return date.toLocaleString("id-ID", {
-    weekday: "long", // Minggu
-    year: "numeric", // 2025
-    month: "long", // Juni
-    day: "numeric", // 15
-    hour: "2-digit", // 03
-    minute: "2-digit", // 59
-    second: "2-digit", // 22
+    weekday: "long",
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+    hour: "2-digit",
+    minute: "2-digit",
+    second: "2-digit",
     timeZoneName: "short",
     hour12: false,
   });
+}
+
+export function getTodayDate(): string {
+  const today = new Date();
+  const year = today.getFullYear();
+  const month = (today.getMonth() + 1).toString().padStart(2, "0");
+  const day = today.getDate().toString().padStart(2, "0");
+
+  return `${year}-${month}-${day}`;
 }

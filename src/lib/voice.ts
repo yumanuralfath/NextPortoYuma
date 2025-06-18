@@ -10,6 +10,7 @@ import {
   postJsonWithToken,
 } from "./fetchLib";
 import { withErrorHandler } from "./withErrorHandler";
+import { getTodayDate } from "./Time";
 
 export async function getVoices(
   userID: string,
@@ -121,6 +122,12 @@ export async function deleteVoiceJournalbyID(id: string) {
   );
 
   return data.Message;
+}
+
+export async function deleteVoiceToday() {
+  const response = await getVoiceJournalbyDate(getTodayDate());
+
+  return await deleteVoiceJournalbyID(response.data.id);
 }
 
 export async function getVoiceWeeklyResume() {

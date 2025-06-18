@@ -3,7 +3,7 @@
 import { useEffect, useRef } from "react";
 import Image from "next/image";
 import Tilt from "react-parallax-tilt";
-import Link from "next/link";
+import ActionButtons from "@/components/General/contactButton";
 import { runDecodeEffect } from "@/lib/runDecodeEffect";
 
 const Homepage = () => {
@@ -52,14 +52,15 @@ const Homepage = () => {
         ></p>
 
         {/* BUTTON */}
-        <div className="w-full flex flex-col lg:flex-row gap-4 justify-center lg:justify-start">
+        {/* <div className="w-full flex flex-col lg:flex-row gap-4 justify-center lg:justify-start">
           <button className="p-4 px-6 rounded-lg ring-1 ring-cyan-500 bg-gradient-to-r from-cyan-500 to-pink-500 text-white font-semibold hover:from-pink-500 hover:to-cyan-500 hover:ring-pink-400 transition-all shadow-md hover:shadow-lg">
             <Link href="/project">View My Projects</Link>
           </button>
           <button className="p-4 px-6 rounded-lg ring-1 ring-cyan-300 bg-white text-black font-semibold hover:bg-gray-100 hover:ring-pink-400 transition-all shadow-md hover:shadow-lg">
             <Link href="https://wa.me/6282268975635">Contact Me</Link>
           </button>
-        </div>
+        </div> */}
+        <ActionButtons />
       </div>
     </div>
   );

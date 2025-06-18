@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { useState } from "react";
 import toast from "react-hot-toast";
-import { getVoices, deleteVoices } from "@/lib/voice";
+import { getVoices, deleteVoices, deleteVoiceToday } from "@/lib/voice";
 import { useUserStore } from "@/store/useUserStore";
 
 export default function DeleteReRecordToast({
@@ -21,14 +21,16 @@ export default function DeleteReRecordToast({
       const userData = useUserStore.getState().user;
       const updatedUser = user ?? userData;
       const today = new Date().toISOString().slice(0, 10);
-      const response = await getVoices(updatedUser.user.id.toString(), today);
+      const response = await getVoices(updatedUser.id.toString(), today);
 
       if (!response.length) throw new Error("No voice found to delete");
 
       const createdAt = new Date(response[0].created_at);
       const date = createdAt.toISOString().split("T")[0];
 
-      const deleted = await deleteVoices(user.user.id.toString(), date);
+      const test = await deleteVoiceToday();
+      console.log(test);
+      const deleted = await deleteVoices(user.id.toString(), date);
 
       toast.dismiss(t.id);
       toast.success(
@@ -53,7 +55,7 @@ export default function DeleteReRecordToast({
       localStorage.removeItem("lastUploadDate");
     } catch (error: any) {
       toast.error(`Failed to delete recording. ${error.message || error}`, {
-        duration: 1500,
+        duration: 1000,
         style: {
           border: "2px solid #ff00ff",
           padding: "16px",

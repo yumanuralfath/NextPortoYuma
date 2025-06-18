@@ -20,7 +20,15 @@ import { CloudinaryAudioResource } from "@/types";
 import DeleteReRecordToast from "./DeleteRecordToast";
 import { useUserStore } from "@/store/useUserStore";
 
-const AudioRecorder = () => {
+interface AudioRecorderProps {
+  onRecordingStateChange?: (hasRecording: boolean) => void;
+  onSaveSuccess?: () => void;
+}
+
+const AudioRecorder = ({
+  onRecordingStateChange,
+  onSaveSuccess,
+}: AudioRecorderProps) => {
   const [isRecording, setIsRecording] = useState(false);
   const [isPlaying, setIsPlaying] = useState(false);
   const [isUploading, setIsUploading] = useState(false);
@@ -77,6 +85,12 @@ const AudioRecorder = () => {
       setVoicesLoading(false);
     }
   };
+
+  useEffect(() => {
+    if (onRecordingStateChange) {
+      onRecordingStateChange(recordingBlob !== null);
+    }
+  }, [recordingBlob]);
 
   useEffect(() => {
     const stored = localStorage.getItem("lastUploadDate");
@@ -594,7 +608,7 @@ const AudioRecorder = () => {
           <div className="text-3xl font-mono text-green-300 bg-gray-900 px-3 py-2 rounded-lg shadow-md inline-block mt-2">
             {formatTime(playbackTime)}
           </div>
-          <Transcribe />
+          <Transcribe onSaveSuccess={onSaveSuccess} />
         </>
       )}
     </div>
