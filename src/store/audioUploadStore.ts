@@ -1,12 +1,9 @@
 import { create } from "zustand";
-
-interface UploadedAudio {
-  url: string;
-}
+import { CloudinaryAudioResource } from "@/types";
 
 interface UploadStore {
-  uploadedAudio: UploadedAudio | null;
-  setUploadedAudio: (data: UploadedAudio) => void;
+  uploadedAudio: CloudinaryAudioResource | null;
+  setUploadedAudio: (data: CloudinaryAudioResource) => void;
 }
 
 const useAudioUploadStore = create<UploadStore>((set) => ({

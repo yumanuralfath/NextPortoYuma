@@ -16,9 +16,16 @@ const VoiceJournalCalendar = () => {
   const [audioUrl, setAudioUrl] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
   const [activeMonthDates, setActiveMonthDates] = useState<string[]>([]);
+  const [lastFetchedMonth, setLastFetchedMonth] = useState<string | null>(null);
   const [cache, setCache] = useState<
-    Record<string, { journal: string; audio: string }>
+    Record<string, { journal: string; audio: string; voiceActive: string[] }>
   >({});
+
+  const getFormattedMonth = (date: Date): string => {
+    const year = date.getFullYear();
+    const month = date.getMonth();
+    return `${year}-${month + 2}`;
+  };
 
   const fetchVoiceLog = async (date: Date) => {
     const isoDate = toLocalDateStringIso(date);
@@ -39,7 +46,7 @@ const VoiceJournalCalendar = () => {
         getVoices(UserID, isoDate),
       ]);
 
-      if (!journalData.data) throw new Error("No voice journal added");
+      if (!journalData.data) throw new Error(journalData.message);
 
       const journalText = journalData.data.voices_journal;
       const audio = voices.length > 0 ? voices[0].secure_url : "";
@@ -48,7 +55,11 @@ const VoiceJournalCalendar = () => {
       setAudioUrl(audio);
       setCache((prev) => ({
         ...prev,
-        [isoDate]: { journal: journalText, audio },
+        [isoDate]: {
+          journal: journalText,
+          audio,
+          voiceActive: prev[isoDate]?.voiceActive ?? [],
+        },
       }));
     } catch (error: any) {
       setJournalText(null);
@@ -73,15 +84,16 @@ const VoiceJournalCalendar = () => {
   };
 
   const fetchMonthActiveDates = async (date: Date) => {
-    const year = date.getFullYear();
-    const month = date.getMonth();
+    const formattedMonth = getFormattedMonth(date);
+    if (formattedMonth === lastFetchedMonth) return;
+
     try {
-      const formattedMonth = `${year}-${month + 2}`;
       const res = await withErrorHandler(
         () => getJsonWithToken(`${BASE_URL}/voice-active/${formattedMonth}`),
         "Failed to get date for voice journal"
       );
       setActiveMonthDates(res);
+      setLastFetchedMonth(formattedMonth);
     } catch (err) {
       console.error("Failed to fetch month active dates", err);
     }

@@ -11,6 +11,7 @@ import {
 } from "./fetchLib";
 import { withErrorHandler } from "./withErrorHandler";
 import { getTodayDate } from "./Time";
+import toast from "react-hot-toast";
 
 export async function getVoices(
   userID: string,
@@ -126,8 +127,28 @@ export async function deleteVoiceJournalbyID(id: string) {
 
 export async function deleteVoiceToday() {
   const response = await getVoiceJournalbyDate(getTodayDate());
-
-  return await deleteVoiceJournalbyID(response.data.id);
+  if (response.data === null) {
+    return toast.success(
+      "No voice journal delete please upload transcribe after upload audio",
+      {
+        duration: 1000,
+        style: {
+          border: "2px solid #ff00ff",
+          padding: "16px",
+          color: "#00ffff",
+          background: "#1a001a",
+          boxShadow: "0 0 20px #ff00ff",
+          fontFamily: "monospace",
+        },
+        iconTheme: {
+          primary: "#00ffff",
+          secondary: "#ff00ff",
+        },
+      }
+    );
+  } else {
+    return await deleteVoiceJournalbyID(response.data.id);
+  }
 }
 
 export async function getVoiceWeeklyResume() {

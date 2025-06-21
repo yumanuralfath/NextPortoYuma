@@ -19,7 +19,7 @@ const Transcribe = ({ onSaveSuccess }: TranscribeProps) => {
 
   const handleTranscribeClick = async () => {
     if (!uploadedAudio) {
-      toast.error("Silakan unggah audio Anda terlebih dahulu!", {
+      toast.error("Please Upload Your Audio First!", {
         duration: 2000,
         style: {
           border: "2px solid #ff00ff",
@@ -45,9 +45,9 @@ const Transcribe = ({ onSaveSuccess }: TranscribeProps) => {
       const result = await toast.promise(
         transcribePromise,
         {
-          loading: "Mentranskripsi audio...",
-          success: "Transkripsi berhasil!",
-          error: "Transkripsi gagal. Silakan coba lagi.",
+          loading: "Audio Transcription...",
+          success: "Transcription Success",
+          error: "Transcription Failed. Please try again.",
         },
         {
           style: {
@@ -67,7 +67,7 @@ const Transcribe = ({ onSaveSuccess }: TranscribeProps) => {
 
       setTranscribedText(result);
     } catch (err) {
-      console.error("Kesalahan transkripsi:", err);
+      console.error("Transcription Error", err);
     } finally {
       setIsTranscribing(false);
     }
@@ -81,11 +81,10 @@ const Transcribe = ({ onSaveSuccess }: TranscribeProps) => {
       await toast.promise(
         savePromise,
         {
-          loading: "Menyimpan Log Suara...",
-          success: "Berhasil Disimpan!",
+          loading: "Voice Log Saving...",
+          success: "Save Succesfull",
           error: (err) =>
-            err.message ||
-            "Gagal menyimpan, entri untuk hari ini mungkin sudah ada.",
+            err.message || "Save Failed, Today entry already exist.",
         },
         {
           duration: 2000,
@@ -105,7 +104,7 @@ const Transcribe = ({ onSaveSuccess }: TranscribeProps) => {
       );
       onSaveSuccess?.();
     } catch (err) {
-      console.error(`Gagal menyimpan jurnal suara: ${err}`);
+      console.error(`Voice Journal error for save: ${err}`);
     } finally {
       setIsSaving(false);
     }

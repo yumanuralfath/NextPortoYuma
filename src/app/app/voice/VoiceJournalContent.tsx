@@ -73,7 +73,7 @@ const VoiceJournalContent = () => {
       try {
         const res = await withErrorHandler(
           () => getJsonWithToken(`${BASE_URL}/voice/weekly-resume`),
-          "Gagal ambil resume mingguan"
+          "Failed to get weekly resume"
         );
         const resumeDate = new Date(res.created_at);
         const today = new Date();

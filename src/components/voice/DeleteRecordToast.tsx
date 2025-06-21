@@ -28,10 +28,8 @@ export default function DeleteReRecordToast({
       const createdAt = new Date(response[0].created_at);
       const date = createdAt.toISOString().split("T")[0];
 
-      const test = await deleteVoiceToday();
-      console.log(test);
+      await deleteVoiceToday();
       const deleted = await deleteVoices(user.id.toString(), date);
-
       toast.dismiss(t.id);
       toast.success(
         `Recording deleted (${deleted})! You may now record again.`,

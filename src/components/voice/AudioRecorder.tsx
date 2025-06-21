@@ -15,7 +15,7 @@ import Transcribe from "./Transcribe";
 import ReRecordToastContent from "./ReRecordToastContent";
 import useAudioUploadStore from "@/store/audioUploadStore";
 import { User } from "@/types";
-import { getVoices, deleteVoices } from "@/lib/voice";
+import { deleteVoices } from "@/lib/voice";
 import { CloudinaryAudioResource } from "@/types";
 import DeleteReRecordToast from "./DeleteRecordToast";
 import { useUserStore } from "@/store/useUserStore";
@@ -40,7 +40,7 @@ const AudioRecorder = ({
   const [loading, setLoading] = useState(false);
   const [user, setUser] = useState<User | null>(null);
   const [voicesLoading, setVoicesLoading] = useState(true);
-  const [voices, setVoices] = useState<CloudinaryAudioResource[]>([]);
+  const [voices, setVoices] = useState<CloudinaryAudioResource | null>(null);
   const [playbackTime, setPlaybackTime] = useState(0);
   const [hasUploadedToday, setHasUploadedToday] = useState(false);
   const waveformRef = useRef<HTMLDivElement | null>(null);
@@ -59,31 +59,54 @@ const AudioRecorder = ({
     return `${String(m).padStart(2, "0")}:${String(s).padStart(2, "0")}`;
   };
 
-  const fetchUserAndVoices = async () => {
+  const checkVoiceToday = (voice: CloudinaryAudioResource | null) => {
+    const fetchuser = useUserStore.getState().user;
+    if (!fetchuser) throw new Error("User not found please relog");
+    setUser(fetchuser);
     setVoicesLoading(true);
-    try {
-      let userData = user;
-      if (!userData) {
-        const fetchedUser = useUserStore.getState().user;
-        if (!fetchedUser) throw new Error("User not found");
-        setUser(fetchedUser);
-        userData = fetchedUser;
-      }
-      if (!userData) throw new Error("User data is null");
-      const today = new Date().toISOString().slice(0, 10);
-      const response = await getVoices(userData.id.toString(), today);
-      setVoices(response);
-      setHasUploadedToday(response.length > 0);
-      if (response.length > 0) {
-        localStorage.setItem("lastUploadDate", today);
-      } else {
-        localStorage.removeItem("lastUploadDate");
-      }
-    } catch (err) {
-      console.error("Error fetching voices:", err);
-    } finally {
+    if (voice === null) {
+      localStorage.removeItem("lastuploadDate");
+      setVoicesLoading(false);
+    } else if (voice != null) {
+      setVoices(voice);
+      setHasUploadedToday(voice != null);
+      localStorage.setItem(
+        "lastUploadDate",
+        new Date().toISOString().slice(0, 10)
+      );
+      setVoicesLoading(false);
+    } else {
       setVoicesLoading(false);
     }
+  };
+
+  const fetchUserAndVoices = async () => {
+    const voice = useAudioUploadStore.getState().uploadedAudio;
+    checkVoiceToday(voice);
+    // setVoicesLoading(true);
+    // try {
+    //   let userData = user;
+    //   if (!userData) {
+    //     const fetchedUser = useUserStore.getState().user;
+    //     if (!fetchedUser) throw new Error("User not found");
+    //     setUser(fetchedUser);
+    //     userData = fetchedUser;
+    //   }
+    //   if (!userData) throw new Error("User data is null");
+    //   const today = new Date().toISOString().slice(0, 10);
+    //   const response = await getVoices(userData.id.toString(), today);
+    //   setVoices(response);
+    //   setHasUploadedToday(response.length > 0);
+    //   if (response.length > 0) {
+    //     localStorage.setItem("lastUploadDate", today);
+    //   } else {
+    //     localStorage.removeItem("lastUploadDate");
+    //   }
+    // } catch (err) {
+    //   console.error("Error fetching voices:", err);
+    // } finally {
+    //   setVoicesLoading(false);
+    // }
   };
 
   useEffect(() => {
@@ -182,7 +205,7 @@ const AudioRecorder = ({
             t={t}
             user={user}
             onSuccess={() => {
-              setVoices([]);
+              setVoices(null);
               setHasUploadedToday(false);
             }}
           />
@@ -397,13 +420,14 @@ const AudioRecorder = ({
                       });
                       return;
                     }
-                    const createdAt = new Date(voices[0].created_at);
+                    if (voices === null) throw new Error("Voice not found");
+                    const createdAt = new Date(voices.created_at);
                     const date = createdAt.toISOString().split("T")[0];
                     const deleted = await deleteVoices(
                       user.id.toString(),
                       date
                     );
-                    setVoices([]);
+                    setVoices(null);
                     setHasUploadedToday(false);
                     localStorage.removeItem("lastUploadDate");
                     toast.dismiss(t.id);
