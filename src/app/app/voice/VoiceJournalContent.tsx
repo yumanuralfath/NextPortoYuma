@@ -9,6 +9,7 @@ import { getVoices } from "@/lib/voice";
 import { useUserStore } from "@/store/useUserStore";
 import { withErrorHandler } from "@/lib/withErrorHandler";
 import { getJsonWithToken } from "@/lib/fetchLib";
+import { isTodaySunday } from "@/lib/Time";
 import BASE_URL from "@/lib/baseUrl";
 
 interface WeeklyResumeData {
@@ -65,8 +66,6 @@ const VoiceJournalContent = () => {
   }, [hasUploadedToday]);
 
   useEffect(() => {
-    const isTodaySunday = new Date().getDay() === 0;
-
     const fetchWeeklyResume = async () => {
       if (!user || !isTodaySunday) return;
 

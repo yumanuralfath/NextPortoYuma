@@ -2,7 +2,7 @@
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { getVoiceJournalbyDate, getVoices } from "@/lib/voice";
-import { toLocalDateStringIso } from "@/lib/Time";
+import { toLocalDateStringIso, getFormattedMonth } from "@/lib/Time";
 import { useUserStore } from "@/store/useUserStore";
 import BASE_URL from "@/lib/baseUrl";
 import { getJsonWithToken } from "@/lib/fetchLib";
@@ -20,12 +20,6 @@ const VoiceJournalCalendar = () => {
   const [cache, setCache] = useState<
     Record<string, { journal: string; audio: string; voiceActive: string[] }>
   >({});
-
-  const getFormattedMonth = (date: Date): string => {
-    const year = date.getFullYear();
-    const month = date.getMonth();
-    return `${year}-${month + 2}`;
-  };
 
   const fetchVoiceLog = async (date: Date) => {
     const isoDate = toLocalDateStringIso(date);

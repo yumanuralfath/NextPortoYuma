@@ -29,3 +29,24 @@ export function getTodayDate(): string {
 
   return `${year}-${month}-${day}`;
 }
+
+export const isLastDayOfMonth = (date: Date) => {
+  const day = new Date(date);
+  day.setDate(day.getDate() + 1);
+  return day.getDate() === 1;
+};
+
+export const isTodaySunday = new Date().getDay() === 0;
+
+export const toLocalIsoString = (date: Date): string => {
+  return `${date.getFullYear()}-${`${date.getMonth() + 1}`.padStart(
+    2,
+    "0"
+  )}-${`${date.getDate()}`.padStart(2, "0")}`;
+};
+
+export const getFormattedMonth = (date: Date): string => {
+  const year = date.getFullYear();
+  const month = date.getMonth();
+  return `${year}-${month + 2}`;
+};

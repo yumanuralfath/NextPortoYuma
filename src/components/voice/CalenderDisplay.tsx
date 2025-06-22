@@ -1,6 +1,7 @@
 import { useState } from "react";
 import Calendar from "react-calendar";
 import { motion, AnimatePresence } from "framer-motion";
+import { isLastDayOfMonth, toLocalIsoString } from "@/lib/Time";
 
 const CalendarDisplay = ({
   selectedDate,
@@ -12,18 +13,6 @@ const CalendarDisplay = ({
   activeDates: string[];
 }) => {
   const [monthKey, setMonthKey] = useState<number>(Date.now());
-
-  const toLocalIsoString = (date: Date): string =>
-    `${date.getFullYear()}-${`${date.getMonth() + 1}`.padStart(
-      2,
-      "0"
-    )}-${`${date.getDate()}`.padStart(2, "0")}`;
-
-  const isLastDayOfMonth = (date: Date) => {
-    const test = new Date(date);
-    test.setDate(test.getDate() + 1);
-    return test.getDate() === 1;
-  };
 
   const isDateLogged = (date: Date) =>
     activeDates.includes(toLocalIsoString(date));
@@ -73,9 +62,9 @@ const CalendarDisplay = ({
               "relative rounded-lg transition-all duration-150 px-1 py-[6px] sm:px-2 sm:py-1 text-xs sm:text-sm",
               isToday &&
                 !isSelected &&
-                "border border-pink-500 shadow-md text-white",
+                "border border-white-1000 shadow-[0_0_50px_#00ffff] text-white",
               isSelected &&
-                "bg-cyan-600 text-black font-bold shadow-[0_0_12px_#00ffff] animate-bounce",
+                "bg-purple-400 text-black font-bold shadow-[0_0_12px_#00ffff] animate-bounce",
               endMonth && "text-yellow-400",
               dayColor,
             ]

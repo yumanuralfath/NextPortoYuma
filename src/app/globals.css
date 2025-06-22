@@ -152,3 +152,6 @@
   animation: pulse-border 2s infinite;
 }
 
+textarea, input {
+  font-size: 16px; /* Hindari zoom otomatis di iOS */
+}
