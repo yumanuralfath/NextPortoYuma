@@ -5,6 +5,7 @@ import { useState, useEffect } from "react";
 import { FaWhatsapp } from "react-icons/fa";
 import Image from "next/image";
 import { motion } from "framer-motion";
+import { MdEmail } from "react-icons/md";
 
 const socialLinks = [
   {
@@ -95,6 +96,17 @@ export default function ActionButtons() {
               title="WhatsApp"
             >
               <FaWhatsapp size={28} className="drop-shadow-[0_0_4px_#00ff00]" />
+            </a>
+
+            {/* Email Icon */}
+            <a
+              href="mailto:yuma@yumana.my.id"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="hover:scale-110 transition-transform"
+              title="Email"
+            >
+              <MdEmail size={28} className="drop-shadow-[0_0_4px_#00ff00]" />
             </a>
 
             {/* Other Social Icons */}
