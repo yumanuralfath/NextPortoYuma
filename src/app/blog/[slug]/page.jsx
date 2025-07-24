@@ -6,11 +6,11 @@ import { marked } from "marked";
 import DisqusComments from "./DisqusComments";
 
 export async function generateMetadata({ params }) {
-  const { slug } = params;
+  const { slug } = await params; 
   const filePath = path.join(process.cwd(), "src/content/blog", `${slug}.md`);
   const fileContent = fs.readFileSync(filePath, "utf-8");
   const { data: frontMatter } = matter(fileContent);
-
+  
   return {
     title: frontMatter.title,
     description: frontMatter.excerpt,
@@ -40,7 +40,7 @@ export async function generateMetadata({ params }) {
 }
 
 export default async function BlogPost({ params }) {
-  const { slug } = params;
+  const { slug } = await params; 
   const filePath = path.join(process.cwd(), "src/content/blog", `${slug}.md`);
   const fileContent = fs.readFileSync(filePath, "utf-8");
   const { data: frontMatter, content } = matter(fileContent);
@@ -62,13 +62,11 @@ export default async function BlogPost({ params }) {
             </span>
           </div>
         </div>
-
         <div
           className="prose prose-invert prose-lg max-w-none mt-8 text-cyan-100"
           dangerouslySetInnerHTML={{ __html: htmlContent }}
         />
       </article>
-
       <DisqusComments slug={slug} />
     </div>
   );
