@@ -3,7 +3,7 @@ title: "Atomic Habits: Rahasia Perubahan Kecil Berdampak Besar"
 date: "2025-07-24"
 category: "atomic habits"
 excerpt: "Bangun Hidup Lebih Baik Secara Perlahan: Mengapa Perubahan Kecil dalam \"Atomic Habits\" Bisa Mengubah Segalanya..."
-image: "https://images.unsplash.com/photo-1598301257942-e6bde1d2149b?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3ODIxNjl8MHwxfHNlYXJjaHwxfHxhdG9taWMlMjBoYWJpdHN8ZW58MHx8fHwxNzUzMzMyNDAwfDA&ixlib=rb-4.1.0&q=80&w=200"
+image: "https://images.unsplash.com/photo-1598301257942-e6bde1d2149b?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3ODIxNjl8MHwxfHNlYXJjaHwxfHxhdG9taWMlMjBoYWJpdHN8ZW58MHx8fHwxNzUzMzMyNDAwfDA&ixlib=rb-4.1.0&q=80&w=400"
 ---
 
 <p align="center">

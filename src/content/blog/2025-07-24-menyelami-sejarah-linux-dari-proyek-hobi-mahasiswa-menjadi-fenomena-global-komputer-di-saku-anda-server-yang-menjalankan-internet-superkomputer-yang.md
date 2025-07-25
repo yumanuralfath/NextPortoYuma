@@ -3,11 +3,11 @@ title: "Mengenal Sejarah Linux: Dari Proyek Hobi ke Sistem Operasi Global"
 date: "2025-07-24"
 category: "linux"
 excerpt: "Menyelami Sejarah Linux: Dari Proyek Hobi Mahasiswa Menjadi Fenomena Global Komputer di saku Anda, server yang menjalankan internet, superkomputer yang..."
-image: "https://images.unsplash.com/photo-1629654297299-c8506221ca97?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3ODIxNjl8MHwxfHNlYXJjaHwxfHxsaW51eHxlbnwwfHx8fDE3NTMzMTc2MTh8MA&ixlib=rb-4.1.0&q=80&w=200"
+image: "https://images.unsplash.com/photo-1640552435388-a54879e72b28?q=80&w=400&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
 ---
 
 <p align="center">
-  <img src="https://images.unsplash.com/photo-1629654297299-c8506221ca97?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3ODIxNjl8MHwxfHNlYXJjaHwxfHxsaW51eHxlbnwwfHx8fDE3NTMzMTc2MTh8MA&ixlib=rb-4.1.0&q=80&w=400" alt="menyelami-sejarah-linux-dari-proyek-hobi-mahasiswa-menjadi-fenomena-global-komputer-di-saku-anda-server-yang-menjalankan-internet-superkomputer-yang" />
+  <img src="https://images.unsplash.com/photo-1640552435388-a54879e72b28?q=80&w=400&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="menyelami-sejarah-linux-dari-proyek-hobi-mahasiswa-menjadi-fenomena-global-komputer-di-saku-anda-server-yang-menjalankan-internet-superkomputer-yang" />
 </p>
 
 **Menyelami Sejarah Linux: Dari Proyek Hobi Mahasiswa Menjadi Fenomena Global**

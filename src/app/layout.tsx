@@ -1,6 +1,6 @@
 import { Inter } from "next/font/google";
 import "./globals.css";
-import TransitionProvider from "../components/General/transitionProvider";
+import TransitionProvider from "../providers/transitionProvider";
 import { Analytics } from "@vercel/analytics/next";
 import ToasterProvider from "@/providers/ToastProviders";
 import { ReactNode } from "react";

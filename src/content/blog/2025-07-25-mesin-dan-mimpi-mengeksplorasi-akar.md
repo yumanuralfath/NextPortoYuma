@@ -1,13 +1,13 @@
 ---
 title: "Sejarah Bahasa Pemrograman Pertama di Dunia"
 date: "2025-07-25"
-category: "sejarah programmer"
+category: "Pemrograman"
 excerpt: "Mesin dan Mimpi: Mengeksplorasi Akar Bahasa Pemrograman Modern Bayangkan dunia tanpa Python, JavaScript, atau Java...."
-image: "https://images.unsplash.com/photo-1617609277590-ec2d145ca13b?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3ODIxNjl8MHwxfHNlYXJjaHwxfHxzZWphcmFoJTIwcHJvZ3JhbW1lcnxlbnwwfHx8fDE3NTM0MDQ3OTB8MA&ixlib=rb-4.1.0&q=80&w=200"
+image: "https://images.unsplash.com/photo-1515879218367-8466d910aaa4?q=80&w=600&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
 ---
 
 <p align="center">
-  <img src="https://images.unsplash.com/photo-1617609277590-ec2d145ca13b?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3ODIxNjl8MHwxfHNlYXJjaHwxfHxzZWphcmFoJTIwcHJvZ3JhbW1lcnxlbnwwfHx8fDE3NTM0MDQ3OTB8MA&ixlib=rb-4.1.0&q=80&w=400" alt="mesin-dan-mimpi-mengeksplorasi-akar" />
+  <img src="https://images.unsplash.com/photo-1515879218367-8466d910aaa4?q=80&w=600&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="mesin-dan-mimpi-mengeksplorasi-akar" />
 </p>
 
 ## Mesin dan Mimpi: Mengeksplorasi Akar Bahasa Pemrograman Modern  

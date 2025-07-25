@@ -3,11 +3,11 @@ title: "Kenali 4 Macam OS Populer: Windows, MacOS, Linux"
 date: "2025-07-25"
 category: "OS"
 excerpt: "Mengenal Lebih Dalam: Ragam Sistem Operasi yang Menggerakkan Perangkat Digital Anda Bayangkan Anda membeli perangkat..."
-image: "https://images.unsplash.com/photo-1637937267030-6d571ad57f3f?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3ODIxNjl8MHwxfHNlYXJjaHwxfHxPU3xlbnwwfHx8fDE3NTM0MTA4MzN8MA&ixlib=rb-4.1.0&q=80&w=200"
+image: "https://images.unsplash.com/photo-1637937267030-6d571ad57f3f?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3ODIxNjl8MHwxfHNlYXJjaHwxfHxPU3xlbnwwfHx8fDE3NTM0MTA4MzN8MA&ixlib=rb-4.1.0&q=80&w=600"
 ---
 
 <p align="center">
-  <img src="https://images.unsplash.com/photo-1637937267030-6d571ad57f3f?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3ODIxNjl8MHwxfHNlYXJjaHwxfHxPU3xlbnwwfHx8fDE3NTM0MTA4MzN8MA&ixlib=rb-4.1.0&q=80&w=400" alt="mengenal-lebih-dalam-ragam-sistem" />
+  <img src="https://images.unsplash.com/photo-1637937267030-6d571ad57f3f?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3ODIxNjl8MHwxfHNlYXJjaHwxfHxPU3xlbnwwfHx8fDE3NTM0MTA4MzN8MA&ixlib=rb-4.1.0&q=80&w=600" alt="mengenal-lebih-dalam-ragam-sistem" />
 </p>
 
 ## Mengenal Lebih Dalam: Ragam Sistem Operasi yang Menggerakkan Perangkat Digital Anda

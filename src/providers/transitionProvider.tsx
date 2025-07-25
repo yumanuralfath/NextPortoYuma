@@ -2,10 +2,10 @@
 
 import { AnimatePresence, motion } from "framer-motion";
 import { usePathname } from "next/navigation";
-import Navbar from "./navbar";
-import Chatbot from "./chatbot";
+import Navbar from "../components/General/navbar";
+import Chatbot from "../components/General/chatbot";
 import { ReactNode } from "react";
-import { Footer } from "./footer";
+import { Footer } from "../components/General/footer";
 
 interface RouteContent {
   [key: string]: string;

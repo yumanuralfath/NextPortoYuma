@@ -1,9 +1,9 @@
 ---
-title: "undefined"
+title: "Mengenal Terminal: Pintu Masuk Dunia Komputasi Modern"
 date: "2025-07-25"
-category: "Linux Terminal"
-excerpt: "# Menguak Kekuatan Terminal: Antarmuka Garis Perintah yang Tak Tergantikan Bayangkan era tahun 1970-an: komputer..."
-image: "https://images.unsplash.com/photo-1629654297299-c8506221ca97?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3ODIxNjl8MHwxfHNlYXJjaHwxfHxMaW51eCUyMFRlcm1pbmFsfGVufDB8fHx8MTc1MzQwOTI0MHww&ixlib=rb-4.1.0&q=80&w=200"
+category: "Terminal" 
+excerpt: "Menguak Kekuatan Terminal: Antarmuka Garis Perintah yang Tak Tergantikan Bayangkan era tahun 1970-an: komputer..."
+image: "https://images.unsplash.com/photo-1629654297299-c8506221ca97?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3ODIxNjl8MHwxfHNlYXJjaHwxfHxMaW51eCUyMFRlcm1pbmFsfGVufDB8fHx8MTc1MzQwOTI0MHww&ixlib=rb-4.1.0&q=80&w=400"
 ---
 
 <p align="center">
