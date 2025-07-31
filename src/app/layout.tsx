@@ -45,20 +45,24 @@ export const metadata = {
   },
 };
 
+import ThemeProviderWrapper from "@/providers/ThemeProvider";
+
 export default function RootLayout({ children }: RootLayoutProps) {
   // const pathname = usePathname();
 
   // const useTransitionProvider = ["/", "/blog", "/yuma-app"].includes(pathname);
 
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <meta name="p:domain_verify" content="c801e44222b4e6bc238e8714a4e171de" />
       <body className={inter.className}>
-        <ToasterProvider />
-        <TransitionProvider>
-          {children}
-          <Analytics />
-        </TransitionProvider>
+        <ThemeProviderWrapper>
+          <ToasterProvider />
+          <TransitionProvider>
+            {children}
+            <Analytics />
+          </TransitionProvider>
+        </ThemeProviderWrapper>
       </body>
     </html>
   );

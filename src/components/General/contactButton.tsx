@@ -49,9 +49,9 @@ export default function ActionButtons() {
   }, []);
 
   return (
-    <div className="relative w-full flex flex-col items-center lg:items-start gap-4 font-mono text-sm z-10">
+    <div className="relative w-full flex flex-col items-center md:items-start gap-4 font-mono text-sm z-10">
       {/* BUTTONS */}
-      <div className="w-full flex flex-col lg:flex-row gap-4 justify-center lg:justify-start">
+      <div className="flex flex-col md:flex-row gap-4 justify-center md:justify-start">
         <Link href="/project">
           <button className="p-4 px-6 rounded-xl ring-2 ring-cyan-500 bg-gradient-to-r from-cyan-500 to-pink-500 text-white font-bold hover:from-pink-500 hover:to-cyan-500 hover:ring-pink-400 transition-all shadow-lg hover:shadow-pink-500/50">
             View My Projects
@@ -95,7 +95,7 @@ export default function ActionButtons() {
               className="hover:scale-110 transition-transform text-green-400"
               title="WhatsApp"
             >
-              <FaWhatsapp size={28} className="drop-shadow-[0_0_4px_#00ff00]" />
+              <FaWhatsapp className="h-6 w-6 sm:h-7 sm:w-7 drop-shadow-[0_0_4px_#00ff00]" />
             </a>
 
             {/* Email Icon */}
@@ -106,7 +106,7 @@ export default function ActionButtons() {
               className="hover:scale-110 transition-transform"
               title="Email"
             >
-              <MdEmail size={28} className="drop-shadow-[0_0_4px_#00ff00]" />
+              <MdEmail className="h-6 w-6 sm:h-7 sm:w-7 drop-shadow-[0_0_4px_#00ff00]" />
             </a>
 
             {/* Other Social Icons */}
@@ -124,7 +124,7 @@ export default function ActionButtons() {
                   alt={social.alt}
                   width={28}
                   height={28}
-                  className="drop-shadow-[0_0_4px_#ff00ff]"
+                  className="h-6 w-6 sm:h-7 sm:w-7 drop-shadow-[0_0_4px_#ff00ff]"
                 />
               </a>
             ))}

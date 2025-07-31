@@ -2,15 +2,13 @@
 title: "Pengenalan Dasar Algoritma untuk Pemula"
 date: "2025-07-27"
 category: "algoritma"
-excerpt: "Mulai Blog Post Bayangkan Anda masuk ke perpustakaan raksasa tanpa panduan pencarian. Ribuan buku berserakan..."
-image: "https://images.unsplash.com/photo-1732565277370-874e0dc0aac5?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3ODIxNjl8MHwxfHNlYXJjaHwxfHxhbGdvcml0bWF8ZW58MHx8fHwxNzUzNTc5NDU1fDA&ixlib=rb-4.1.0&q=80&w=400"
+excerpt: "Bayangkan Anda masuk ke perpustakaan raksasa tanpa panduan pencarian. Ribuan buku berserakan..."
+image: "https://plus.unsplash.com/premium_photo-1675018587751-76c5626f5b33?q=80&w=400&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
 ---
 
 <p align="center">
-  <img src="https://images.unsplash.com/photo-1732565277370-874e0dc0aac5?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3ODIxNjl8MHwxfHNlYXJjaHwxfHxhbGdvcml0bWF8ZW58MHx8fHwxNzUzNTc5NDU1fDA&ixlib=rb-4.1.0&q=80&w=400" alt="mulai-blog-post-bayangkan-anda" />
+  <img src="https://plus.unsplash.com/premium_photo-1675018587751-76c5626f5b33?q=80&w=400&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="pengenalan-algorithms"/>
 </p>
-
-## Mulai Blog Post
 
 Bayangkan Anda masuk ke perpustakaan raksasa tanpa panduan pencarian. Ribuan buku berserakan tanpa susunan. Berapa lama Anda menemukan satu buku spesifik? Sekarang bayangkan menggunakan sistem katalog digital—ketik judul, klik enter, dan *bingo*! Lokasinya muncul. Perbedaan antara kekacauan dan efisiensi itu terletak pada **algoritma**. Di era digital ini, algoritma adalah "resep" tak terlihat yang mengatur semuanya, mulai dari feed media sosial hingga navigasi pesawat. Namun, apakah sebenarnya algoritma itu? Mari kita selami dasar-dasarnya!
 

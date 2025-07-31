@@ -21,17 +21,17 @@ const Homepage = () => {
   }, []);
 
   return (
-    <div className="min-h-screen flex flex-col lg:flex-row px-4 sm:px-8 md:px-12 lg:px-20 xl:px-48 justify-center items-center pt-16 bg-black text-white font-mono">
+    <div className="min-h-screen flex flex-col lg:flex-row px-4 sm:px-8 md:px-12 lg:px-20 xl:px-48 justify-center items-center pt-16 bg-white dark:bg-black text-black dark:text-white font-mono">
       {/* IMAGE CONTAINER */}
       <Tilt>
         <div className="lg:w-1/2 xl:w-2/5 mb-8 lg:mb-0 flex justify-center lg:justify-start">
-          <div className="relative w-64 h-64 lg:w-80 lg:h-80 xl:w-96 xl:h-96">
+          <div className="relative w-56 h-56 sm:w-64 sm:h-64 lg:w-80 lg:h-80 xl:w-96 xl:h-96">
             <Image
               src="/hero.png"
               alt="Hero Icon"
               className="grayscale rounded-full shadow-lg transition-all duration-300 ease-in-out hover:shadow-2xl hover:scale-105 hover:grayscale-0"
               fill
-              sizes="(max-width: 1024px) 20rem, (max-width: 1280px) 25rem, 30rem"
+              sizes="(max-width: 639px) 14rem, (max-width: 1023px) 16rem, (max-width: 1279px) 20rem, 24rem"
               style={{ objectFit: "cover" }}
             />
           </div>

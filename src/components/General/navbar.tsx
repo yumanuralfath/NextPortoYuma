@@ -6,6 +6,7 @@ import { useState } from "react";
 import { motion } from "framer-motion";
 import { usePathname } from "next/navigation";
 import NavbarApp from "../App/NavbarApp";
+import ThemeToggle from "./ThemeToggle";
 
 const links = [
   { url: "/", title: "Home" },
@@ -82,7 +83,7 @@ const Navbar = () => {
   }
 
   return (
-    <div className="fixed top-0 left-0 right-0 z-50 h-16 flex items-center justify-between px-4 sm:px-8 md:px-12 lg:px-20 xl:px-48 text-xl bg-[#0f0f1a] text-[#00ffe1] shadow-lg font-mono border-b border-[#00ffe1]">
+    <div className="fixed top-0 left-0 right-0 z-50 h-16 flex items-center justify-between px-4 sm:px-8 md:px-12 lg:px-20 xl:px-48 text-xl bg-white dark:bg-[#0f0f1a] text-black dark:text-[#00ffe1] shadow-lg font-mono border-b border-gray-200 dark:border-[#00ffe1]">
       {/* LINKS */}
       <div className="hidden md:flex gap-6 w-1/3">
         {links.map((link) => (
@@ -91,7 +92,7 @@ const Navbar = () => {
             key={link.title}
             className={`hover:text-pink-500 transition duration-300 ${
               pathname === link.url
-                ? "bg-[#00ffe1] text-black px-3 py-1 rounded shadow-md shadow-cyan-500"
+                ? "bg-gray-200 dark:bg-[#00ffe1] text-black px-3 py-1 rounded shadow-md dark:shadow-cyan-500"
                 : ""
             }`}
           >
@@ -104,10 +105,10 @@ const Navbar = () => {
       <div className="md:hidden lg:flex xl:w-1/3 xl:justify-center">
         <Link
           href="/"
-          className="text-sm bg-gradient-to-r from-cyan-500  to-purple-400 text-black rounded-md px-3 py-1 font-bold shadow-lg shadow-purple-500/50"
+          className="text-sm bg-gradient-to-r from-cyan-500 to-purple-400 text-black rounded-md px-3 py-1 font-bold shadow-lg shadow-purple-500/50"
         >
           <span className="mr-1">Yuma</span>
-          <span className="bg-[#0f0f1a] text-[#00ffe1] px-2 py-1 rounded shadow-cyan-500/50 shadow">
+          <span className="bg-white dark:bg-[#0f0f1a] text-black dark:text-[#00ffe1] px-2 py-1 rounded shadow-cyan-500/50 shadow">
             Na
           </span>
         </Link>
@@ -115,6 +116,7 @@ const Navbar = () => {
 
       {/* SOCIAL */}
       <div className="hidden md:flex gap-4 w-1/3 justify-end">
+        <ThemeToggle />
         {socialLinks.map((social) => (
           <Link href={social.url} target="_blank" key={social.alt}>
             <Image src={social.icon} alt={social.alt} width={24} height={24} />
@@ -131,18 +133,18 @@ const Navbar = () => {
           <motion.div
             variants={topVariants}
             animate={open ? "openend" : "closed"}
-            className="w-10 h-1 bg-[#00ffe1] rounded origin-left"
-          ></motion.div>
+            className="w-10 h-1 bg-black dark:bg-[#00ffe1] rounded origin-left"
+          />
           <motion.div
             variants={centerVariants}
             animate={open ? "openend" : "closed"}
-            className="w-10 h-1 bg-[#00ffe1] rounded"
-          ></motion.div>
+            className="w-10 h-1 bg-black dark:bg-[#00ffe1] rounded"
+          />
           <motion.div
             variants={bottomVariants}
             animate={open ? "openend" : "closed"}
-            className="w-10 h-1 bg-[#00ffe1] rounded origin-left"
-          ></motion.div>
+            className="w-10 h-1 bg-black dark:bg-[#00ffe1] rounded origin-left"
+          />
         </button>
 
         {/* MENU LIST */}
@@ -151,7 +153,7 @@ const Navbar = () => {
             variants={listVariants}
             initial="closed"
             animate="openend"
-            className="fixed top-0 left-0 w-screen h-screen bg-[#0f0f1a] text-[#00ffe1] flex flex-col items-center justify-center gap-8 text-4xl z-40"
+            className="fixed top-0 left-0 w-screen h-screen bg-white dark:bg-[#0f0f1a] text-black dark:text-[#00ffe1] flex flex-col items-center justify-center gap-8 text-4xl z-40"
           >
             {links.map((link) => (
               <motion.div variants={listVariants} key={link.title}>
@@ -160,7 +162,7 @@ const Navbar = () => {
                   onClick={() => setOpen(false)}
                   className={`${
                     pathname === link.url
-                      ? "text-black bg-[#00ffe1] px-4 py-2 rounded shadow-lg"
+                      ? "text-black bg-gray-200 dark:bg-[#00ffe1] px-4 py-2 rounded shadow-lg"
                       : "hover:text-pink-500 transition duration-300"
                   }`}
                 >
@@ -168,18 +170,6 @@ const Navbar = () => {
                 </Link>
               </motion.div>
             ))}
-            <div className="flex gap-4 mt-8">
-              {socialLinks.map((social) => (
-                <Link href={social.url} target="_blank" key={social.alt}>
-                  <Image
-                    src={social.icon}
-                    alt={social.alt}
-                    width={32}
-                    height={32}
-                  />
-                </Link>
-              ))}
-            </div>
           </motion.div>
         )}
       </div>

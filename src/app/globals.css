@@ -2,6 +2,10 @@
 @tailwind components;
 @tailwind utilities;
 
+body {
+  @apply bg-white dark:bg-black text-black dark:text-white;
+}
+
 @keyframes decode {
   0% {
     content: '';

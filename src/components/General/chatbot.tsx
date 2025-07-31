@@ -1,14 +1,44 @@
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import { usePathname } from "next/navigation";
 import ChatboxPage from "../alfathai/chatbox";
 import Image from "next/image";
 
 const Chatbot = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const [showGreeting, setShowGreeting] = useState(false);
+  const audioRef = useRef<HTMLAudioElement | null>(null);
   const pathname = usePathname();
+
+  useEffect(() => {
+    audioRef.current = new Audio("/sounds/notification.ogg");
+    audioRef.current.volume = 0.4;
+
+    const playSound = () => {
+      audioRef.current
+        ?.play()
+        .catch((error) => console.error("Gagal memutar audio:", error));
+    };
+
+    const initialTimeout = setTimeout(() => {
+      setShowGreeting(true);
+      playSound();
+    }, 1500);
+
+    const greetingTimeout = setTimeout(() => {
+      setShowGreeting(false);
+    }, 8000);
+
+    return () => {
+      clearTimeout(initialTimeout);
+      clearTimeout(greetingTimeout);
+    };
+  }, []);
 
   const toggleChat = () => {
     setIsOpen(!isOpen);
+    if (showGreeting) {
+      setShowGreeting(false);
+    }
   };
 
   if (pathname?.startsWith("/app")) {
@@ -19,18 +49,12 @@ const Chatbot = () => {
     <div className="fixed bottom-4 right-4 z-[1000]">
       <div
         className={`
-          fixed bottom-20 right-4 z-[1001] flex flex-col overflow-hidden border
+          fixed bottom-24 right-4 z-[1001] flex flex-col overflow-hidden rounded-2xl border
+          bg-[linear-gradient(145deg,#0f0f0f,#1a1a1a)] text-white
+          shadow-[0_0_15px_#00f0ff88,0_0_30px_#aa00ff55]
           transition-all duration-300 ease-in-out
-
-          bg-[linear-gradient(145deg,#0f0f0f,#1a1a1a)] border-[#00f0ff]
-          shadow-[0_0_10px_#00f0ff66,0_0_20px_#aa00ff33]
-
-          @media (min-device-width: 71mm) and (max-device-height: 152mm)
-          sm:w-[400px] sm:h-[600px] sm:rounded-2xl
-
-          // Tambahkan tinggi untuk layar kecil (smartphone) di sini
-          w-[calc(100vw-2rem)] h-[calc(100vh-8rem)] max-h-[600px] rounded-xl
-
+          border-[#00f0ff]
+          w-[calc(100vw-2rem)] h-[70vh] max-w-[400px] sm:h-[500px]
           ${
             isOpen
               ? "opacity-100 scale-100"
@@ -56,21 +80,46 @@ const Chatbot = () => {
         </div>
       </div>
 
+      {/* Gelembung Sapaan */}
+      {showGreeting && !isOpen && (
+        <div
+          className="
+            absolute bottom-20 right-0 mb-2 w-max animate-fade-in-up rounded-lg
+            bg-[#00f0ff] p-3 text-black shadow-lg transition-all duration-500
+          "
+        >
+          <p className="text-sm font-semibold">
+            Halo! Ada yang bisa saya bantu?
+          </p>
+          <div
+            className="
+              absolute bottom-[-8px] right-5 h-4 w-4 rotate-45
+              bg-[#00f0ff]
+            "
+          ></div>
+        </div>
+      )}
+
       <button
         onClick={toggleChat}
         className="
-          flex h-20 w-20 items-center justify-center rounded-full border bg-[#0f0f0f] text-[#00f0ff]
-          border-[#00f0ff] shadow-[0_0_5px_#00f0ff66]
-          transition-all duration-300 ease-in-out hover:bg-[#00f0ff] hover:text-black hover:shadow-[0_0_10px_#00f0ffcc]"
+          group relative flex h-16 w-16 items-center justify-center rounded-full
+          border-2 border-[#00f0ff] bg-[#0f0f0f]
+          text-[#00f0ff] shadow-[0_0_8px_#00f0ff99]
+          transition-all duration-300 ease-in-out
+          hover:bg-[#00f0ff] hover:text-black hover:shadow-[0_0_15px_#00f0ffcc]
+        "
         aria-label="Buka Chat"
       >
         <Image
-          height={100}
-          width={100}
-          unoptimized
-          src="/miku-wave.gif"
+          height={80}
+          width={80}
+          src="/miku-wave.webp"
           alt="Chatbot Icon"
-          className="drop-shadow-[0_0_6px_#ff00ff]"
+          className="
+            rounded-full drop-shadow-[0_0_6px_#ff00ff]
+            transition-transform duration-300 group-hover:scale-110
+          "
         />
       </button>
     </div>

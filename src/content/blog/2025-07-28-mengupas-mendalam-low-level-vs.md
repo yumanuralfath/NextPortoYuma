@@ -2,12 +2,12 @@
 title: "Low-Level vs. High-Level: Mana yang Lebih Efisien?"
 date: "2025-07-28"
 category: "low level language"
-excerpt: "# Mengupas Mendalam: Low-Level vs. High-Level Programming Languages Bayangkan Anda punya dua alat: sebuah obeng..."
-image: "https://images.unsplash.com/photo-1734569846366-050ac5932603?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3ODIxNjl8MHwxfHNlYXJjaHwxfHxsb3clMjBsZXZlbCUyMGxhbmd1YWdlfGVufDB8fHx8MTc1MzY3MjE0Nnww&ixlib=rb-4.1.0&q=80&w=400"
+excerpt: "Low-Level vs. High-Level Programming Languages Bayangkan Anda punya dua alat: sebuah obeng..."
+image: "https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?q=80&w=400&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
 ---
 
 <p align="center">
-  <img src="https://images.unsplash.com/photo-1734569846366-050ac5932603?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3ODIxNjl8MHwxfHNlYXJjaHwxfHxsb3clMjBsZXZlbCUyMGxhbmd1YWdlfGVufDB8fHx8MTc1MzY3MjE0Nnww&ixlib=rb-4.1.0&q=80&w=400" alt="mengupas-mendalam-low-level-vs" />
+  <img src="https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?q=80&w=400&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="mengupas-mendalam-low-level-vs" />
 </p>
 
 ### Mengupas Mendalam: Low-Level vs. High-Level Programming Languages  
