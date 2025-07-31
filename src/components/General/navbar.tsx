@@ -6,7 +6,6 @@ import { useState } from "react";
 import { motion } from "framer-motion";
 import { usePathname } from "next/navigation";
 import NavbarApp from "../App/NavbarApp";
-import ThemeToggle from "./ThemeToggle";
 
 const links = [
   { url: "/", title: "Home" },
@@ -105,10 +104,23 @@ const Navbar = () => {
       <div className="md:hidden lg:flex xl:w-1/3 xl:justify-center">
         <Link
           href="/"
-          className="text-sm bg-gradient-to-r from-cyan-500 to-purple-400 text-black rounded-md px-3 py-1 font-bold shadow-lg shadow-purple-500/50"
+          className="group relative inline-flex gap-1 text-sm font-bold transition-all duration-300 ease-in-out"
         >
-          <span className="mr-1">Yuma</span>
-          <span className="bg-white dark:bg-[#0f0f1a] text-black dark:text-[#00ffe1] px-2 py-1 rounded shadow-cyan-500/50 shadow">
+          {/* Background kotak bergerak */}
+          <span
+            className={`
+        absolute z-0 h-6 rounded-md transition-transform duration-500 ease-in-out
+        bg-gray-800 dark:bg-white
+        transform
+        ${"dark:translate-x-0 translate-x-[3.5rem]"}
+        w-[2.5rem] dark:w-[3.2rem]
+      `}
+          ></span>
+          {/* Teks Yuma dan Na */}
+          <span className="relative z-10 px-2 py-0.5 text-transparent bg-clip-text bg-gradient-to-r from-teal-400 to-blue-500 group-hover:from-blue-500 group-hover:to-teal-400">
+            Yuma
+          </span>
+          <span className="relative z-10 px-2 py-0.5 text-white dark:text-black">
             Na
           </span>
         </Link>
@@ -116,7 +128,6 @@ const Navbar = () => {
 
       {/* SOCIAL */}
       <div className="hidden md:flex gap-4 w-1/3 justify-end">
-        <ThemeToggle />
         {socialLinks.map((social) => (
           <Link href={social.url} target="_blank" key={social.alt}>
             <Image src={social.icon} alt={social.alt} width={24} height={24} />

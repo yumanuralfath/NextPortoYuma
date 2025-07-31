@@ -59,12 +59,12 @@ export default async function BlogPage(props) {
   );
 
   return (
-    <div className="min-h-screen px-4 pt-20 pb-10 bg-gradient-to-br from-black via-zinc-900 to-black text-cyan-300 font-mono">
+    <div className="min-h-screen px-4 pt-20 pb-10 dark:bg-gradient-to-br dark:from-black dark:via-zinc-900 dark:to-black dark:text-cyan-300 font-mono">
       <div className="max-w-7xl mx-auto">
-        <h1 className="text-6xl font-extrabold text-center mb-4 bg-gradient-to-r from-pink-500 via-purple-500 to-blue-500 bg-clip-text text-transparent drop-shadow-[0_0_8px_rgba(255,255,255,0.8)]">
+        <h1 className="text-6xl font-extrabold text-center mb-4 dark:bg-gradient-to-r  text-gray-950 dark:from-pink-500 dark:via-purple-500 dark:to-blue-500 dark:bg-clip-text dark:text-transparent dark:drop-shadow-[0_0_8px_rgba(255,255,255,0.8)]">
           Explore My Notes
         </h1>
-        <p className="text-center mb-10 text-lg font-medium text-cyan-400 drop-shadow">
+        <p className="text-center mb-10 text-lg font-medium text-gray-700 dark:text-cyan-400 drop-shadow">
           Random thoughts and ideas about programming and life
         </p>
 
@@ -72,7 +72,7 @@ export default async function BlogPage(props) {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {currentPosts.map((post) => (
             <Link href={`/blog/${post.slug}`} key={post.slug} className="group">
-              <div className="bg-zinc-900 border border-cyan-500/20 rounded-xl shadow-[0_0_15px_rgba(0,255,255,0.2)] hover:shadow-cyan-400/40 transition-all duration-300 transform hover:scale-105 overflow-hidden">
+              <div className="bg-zinc-900 border dark:border-cyan-500/20 rounded-xl dark:shadow-[0_0_15px_rgba(0,255,255,0.2)] hover:shadow-cyan-400/40 transition-all duration-300 transform hover:scale-105 overflow-hidden">
                 <div className="relative h-48">
                   <Image
                     src={post.image}
@@ -86,7 +86,7 @@ export default async function BlogPage(props) {
 
                 <div className="p-4">
                   <div className="flex items-center gap-2 mb-2 text-sm">
-                    <span className="bg-pink-600 text-white px-2 py-1 rounded-full shadow-md shadow-pink-500/30">
+                    <span className="dark:bg-pink-600 text-white px-2 py-1 rounded-full shadow-md dark:shadow-pink shadow-white ">
                       {post.category}
                     </span>
                     <span className="text-gray-400">
@@ -94,11 +94,11 @@ export default async function BlogPage(props) {
                     </span>
                   </div>
 
-                  <h2 className="text-xl font-bold text-cyan-200 mb-2 transition-colors duration-300 group-hover:text-pink-400">
+                  <h2 className="text-xl font-bold text-gray-100 dark:text-cyan-200 mb-2 transition-colors duration-300 dark:group-hover:text-pink-400 group-hover:text-gray-400">
                     {post.title}
                   </h2>
 
-                  <p className="text-cyan-400 leading-relaxed line-clamp-3">
+                  <p className="dark:text-cyan-400 leading-relaxed line-clamp-3 text-gray-100">
                     {post.excerpt}
                   </p>
                 </div>

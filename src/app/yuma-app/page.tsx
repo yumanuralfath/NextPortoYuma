@@ -101,17 +101,17 @@ const CodexPage = () => {
   };
 
   return (
-    <div className="min-h-screen p-8 pt-24 bg-black text-[#00ffe7] font-mono">
+    <div className="min-h-screen p-8 pt-24 dark:bg-black dark:text-[#00ffe7] font-mono">
       <div className="max-w-7xl mx-auto flex flex-col items-center">
-        <h1 className="text-5xl font-extrabold text-center mb-6 bg-gradient-to-r from-pink-500 via-purple-500 to-blue-500 bg-clip-text text-transparent drop-shadow-[0_0_10px_#0ff]">
-          👾My App👾
+        <h1 className="text-5xl font-extrabold text-center mb-6 dark:bg-gradient-to-r dark:from-pink-500 dark:via-purple-500 dark:to-blue-500 dark:bg-clip-text dark:text-transparent dark:drop-shadow-[0_0_10px_#0ff]">
+          ♣️ My App ♠️
         </h1>
-        <p className="text-center mb-16 text-lg font-medium text-[#39ff14]">
+        <p className="text-center mb-16 text-lg font-medium text-gray-600 dark:text-[#39ff14]">
           Thanks for using My App!
         </p>
 
-        <div className="w-full max-w-md neon-border p-1 rounded-xl">
-          <div className="bg-black rounded-xl shadow-[0_0_20px_#0ff]">
+        <div className="w-full max-w-md dark:neon-border p-1 rounded-xl">
+          <div className="bg-black rounded-xl dark:shadow-[0_0_20px_#0ff]">
             <div className="flex mb-4">
               <button
                 className={`flex-1 py-4 text-lg font-semibold transition-colors ${

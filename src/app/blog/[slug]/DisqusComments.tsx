@@ -21,7 +21,7 @@ export default function DisqusComments({ slug }: DisqusCommentsProps) {
   return (
     <div
       id="disqus_thread"
-      className="max-w-6xl mx-auto bg-black text-cyan-200 font-mono rounded-xl shadow-lg p-8 mb-16"
+      className="max-w-6xl mx-auto dark:bg-black dark:text-cyan-200 font-mono dark:rounded-xl dark:shadow-lg p-8 mb-16"
     ></div>
   );
 }

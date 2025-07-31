@@ -29,7 +29,7 @@ const Homepage = () => {
             <Image
               src="/hero.png"
               alt="Hero Icon"
-              className="grayscale rounded-full shadow-lg transition-all duration-300 ease-in-out hover:shadow-2xl hover:scale-105 hover:grayscale-0"
+              className="grayscale rounded-full shadow-lg transition-all duration-300 ease-in-out hover:shadow-2xl hover:scale-105 hover:grayscale-0 dark:grayscale-0"
               fill
               sizes="(max-width: 639px) 14rem, (max-width: 1023px) 16rem, (max-width: 1279px) 20rem, 24rem"
               style={{ objectFit: "cover" }}
@@ -41,13 +41,13 @@ const Homepage = () => {
       {/* TEXT CONTAINER */}
       <div className="h-full lg:w-1/2 flex flex-col gap-8 items-center lg:items-start justify-center text-center lg:text-left">
         {/* TITLE */}
-        <h1 className="text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold text-cyan-400 leading-tight">
+        <h1 className="text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold text-gray-800 dark:text-cyan-400 leading-tight">
           Welcome to My Personal Website
         </h1>
 
         {/* PARAGRAPH */}
         <p
-          className="text-lg md:text-xl text-purple-300 min-h-[4rem]"
+          className="text-lg md:text-xl text-gray-700 dark:text-purple-300 min-h-[4rem]"
           ref={titleRef}
         ></p>
 

@@ -27,19 +27,19 @@ export const metadata: Metadata = {
 
 const ProjectPage: React.FC = () => {
   return (
-    <div className="min-h-screen bg-gradient-to-br from-black via-[#0f0c29] to-[#302b63] px-4 sm:px-8 md:px-12 lg:px-20 xl:px-48 pt-16 text-white font-mono">
+    <div className="min-h-screen dark:bg-gradient-to-br from-black via-[#0f0c29] to-[#302b63] px-4 sm:px-8 md:px-12 lg:px-20 xl:px-48 pt-20 text-white font-mono">
       <div className="max-w-7xl mx-auto">
-        <h1 className="text-5xl font-bold text-center mb-4 bg-gradient-to-r from-pink-500 via-purple-500 to-blue-500 bg-clip-text text-transparent drop-shadow-neon">
+        <h1 className="text-5xl font-bold text-center mb-4 bg-gradient-to-r dark:from-pink-500 dark:via-purple-500 dark:to-blue-500 bg-clip-text text-transparent drop-shadow-neon">
           MY PROJECTS
         </h1>
-        <p className="text-gray-300 text-center mb-12 text-lg tracking-wide">
+        <p className="dark:text-gray-300 text-black text-center mb-12 text-lg tracking-wide">
           Some projects that I have worked on
         </p>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {projects.map((project) => (
             <div
               key={project.id}
-              className="relative bg-[#1a1a2e] border border-[#3a0ca3] rounded-xl shadow-[0_0_15px_rgba(173,0,255,0.4)] hover:shadow-[0_0_25px_rgba(0,255,255,0.6)] transition-all duration-300 transform hover:-translate-y-2"
+              className="relative dark:bg-[#1a1a2e] border border-[#3a0ca3] rounded-xl shadow-[0_0_15px_rgba(173,0,255,0.4)] hover:shadow-[0_0_25px_rgba(0,255,255,0.6)] transition-all duration-300 transform hover:-translate-y-2"
             >
               <div className="relative h-48 overflow-hidden">
                 <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent z-10" />
