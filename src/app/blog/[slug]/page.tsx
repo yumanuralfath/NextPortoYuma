@@ -10,14 +10,21 @@ import { notFound } from "next/navigation";
 export async function generateMetadata({
   params,
 }: {
-  params: { slug: string };
+  params: Promise<{ slug: string }>;
 }) {
   try {
-    const { slug } = params;
+    const { slug } = await params;
     const filePath = path.join(process.cwd(), "src/content/blog", `${slug}.md`);
+
+    if (!fs.existsSync(filePath)) {
+      return {
+        title: "Not Found",
+        description: "The page you are looking for does not exist.",
+      };
+    }
+
     const fileContent = fs.readFileSync(filePath, "utf-8");
     const { data: frontMatter } = matter(fileContent);
-
     return {
       title: frontMatter.title,
       description: frontMatter.excerpt,
@@ -96,9 +103,9 @@ const BlogBody = ({ content }: { content: string }) => (
 export default async function BlogPostPage({
   params,
 }: {
-  params: { slug: string };
+  params: Promise<{ slug: string }>;
 }) {
-  const { slug } = params;
+  const { slug } = await params;
   const filePath = path.join(process.cwd(), "src/content/blog", `${slug}.md`);
 
   if (!fs.existsSync(filePath)) {
@@ -107,7 +114,7 @@ export default async function BlogPostPage({
 
   const fileContent = fs.readFileSync(filePath, "utf-8");
   const { data: frontMatter, content } = matter(fileContent);
-  const htmlContent = marked(content);
+  const htmlContent = await marked(content);
 
   return (
     <div className="min-h-screen bg-slate-900/50 text-white font-mono p-4 sm:p-6 pt-24">
@@ -119,7 +126,6 @@ export default async function BlogPostPage({
           <ArrowLeft size={18} />
           Back to Blog
         </Link>
-
         <article className="bg-slate-900 border border-cyan-900/50 rounded-2xl shadow-2xl shadow-cyan-500/10 p-6 sm:p-8 md:p-10">
           <BlogHeader
             title={frontMatter.title}
@@ -128,7 +134,6 @@ export default async function BlogPostPage({
           />
           <BlogBody content={htmlContent} />
         </article>
-
         <div className="mt-16">
           <DisqusComments slug={slug} />
         </div>

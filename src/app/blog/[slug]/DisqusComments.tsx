@@ -1,6 +1,19 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
-
 import { useEffect } from "react";
+
+// Extend the Window interface to include DISQUS
+declare global {
+  interface Window {
+    DISQUS?: {
+      reset: (options: {
+        [x: string]: any;
+        reload: boolean;
+        config: () => void;
+      }) => void;
+    };
+  }
+}
 
 interface DisqusCommentsProps {
   slug: string;
