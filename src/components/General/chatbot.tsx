@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 import { usePathname } from "next/navigation";
 import ChatboxPage from "../alfathai/chatbox";
 import Image from "next/image";
@@ -6,22 +6,11 @@ import Image from "next/image";
 const Chatbot = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [showGreeting, setShowGreeting] = useState(false);
-  const audioRef = useRef<HTMLAudioElement | null>(null);
   const pathname = usePathname();
 
   useEffect(() => {
-    audioRef.current = new Audio("/sounds/notification.ogg");
-    audioRef.current.volume = 0.4;
-
-    const playSound = () => {
-      audioRef.current
-        ?.play()
-        .catch((error) => console.error("Gagal memutar audio:", error));
-    };
-
     const initialTimeout = setTimeout(() => {
       setShowGreeting(true);
-      playSound();
     }, 1500);
 
     const greetingTimeout = setTimeout(() => {
