@@ -10,9 +10,12 @@
     "release": "standard-version"
   },
   "dependencies": {
+    "@radix-ui/react-slot": "^1.2.3",
     "@vercel/analytics": "^1.4.1",
     "assemblyai": "^4.9.0",
+    "class-variance-authority": "^0.7.1",
     "cloudinary": "^2.5.1",
+    "clsx": "^2.1.1",
     "framer-motion": "^11.15.0",
     "gray-matter": "^4.0.3",
     "js-cookie": "^3.0.5",
@@ -28,6 +31,7 @@
     "react-parallax-tilt": "^1.7.269",
     "sharp": "^0.33.5",
     "streamifier": "^0.1.1",
+    "tailwind-merge": "^3.3.1",
     "wavesurfer.js": "^7.9.4",
     "zustand": "^5.0.3"
   },

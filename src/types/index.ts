@@ -98,3 +98,9 @@ export interface getVoiceMonthlyJournal {
   created_at: string;
   updated_at: string;
 }
+
+export interface DiaryEntry {
+  id: string;
+  date: string;
+  content: string; // HTML content from the editor
+}

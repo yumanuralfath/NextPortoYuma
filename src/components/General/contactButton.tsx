@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useState, useEffect } from "react";
+import { ArrowRight } from "lucide-react";
 import { FaWhatsapp } from "react-icons/fa";
 import Image from "next/image";
 import { motion } from "framer-motion";
@@ -52,10 +53,12 @@ export default function ActionButtons() {
     <div className="relative w-full flex flex-col items-center md:items-start gap-4 font-mono text-sm z-10">
       {/* BUTTONS */}
       <div className="flex flex-col md:flex-row gap-4 justify-center md:justify-start">
-        <Link href="/project">
-          <button className="p-4 px-6 rounded-xl ring-2 ring-cyan-500 bg-gradient-to-r from-cyan-500 to-pink-500 text-white font-bold hover:from-pink-500 hover:to-cyan-500 hover:ring-pink-400 transition-all shadow-lg hover:shadow-pink-500/50 dark:ring-cyan-300 dark:bg-black dark:text-cyan-300 dark:hover:bg-[#1a1a1a] dark:hover:ring-pink-400 dark:shadow-md dark:hover:shadow-pink-500/40">
-            View My Projects
-          </button>
+        <Link
+          href="/project"
+          className="inline-flex items-center justify-center rounded-xl p-4 px-6 font-bold transition-colors bg-slate-900 text-slate-50 hover:bg-slate-700 dark:bg-slate-50 dark:text-slate-900 dark:hover:bg-slate-200"
+        >
+          View My Projects
+          <ArrowRight className="ml-2 h-5 w-5" />
         </Link>
 
         <button

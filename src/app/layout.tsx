@@ -60,7 +60,7 @@ export default function RootLayout({ children }: RootLayoutProps) {
       <body className={inter.className}>
         <ThemeProviderWrapper>
           <ToasterProvider />
-          <div className="fixed top-20 right-4 z-50">
+          <div className="fixed top-20 right-4 z-50 md:hidden">
             <ThemeToggle />
           </div>
           <TransitionProvider>
