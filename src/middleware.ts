@@ -1,7 +1,7 @@
 import { NextResponse, NextRequest } from "next/server";
 
 export function middleware(request: NextRequest) {
-  const publicPaths = ["/", "/project", "/yuma-app", "/blog", "/blog/:path*"];
+  const publicPaths = ["/", "/about", "/project", "/yuma-app", "/blog", "/blog/:path*"];
   const protectedPaths = ["/app", "/app/:path*"];
 
   const accessToken = request.cookies.get("accessToken")?.value;
@@ -31,6 +31,7 @@ export function middleware(request: NextRequest) {
 export const config = {
   matcher: [
     "/",
+    "/about",
     "/project",
     "/yuma-app",
     "/blog",
