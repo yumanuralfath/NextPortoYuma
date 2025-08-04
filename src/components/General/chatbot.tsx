@@ -59,18 +59,18 @@ const Chatbot = () => {
   const [isThinking, setIsThinking] = useState(false);
   const [showNotification, setShowNotification] = useState(false);
   const [showAuthModal, setShowAuthModal] = useState(false);
-  const [authMode, setAuthMode] = useState<'login' | 'register'>('login');
+  const [authMode, setAuthMode] = useState<"login" | "register">("login");
 
   const handleAuthSuccess = () => {
     setShowAuthModal(false);
     // Optionally, refresh token or navigate
   };
 
-  const handleSwitchAuthMode = (mode: 'login' | 'register') => {
+  const handleSwitchAuthMode = (mode: "login" | "register") => {
     setAuthMode(mode);
   };
   const chatContainerRef = useRef<HTMLDivElement>(null);
-  const { token } = useAuthStore();
+  const { accessToken } = useAuthStore();
 
   useEffect(() => {
     const notificationTimer = setTimeout(() => {
@@ -117,7 +117,7 @@ const Chatbot = () => {
     e.preventDefault();
     if (!inputValue.trim()) return;
 
-    if (!token) {
+    if (!accessToken) {
       setShowAuthModal(true);
       return;
     }
@@ -132,7 +132,10 @@ const Chatbot = () => {
       const aiMessage: Message = { text: response.content, isUser: false };
       setMessages((prev) => [...prev, aiMessage]);
     } catch (error) {
-      if (error instanceof Error && error.message.includes("Token tidak ditemukan")) {
+      if (
+        error instanceof Error &&
+        error.message.includes("Token tidak ditemukan")
+      ) {
         setShowAuthModal(true);
         const errorMessage: Message = {
           text: "Sesi Anda mungkin telah berakhir. Silakan login kembali untuk melanjutkan.",
@@ -167,7 +170,6 @@ const Chatbot = () => {
     <>
       {showAuthModal && (
         <AuthModal
-          isOpen={showAuthModal}
           onClose={() => setShowAuthModal(false)}
           mode={authMode}
           onSwitchMode={handleSwitchAuthMode}
