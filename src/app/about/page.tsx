@@ -23,9 +23,12 @@ const AboutPage = () => {
                 About Me
               </h1>
               <p className="mt-4 text-lg md:text-xl text-slate-600 dark:text-purple-300/90">
-                I'm someone who enjoys learning about science and technology,
-                and I love exploring new ideas through code whenever I get the
-                chance.
+                I’m just a curious person who loves learning about how the world
+                works. My background is in chemistry, but my interests often
+                lead me into exploring science, technology, and any new ideas
+                that spark my curiosity. I don’t see myself as an expert — I
+                just enjoy learning, experimenting, and finding connections
+                between different fields.
               </p>
             </section>
 
