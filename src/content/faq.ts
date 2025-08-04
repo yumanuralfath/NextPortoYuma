@@ -1,38 +1,26 @@
 export const faq = [
   {
     question: "What is your name?",
-    answer: "My name is Yuma Alfath.",
+    answer: "Hi, I'm Yuma Nur Alfath.",
   },
   {
     question: "What do you do?",
-    answer: "I am a backend engineer and full-stack developer.",
+    answer: "I'm someone who enjoys learning about science and technology, and I love exploring new ideas through code whenever I get the chance.",
   },
   {
     question: "What technologies do you use?",
-    answer: "I use Ruby on Rails, Next.js, TypeScript, Tailwind CSS, and Rust.",
+    answer: "Lately, I’ve been working mostly with Next.js and TypeScript for frontend, Rust for backend, and occasionally C when learning about emulator development. I also use Python when experimenting with machine learning. I'm always curious to try new tools and languages.",
   },
   {
     question: "What is your educational background?",
-    answer: "I have a bachelor's degree in Chemistry with a focus on computational biochemistry research.",
+    answer: "I have a bachelor's degree in Chemistry, where I focused on computational biochemistry research. That background really shaped the way I approach technical problems — with a mix of curiosity, structure, and experimentation.",
   },
   {
-    question: "What are you currently learning?",
-    answer: "I am currently learning AI/ML and Rust for personal projects, and preparing for my master's degree in Computational Science.",
+    question: "What kind of projects are you working on?",
+    answer: "Right now, I'm working on a few personal projects like building full-stack web apps, exploring emulator internals, and occasionally diving into low-level programming or AI experiments just for fun and learning.",
   },
   {
-    question: "What are your current projects?",
-    answer: "I’m working on integrating a Game Boy Advance emulator using Rust and WASM into a Next.js web app, and also building full-stack apps with Laravel and PostgreSQL.",
-  },
-  {
-    question: "What are your career goals?",
-    answer: "I want to bridge science and software by contributing to tools in computational chemistry, scientific computing, or open-source software for researchers.",
-  },
-  {
-    question: "What programming languages do you like the most?",
-    answer: "I enjoy using Rust for its safety and performance, and TypeScript for frontend/backend web development.",
-  },
-  {
-    question: "Do you have experience with Android or mobile apps?",
-    answer: "Yes, I’m learning Jetpack Compose and building an Android app that connects to my own API backend using Retrofit.",
+    question: "What motivates you to code?",
+    answer: "I enjoy the process of figuring things out and building something from scratch. For me, coding is a way to combine logic, creativity, and continuous learning in one place.",
   },
 ];

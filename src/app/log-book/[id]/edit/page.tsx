@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter, useParams } from "next/navigation";
 import { useUserStore } from "@/store/useUserStore";
 import { useAuthStore } from "@/store/useAuthStore";
 import TextEditor from "@/components/General/TextEditor";
@@ -9,12 +9,18 @@ import AuthModal from "@/components/General/AuthModal";
 import { ArrowLeft } from "lucide-react";
 import Link from "next/link";
 import { toast } from "react-hot-toast";
-import { createLogBook } from "@/lib/LogBook";
+import { getLogBookById, updateLogBook } from "@/lib/LogBook";
+import { DiaryEntry } from "@/types";
 
-export default function NewLogEntryPage() {
+export default function EditLogEntryPage() {
   const router = useRouter();
+  const params = useParams();
+  const { id } = params;
   const { user } = useUserStore();
   const { accessToken } = useAuthStore();
+
+  const [entry, setEntry] = useState<DiaryEntry | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
   const [isSaving, setIsSaving] = useState(false);
   const [status, setStatus] = useState<
     "loading" | "unauthorized" | "forbidden" | "authorized"
@@ -31,6 +37,7 @@ export default function NewLogEntryPage() {
       toastId.current = null;
     }
 
+    // Check for admin user in localStorage first
     try {
       const storedUser = localStorage.getItem("user-local");
       if (storedUser) {
@@ -38,17 +45,17 @@ export default function NewLogEntryPage() {
         if (parsedUser?.state?.user?.is_admin) {
           setStatus("authorized");
           setShowModal(false);
-
+          // Optionally, sync with Zustand store if needed
           if (!user?.is_admin) {
             useUserStore.setState({ user: parsedUser.state.user });
           }
-          return;
+          return; // Skip the rest of the effect
         }
       }
     } catch (error) {
       console.error("Failed to parse user from localStorage", error);
     }
-
+    
     const isAuthenticated = !!accessToken;
 
     if (isAuthenticated && !user) {
@@ -59,7 +66,7 @@ export default function NewLogEntryPage() {
 
     if (!isAuthenticated) {
       setStatus("unauthorized");
-      toast("Please log in as an admin to continue.", { icon: "🔒" });
+      toast("Please log in as an admin to continue.", { icon: '🔒' });
       setShowModal(true);
     } else if (!user?.is_admin) {
       setStatus("forbidden");
@@ -70,26 +77,43 @@ export default function NewLogEntryPage() {
       toast.success("Permissions verified. Welcome!");
       setShowModal(false);
     }
-
+    
     return () => {
       if (toastId.current) toast.dismiss(toastId.current);
     };
   }, [accessToken, user, router]);
 
+  useEffect(() => {
+    if (status === "authorized" && typeof id === "string") {
+      const fetchEntry = async () => {
+        setIsLoading(true);
+        const fetchedEntry = await getLogBookById(id);
+        if (fetchedEntry) {
+          setEntry(fetchedEntry);
+        } else {
+          toast.error("Could not find the requested entry.");
+          router.push("/log-book");
+        }
+        setIsLoading(false);
+      };
+      fetchEntry();
+    }
+  }, [id, status, router]);
+
   const handleSave = async (content: string) => {
+    if (!entry) return;
+
     setIsSaving(true);
-    const newEntry = {
-      date: new Date().toISOString(),
+    const updatedEntry = {
+      ...entry,
       content: content,
     };
 
-    const result = await createLogBook(newEntry);
+    const result = await updateLogBook(entry.id, updatedEntry);
 
     if (result) {
-      toast.success("Entry saved successfully!");
+      toast.success("Entry updated successfully!");
       router.push("/log-book");
-    } else {
-      toast.error("error log books not save");
     }
 
     setIsSaving(false);
@@ -120,6 +144,18 @@ export default function NewLogEntryPage() {
     );
   }
 
+  if (isLoading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-slate-900/50 text-white">
+        Loading entry...
+      </div>
+    );
+  }
+
+  if (!entry) {
+    return null; // Or a not found component
+  }
+
   return (
     <div className="min-h-screen bg-slate-900/50 text-white font-mono p-4 sm:p-6 pt-24">
       <main className="max-w-4xl mx-auto">
@@ -131,9 +167,13 @@ export default function NewLogEntryPage() {
           Back to Log Book
         </Link>
         <h1 className="text-3xl md:text-4xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-pink-500 mb-8">
-          New Log Entry
+          Edit Log Entry
         </h1>
-        <TextEditor onSave={handleSave} isSaving={isSaving} />
+        <TextEditor
+          onSave={handleSave}
+          isSaving={isSaving}
+          initialText={entry.content}
+        />
       </main>
     </div>
   );

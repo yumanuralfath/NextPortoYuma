@@ -1,54 +1,161 @@
-import { mockDiaryEntries } from "@/content/diary";
-import { DiaryEntry } from "@/types";
-import { Calendar } from "lucide-react";
-import AdminNewEntryButton from "./AdminNewEntryButton";
+"use client";
 
-const getLogBookEntries = async (): Promise<DiaryEntry[]> => {
-  // In the future, this will fetch from a real API
-  // For now, we sort the mock data by date
-  return [...mockDiaryEntries].sort(
-    (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()
+import { useEffect, useState } from "react";
+import { getLogBooks, deleteLogBook } from "@/lib/LogBook";
+import { DiaryEntry } from "@/types";
+import { Calendar, Trash2, Edit } from "lucide-react";
+import AdminNewEntryButton from "./AdminNewEntryButton";
+import Link from "next/link";
+import toast from "react-hot-toast";
+import { useUserStore } from "@/store/useUserStore";
+
+const LogBookCard = ({
+  entry,
+  onDelete,
+}: {
+  entry: DiaryEntry;
+  onDelete: (id: string) => void;
+}) => {
+  const { user } = useUserStore();
+
+  return (
+    <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-cyan-900/50 rounded-2xl shadow-lg shadow-slate-400/10 dark:shadow-cyan-500/10 transition-all duration-300 hover:shadow-slate-400/20 dark:hover:shadow-cyan-500/20 hover:border-slate-300 dark:hover:border-cyan-800/70">
+      <div className="p-6">
+        <div className="flex items-center justify-between gap-3 text-sm text-slate-500 dark:text-slate-400 mb-4 pb-4 border-b border-slate-200 dark:border-slate-800">
+          <div className="flex items-center gap-3">
+            <Calendar size={16} className="text-cyan-600 dark:text-cyan-400" />
+            <span>
+              {new Date(entry.date).toLocaleDateString("en-US", {
+                year: "numeric",
+                month: "long",
+                day: "numeric",
+              })}
+            </span>
+          </div>
+          {user?.is_admin && (
+            <div className="flex items-center gap-2">
+              <Link href={`/log-book/${entry.id}/edit`}>
+                <button className="text-slate-500 dark:text-slate-400 hover:text-cyan-600 dark:hover:text-cyan-400 transition-colors">
+                  <Edit size={16} />
+                </button>
+              </Link>
+              <button
+                onClick={() => onDelete(entry.id)}
+                className="text-slate-500 dark:text-slate-400 hover:text-red-600 dark:hover:text-red-500 transition-colors"
+              >
+                <Trash2 size={16} />
+              </button>
+            </div>
+          )}
+        </div>
+        <div
+          className="text-slate-700 dark:text-slate-300 whitespace-pre-wrap font-sans text-base prose dark:prose-invert"
+          dangerouslySetInnerHTML={{ __html: entry.content }}
+        />
+      </div>
+    </div>
   );
 };
 
-const LogBookCard = ({ entry }: { entry: DiaryEntry }) => (
-  <div className="bg-slate-900 border border-cyan-900/50 rounded-2xl shadow-lg shadow-cyan-500/10 transition-all duration-300 hover:shadow-cyan-500/20 hover:border-cyan-800/70">
-    <div className="p-6">
-      <div className="flex items-center gap-3 text-sm text-slate-400 mb-4 pb-4 border-b border-slate-800">
-        <Calendar size={16} className="text-cyan-400" />
-        <span>
-          {new Date(entry.date).toLocaleDateString("en-US", {
-            year: "numeric",
-            month: "long",
-            day: "numeric",
-          })}
-        </span>
-      </div>
-      <div className="text-slate-300 whitespace-pre-wrap font-sans text-base">
-        {entry.content}
-      </div>
-    </div>
-  </div>
-);
+export default function LogBookPage() {
+  const { user } = useUserStore();
+  const [entries, setEntries] = useState<DiaryEntry[]>([]);
+  const [page, setPage] = useState(1);
+  const [hasMore, setHasMore] = useState(true);
+  const [isLoading, setIsLoading] = useState(true);
 
-export default async function LogBookPage() {
-  const entries = await getLogBookEntries();
+  const loadMoreEntries = async () => {
+    try {
+      const response = await getLogBooks(page, 5);
+
+      if (response && response.log_books && response.log_books.length > 0) {
+        setEntries((prev) => {
+          const newEntries = response.log_books.filter(
+            (newEntry: { id: string }) =>
+              !prev.some((prevEntry) => prevEntry.id === newEntry.id)
+          );
+          return [...prev, ...newEntries];
+        });
+        setPage((prev) => prev + 1);
+
+        const loadedEntriesCount = entries.length + response.log_books.length;
+        if (loadedEntriesCount >= response.pagination.total_items) {
+          setHasMore(false);
+        }
+      } else {
+        setHasMore(false);
+      }
+    } catch (error) {
+      console.error("Failed to load log book entries:", error);
+      toast.error("Failed to load data. Please try again later.");
+      setHasMore(false);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    loadMoreEntries();
+  }, []);
+
+  const handleDelete = async (id: string) => {
+    const originalEntries = [...entries];
+    setEntries(entries.filter((e) => e.id !== id));
+
+    try {
+      await deleteLogBook(id);
+      toast.success("Entry deleted successfully!");
+    } catch (error) {
+      toast.error(`Failed to delete entry: ${error} . Restoring...`);
+      setEntries(originalEntries);
+    }
+  };
 
   return (
-    <div className="min-h-screen bg-slate-900/50 text-white font-mono p-6 pt-24">
+    <div className="min-h-screen bg-gray-50 dark:bg-slate-900/50 text-slate-800 dark:text-white font-mono p-6 pt-24">
       <main className="max-w-4xl mx-auto">
-        <div className="flex justify-between items-center mb-8 pb-4 border-b border-cyan-900/50">
-          <h1 className="text-3xl md:text-4xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-pink-500">
+        <div className="flex justify-between items-center mb-8 pb-4 border-b border-slate-200 dark:border-cyan-900/50">
+          <h1 className="text-3xl md:text-4xl font-bold dark:text-transparent bg-clip-text dark:bg-gradient-to-r dark:from-cyan-400 dark:to-pink-500">
             Developer's Log Book
           </h1>
-          <AdminNewEntryButton />
+          {user?.is_admin && <AdminNewEntryButton />}
         </div>
 
         <div className="grid gap-8">
           {entries.map((entry) => (
-            <LogBookCard key={entry.id} entry={entry} />
+            <LogBookCard key={entry.id} entry={entry} onDelete={handleDelete} />
           ))}
         </div>
+
+        {isLoading && (
+          <p className="text-center mt-8 text-cyan-600 dark:text-cyan-400">
+            Loading entries...
+          </p>
+        )}
+
+        {!isLoading && hasMore && (
+          <div className="flex justify-center mt-8">
+            <button
+              onClick={loadMoreEntries}
+              disabled={isLoading}
+              className="bg-cyan-500 hover:bg-cyan-600 text-white font-bold py-2 px-4 rounded-full transition-all duration-300 shadow-lg shadow-cyan-500/20 disabled:bg-slate-600 disabled:shadow-none"
+            >
+              {isLoading ? "Loading..." : "Load More"}
+            </button>
+          </div>
+        )}
+
+        {!hasMore && entries.length > 0 && (
+          <p className="text-center mt-8 text-slate-400 dark:text-slate-500">
+            You've reached the end.
+          </p>
+        )}
+
+        {!isLoading && entries.length === 0 && !hasMore && (
+          <p className="text-center mt-8 text-slate-500 dark:text-slate-400">
+            No entries found. Start by creating one!
+          </p>
+        )}
       </main>
     </div>
   );

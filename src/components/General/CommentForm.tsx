@@ -1,16 +1,14 @@
 "use client";
 
-import { useState } from 'react';
-import { useAuthStore } from '@/store/useAuthStore';
-import { useUserStore } from '@/store/useUserStore';
-import AuthModal from './AuthModal'; 
+import { useState } from "react";
+import { useAuthStore } from "@/store/useAuthStore";
+import AuthModal from "./AuthModal";
 
 const CommentForm = () => {
-  const [comment, setComment] = useState('');
+  const [comment, setComment] = useState("");
   const { accessToken } = useAuthStore();
-  const { user } = useUserStore();
   const [isAuthModalOpen, setAuthModalOpen] = useState(false);
-  const [authMode, setAuthMode] = useState<'login' | 'register'>('login');
+  const [authMode, setAuthMode] = useState<"login" | "register">("login");
 
   const isAuthenticated = !!accessToken;
 
@@ -19,10 +17,8 @@ const CommentForm = () => {
     if (!isAuthenticated) {
       setAuthModalOpen(true);
     } else {
-      // TODO: Implement API call for comment submission
-      console.log('User:', user);
       alert(`Comment submitted: ${comment}`);
-      setComment('');
+      setComment("");
     }
   };
 

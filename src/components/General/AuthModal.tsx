@@ -17,8 +17,8 @@ const AuthModal = ({
 }: AuthModalProps) => {
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-[10000]">
-      <div className="bg-gradient-to-br from-black via-[#00f7ff] to-[#ff00e670] p-6 rounded-md max-w-sm w-full relative">
-        <h2 className="text-xl mb-4 text-white">
+      <div className="bg-white dark:bg-gradient-to-br dark:from-black dark:via-[#00f7ff] dark:to-[#ff00e670] p-6 rounded-md max-w-sm w-full relative shadow-lg">
+        <h2 className="text-xl mb-4 text-slate-800 dark:text-white">
           {mode === "login" ? "Login" : "Register"}
         </h2>
 
@@ -30,13 +30,13 @@ const AuthModal = ({
         )}
 
         {/* Switch Mode */}
-        <div className="mt-4 text-sm">
+        <div className="mt-4 text-sm text-slate-600 dark:text-white">
           {mode === "login" ? (
             <>
               Belum punya akun?{" "}
               <button
                 onClick={() => onSwitchMode("register")}
-                className="text-white underline"
+                className="text-cyan-600 dark:text-white underline"
               >
                 Daftar
               </button>
@@ -46,7 +46,7 @@ const AuthModal = ({
               Sudah punya akun?{" "}
               <button
                 onClick={() => onSwitchMode("login")}
-                className="text-white underline"
+                className="text-cyan-600 dark:text-white underline"
               >
                 Login
               </button>
@@ -57,7 +57,7 @@ const AuthModal = ({
         {/* Tombol Tutup */}
         <button
           onClick={onClose}
-          className="absolute top-2 right-2 text-gray-600 hover:text-black"
+          className="absolute top-2 right-2 text-gray-500 hover:text-gray-800 dark:text-gray-400 dark:hover:text-white transition-colors"
         >
           ✕
         </button>

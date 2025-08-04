@@ -17,6 +17,7 @@ interface TransitionProviderProps {
 
 const routeContent: RouteContent = {
   "/": "Home",
+  "/about": "About",
   "/blog": "Blog",
   "/yuma-app": "Yuma App",
   "/project": "My Project",

@@ -1,16 +1,9 @@
 "use client";
 
-import { useUserStore } from "@/store/useUserStore";
 import { Pencil } from "lucide-react";
 import Link from "next/link";
 
 export default function AdminNewEntryButton() {
-  const { user } = useUserStore();
-
-  if (!user?.is_admin) {
-    return null;
-  }
-
   return (
     <Link
       href="/log-book/new"

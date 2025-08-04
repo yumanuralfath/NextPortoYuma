@@ -105,6 +105,9 @@ const deleteJsonWithToken = async (url: string, useToken: boolean = true) => {
     method: "DELETE",
     useToken,
   });
+  if (response.status === 204) {
+    return { success: true };
+  }
   return handleJsonResponse(response);
 };
 
