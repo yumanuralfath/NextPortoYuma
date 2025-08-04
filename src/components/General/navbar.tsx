@@ -265,6 +265,9 @@ const Navbar = () => {
                   <LogIn /> Login
                 </button>
               )}
+              <div className="absolute bottom-20">
+                <ThemeToggle />
+              </div>
             </motion.div>
           )}
         </div>

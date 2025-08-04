@@ -17,9 +17,25 @@ const LogBookCard = ({
   onDelete: (id: string) => void;
 }) => {
   const { user } = useUserStore();
+  const MAX_LENGTH = 250;
+
+  // Utility to remove HTML tags for a clean summary
+  const stripHtml = (html: string) => {
+    if (typeof window !== "undefined") {
+      const doc = new DOMParser().parseFromString(html, "text/html");
+      return doc.body.textContent || "";
+    }
+    return html; // Fallback for server-side rendering
+  };
+
+  const plainContent = stripHtml(entry.content);
+  const isTruncated = plainContent.length > MAX_LENGTH;
+  const summary = isTruncated
+    ? plainContent.substring(0, MAX_LENGTH) + "..."
+    : plainContent;
 
   return (
-    <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-cyan-900/50 rounded-2xl shadow-lg shadow-slate-400/10 dark:shadow-cyan-500/10 transition-all duration-300 hover:shadow-slate-400/20 dark:hover:shadow-cyan-500/20 hover:border-slate-300 dark:hover:border-cyan-800/70">
+    <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-cyan-900/50 rounded-2xl shadow-lg shadow-slate-400/10 dark:shadow-cyan-500/10 transition-all duration-300 hover:shadow-slate-400/50 dark:hover:shadow-cyan-500/20 hover:border-slate-300 dark:hover:border-cyan-800/70">
       <div className="p-6">
         <div className="flex items-center justify-between gap-3 text-sm text-slate-500 dark:text-slate-400 mb-4 pb-4 border-b border-slate-200 dark:border-slate-800">
           <div className="flex items-center gap-3">
@@ -48,10 +64,17 @@ const LogBookCard = ({
             </div>
           )}
         </div>
-        <div
-          className="text-slate-700 dark:text-slate-300 whitespace-pre-wrap font-sans text-base prose dark:prose-invert"
-          dangerouslySetInnerHTML={{ __html: entry.content }}
-        />
+        <p className="text-slate-700 dark:text-slate-300 whitespace-pre-wrap font-sans text-base">
+          {summary}
+        </p>
+        {isTruncated && (
+          <Link
+            href={`/log-book/${entry.id}`}
+            className="text-cyan-600 dark:text-cyan-400 hover:underline mt-4 inline-block font-semibold"
+          >
+            Read More &rarr;
+          </Link>
+        )}
       </div>
     </div>
   );
@@ -62,27 +85,37 @@ export default function LogBookPage() {
   const [entries, setEntries] = useState<DiaryEntry[]>([]);
   const [page, setPage] = useState(1);
   const [hasMore, setHasMore] = useState(true);
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
 
-  const loadMoreEntries = async () => {
+  const loadEntries = async (reset = false) => {
+    setIsLoading(true);
     try {
-      const response = await getLogBooks(page, 5);
+      const currentPage = reset ? 1 : page;
+      const response = await getLogBooks(currentPage, 5);
 
       if (response && response.log_books && response.log_books.length > 0) {
         setEntries((prev) => {
           const newEntries = response.log_books.filter(
             (newEntry: { id: string }) =>
-              !prev.some((prevEntry) => prevEntry.id === newEntry.id)
+              !(reset ? [] : prev).some((prevEntry) => prevEntry.id === newEntry.id)
           );
-          return [...prev, ...newEntries];
+          return reset ? newEntries : [...prev, ...newEntries];
         });
-        setPage((prev) => prev + 1);
 
-        const loadedEntriesCount = entries.length + response.log_books.length;
+        if (reset) {
+          setPage(2);
+        } else {
+          setPage((prev) => prev + 1);
+        }
+
+        const loadedEntriesCount = (reset ? 0 : entries.length) + response.log_books.length;
         if (loadedEntriesCount >= response.pagination.total_items) {
           setHasMore(false);
+        } else {
+          setHasMore(true);
         }
       } else {
+        if (reset) setEntries([]);
         setHasMore(false);
       }
     } catch (error) {
@@ -95,7 +128,7 @@ export default function LogBookPage() {
   };
 
   useEffect(() => {
-    loadMoreEntries();
+    loadEntries(true);
   }, []);
 
   const handleDelete = async (id: string) => {
@@ -114,11 +147,18 @@ export default function LogBookPage() {
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-slate-900/50 text-slate-800 dark:text-white font-mono p-6 pt-24">
       <main className="max-w-4xl mx-auto">
-        <div className="flex justify-between items-center mb-8 pb-4 border-b border-slate-200 dark:border-cyan-900/50">
-          <h1 className="text-3xl md:text-4xl font-bold dark:text-transparent bg-clip-text dark:bg-gradient-to-r dark:from-cyan-400 dark:to-pink-500">
+        <div className="flex flex-col sm:flex-row justify-between items-center mb-8 pb-4 border-b border-slate-200 dark:border-cyan-900/50 gap-4">
+          <h1 className="text-3xl md:text-4xl font-bold dark:text-transparent bg-clip-text dark:bg-gradient-to-r dark:from-cyan-400 dark:to-pink-500 text-center sm:text-left">
             Developer's Log Book
           </h1>
-          {user?.is_admin && <AdminNewEntryButton />}
+          <div className="flex items-center gap-4">
+            {user?.is_admin && <AdminNewEntryButton />}
+          </div>
+        </div>
+
+        <div className="flex flex-wrap items-center justify-between mb-8 gap-4">
+          
+          
         </div>
 
         <div className="grid gap-8">
@@ -136,7 +176,7 @@ export default function LogBookPage() {
         {!isLoading && hasMore && (
           <div className="flex justify-center mt-8">
             <button
-              onClick={loadMoreEntries}
+              onClick={() => loadEntries()}
               disabled={isLoading}
               className="bg-cyan-500 hover:bg-cyan-600 text-white font-bold py-2 px-4 rounded-full transition-all duration-300 shadow-lg shadow-cyan-500/20 disabled:bg-slate-600 disabled:shadow-none"
             >

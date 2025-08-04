@@ -7,13 +7,14 @@ const LOGS_API_URL = `${BASE_URL}/logs`;
 
 export const getLogBooks = (page: number = 1, limit: number = 10) => {
   return withErrorHandler(async () => {
-    return getJsonWithToken(`${LOGS_API_URL}?page=${page}&limit=${limit}`, false);
+    const url = `${LOGS_API_URL}?page=${page}&limit=${limit}`;
+    return getJsonWithToken(url, false);
   }, "Failed to fetch log books");
 };
 
 export const getLogBookById = (id: string) => {
   return withErrorHandler(async () => {
-    return getJsonWithToken(`${LOGS_API_URL}/${id}`);
+    return getJsonWithToken(`${LOGS_API_URL}/${id}`, false);
   }, "Failed to fetch log book");
 };
 

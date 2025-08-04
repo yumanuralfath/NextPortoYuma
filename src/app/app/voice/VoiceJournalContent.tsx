@@ -95,7 +95,7 @@ const VoiceJournalContent = () => {
 
   if (view === null) {
     return (
-      <div className="text-center py-20 text-xl text-cyan-300 font-mono animate-pulse">
+      <div className="text-center py-20 text-xl text-gray-500 dark:text-cyan-300 font-mono animate-pulse">
         Checking today's journal status...
       </div>
     );
@@ -127,8 +127,8 @@ const VoiceJournalContent = () => {
             }}
             className={`relative px-4 py-2 rounded font-mono text-sm border transition duration-300 overflow-hidden ${
               view === tab.id
-                ? "bg-gradient-to-r from-pink-600 to-cyan-600 text-black border-pink-300 shadow-md"
-                : "bg-black text-pink-200 border-pink-500 hover:bg-pink-950"
+                ? "bg-blue-600 text-white dark:bg-gradient-to-r dark:from-pink-600 dark:to-cyan-600 dark:text-black border-blue-300 dark:border-pink-300 shadow-md"
+                : "bg-white text-gray-800 dark:bg-black dark:text-pink-200 border-gray-300 dark:border-pink-500 hover:bg-gray-100 dark:hover:bg-pink-950"
             }`}
           >
             {tab.label}
@@ -136,7 +136,7 @@ const VoiceJournalContent = () => {
         ))}
       </div>
 
-      <div className="bg-black bg-opacity-70 rounded-3xl shadow-cyberpunk p-4 sm:p-6 md:p-10 border border-pink-500 relative min-h-[300px]">
+      <div className="bg-white dark:bg-black dark:bg-opacity-70 rounded-3xl shadow-lg dark:shadow-cyberpunk p-4 sm:p-6 md:p-10 border border-gray-200 dark:border-pink-500 relative min-h-[300px]">
         <AnimatePresence mode="wait">
           {view === "record" && (
             <motion.div
@@ -147,7 +147,7 @@ const VoiceJournalContent = () => {
               transition={{ duration: 0.3 }}
               className="space-y-6"
             >
-              <h2 className="text-4xl font-bold text-center text-pink-400 drop-shadow-glow">
+              <h2 className="text-4xl font-bold text-center text-gray-900 dark:text-pink-400 dark:drop-shadow-glow">
                 Voice Journal
               </h2>
               <div className="justify-between text-center p-8 max-w-2xl m-auto">
@@ -168,10 +168,10 @@ const VoiceJournalContent = () => {
               transition={{ duration: 0.3 }}
               className="space-y-6"
             >
-              <h3 className="text-2xl font-bold text-center mb-4 text-cyan-300">
+              <h3 className="text-2xl font-bold text-center mb-4 text-gray-900 dark:text-cyan-300">
                 ✅ Voice Journal Calendar
               </h3>
-              <p className="text-center text-pink-200 mb-4">
+              <p className="text-center text-gray-600 dark:text-pink-200 mb-4">
                 Browse your past entries or listen to today’s journal.
               </p>
               <VoiceJournalCalendar />

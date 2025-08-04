@@ -7,6 +7,8 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { motion, AnimatePresence } from "framer-motion";
 import { promptService } from "@/lib/alfathai";
+import { useAuthStore } from "@/store/useAuthStore";
+import AuthModal from "./AuthModal";
 
 interface Message {
   text: string;
@@ -56,7 +58,19 @@ const Chatbot = () => {
   const [inputValue, setInputValue] = useState("");
   const [isThinking, setIsThinking] = useState(false);
   const [showNotification, setShowNotification] = useState(false);
+  const [showAuthModal, setShowAuthModal] = useState(false);
+  const [authMode, setAuthMode] = useState<'login' | 'register'>('login');
+
+  const handleAuthSuccess = () => {
+    setShowAuthModal(false);
+    // Optionally, refresh token or navigate
+  };
+
+  const handleSwitchAuthMode = (mode: 'login' | 'register') => {
+    setAuthMode(mode);
+  };
   const chatContainerRef = useRef<HTMLDivElement>(null);
+  const { token } = useAuthStore();
 
   useEffect(() => {
     const notificationTimer = setTimeout(() => {
@@ -103,6 +117,11 @@ const Chatbot = () => {
     e.preventDefault();
     if (!inputValue.trim()) return;
 
+    if (!token) {
+      setShowAuthModal(true);
+      return;
+    }
+
     const userMessage: Message = { text: inputValue, isUser: true };
     setMessages((prev) => [...prev, userMessage]);
     setInputValue("");
@@ -113,11 +132,20 @@ const Chatbot = () => {
       const aiMessage: Message = { text: response.content, isUser: false };
       setMessages((prev) => [...prev, aiMessage]);
     } catch (error) {
-      const errorMessage: Message = {
-        text: `Maaf, terjadi kesalahan saat menghubungi AI: ${error} . Silakan coba lagi.`,
-        isUser: false,
-      };
-      setMessages((prev) => [...prev, errorMessage]);
+      if (error instanceof Error && error.message.includes("Token tidak ditemukan")) {
+        setShowAuthModal(true);
+        const errorMessage: Message = {
+          text: "Sesi Anda mungkin telah berakhir. Silakan login kembali untuk melanjutkan.",
+          isUser: false,
+        };
+        setMessages((prev) => [...prev, errorMessage]);
+      } else {
+        const errorMessage: Message = {
+          text: `Maaf, terjadi kesalahan saat menghubungi AI. Silakan coba lagi nanti.`,
+          isUser: false,
+        };
+        setMessages((prev) => [...prev, errorMessage]);
+      }
     } finally {
       setIsThinking(false);
     }
@@ -137,6 +165,15 @@ const Chatbot = () => {
 
   return (
     <>
+      {showAuthModal && (
+        <AuthModal
+          isOpen={showAuthModal}
+          onClose={() => setShowAuthModal(false)}
+          mode={authMode}
+          onSwitchMode={handleSwitchAuthMode}
+          onSuccessLogin={handleAuthSuccess}
+        />
+      )}
       <div className="fixed bottom-5 right-5 z-50">
         <AnimatePresence>
           {showNotification && !isOpen && (

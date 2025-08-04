@@ -1,90 +1,59 @@
 import { Metadata } from "next";
 import Link from "next/link";
-import { Code, User, Briefcase, Mail } from "lucide-react";
-import CommentForm from "@/components/General/CommentForm";
+import { User, BookText } from "lucide-react";
 
 export const metadata: Metadata = {
   title: "About Me | Yuma Nur Alfath",
   description:
-    "Learn more about Yuma Nur Alfath, a passionate full-stack developer with a love for creating elegant and efficient web solutions.",
+    "I’m just a curious person who loves learning about how the world works. My background is in chemistry, but my interests often lead me into exploring science, technology, and any new ideas that spark my curiosity. I don’t see myself as an expert — I just enjoy learning, experimenting, and finding connections between different fields.",
 };
 
 const AboutPage = () => {
-  const skills = [
-    "TypeScript",
-    "JavaScript (ES6+)",
-    "React",
-    "Next.js",
-    "Node.js",
-    "Tailwind CSS",
-    "Python",
-    "rust",
-  ];
-
   return (
-    <div className="min-h-screen bg-white dark:bg-black text-black dark:text-white font-mono">
-      <main className="container mx-auto px-4 sm:px-8 md:px-12 lg:px-20 xl:px-48 py-24">
-        <div className="space-y-12">
-          <section className="text-center">
-            <div className="inline-block p-4 bg-cyan-100 dark:bg-cyan-900/30 rounded-full mb-4">
-              <User className="w-12 h-12 text-cyan-600 dark:text-cyan-400" />
-            </div>
-            <h1 className="text-4xl md:text-5xl font-bold text-gray-800 dark:text-cyan-400">
-              About Me
-            </h1>
-            <p className="mt-4 text-lg md:text-xl text-gray-700 dark:text-purple-300 max-w-3xl mx-auto">
-              I am a passionate full-stack developer with a love for creating
-              elegant, efficient, and user-friendly web solutions.
-            </p>
-          </section>
+    <div className="antialiased text-slate-700 dark:text-slate-300  dark:bg-dark font-mono">
+      <main className="container mx-auto px-4 sm:px-6 md:px-8 py-24 md:py-32">
+        <div className="max-w-3xl mx-auto">
+          <div className="flex flex-col items-center text-center space-y-8">
+            {/* About Me Section */}
+            <section className="w-full">
+              <div className="inline-block p-4 bg-cyan-100 dark:bg-cyan-900/30 rounded-full mb-6">
+                <User className="w-12 h-12 text-cyan-600 dark:text-cyan-400" />
+              </div>
+              <h1 className="text-4xl md:text-5xl font-bold text-slate-800 dark:text-cyan-400">
+                About Me
+              </h1>
+              <p className="mt-4 text-lg md:text-xl text-slate-600 dark:text-purple-300/90">
+                I'm someone who enjoys learning about science and technology,
+                and I love exploring new ideas through code whenever I get the
+                chance.
+              </p>
+            </section>
 
-          <section>
-            <h2 className="text-3xl font-bold text-center mb-8 flex items-center justify-center gap-3">
-              <Code className="w-8 h-8 text-pink-500" />
-              My Skills
-            </h2>
-            <div className="flex flex-wrap justify-center gap-3 text-center">
-              {skills.map((skill) => (
-                <div
-                  key={skill}
-                  className="px-4 py-2 bg-slate-100 dark:bg-slate-800 rounded-md font-semibold text-slate-700 dark:text-slate-300"
-                >
-                  {skill}
+            {/* Digital Journey Log Book Section */}
+            <section className="w-full pt-12">
+              <div className="bg-white dark:bg-slate-800/50 rounded-2xl shadow-lg p-8 md:p-12 transform transition-transform hover:scale-105">
+                <div className="inline-block p-3 bg-green-100 dark:bg-green-900/30 rounded-full mb-5">
+                  <BookText className="w-8 h-8 text-green-600 dark:text-green-400" />
                 </div>
-              ))}
-            </div>
-          </section>
-
-          <section className="text-center">
-            <h2 className="text-3xl font-bold mb-4 flex items-center justify-center gap-3">
-              <Briefcase className="w-8 h-8 text-green-500" />
-              My Digital Journal
-            </h2>
-            <p className="mt-4 text-lg md:text-xl text-gray-700 dark:text-purple-300 max-w-3xl mx-auto">
-              I document my journey, thoughts, and projects in my log book. Feel free to take a look.
-            </p>
-            <div className="mt-8 flex justify-center gap-4">
-              <Link
-                href="/log-book"
-                className="inline-flex items-center justify-center rounded-xl p-4 px-6 font-bold transition-colors bg-slate-900 text-slate-50 hover:bg-slate-700 dark:bg-slate-50 dark:text-slate-900 dark:hover:bg-slate-200"
-              >
-                See My Log Book
-              </Link>
-            </div>
-          </section>
-
-          <section className="text-center">
-            <h2 className="text-3xl font-bold mb-4 flex items-center justify-center gap-3">
-              <Mail className="w-8 h-8 text-yellow-500" />
-              Leave a Comment
-            </h2>
-            <p className="mt-4 text-lg md:text-xl text-gray-700 dark:text-purple-300 max-w-3xl mx-auto">
-              Have feedback or a random thought? Drop it here. You must be logged in to comment.
-            </p>
-            <div className="mt-8 max-w-xl mx-auto">
-              <CommentForm />
-            </div>
-          </section>
+                <h2 className="text-3xl font-bold text-slate-800 dark:text-green-400 mb-4">
+                  Digital Journey Log Book
+                </h2>
+                <p className="text-lg text-slate-600 dark:text-purple-300/90 max-w-2xl mx-auto">
+                  I document my journey, thoughts, and the projects I'm
+                  tinkering with. Feel free to take a look and see what I've
+                  been up to.
+                </p>
+                <div className="mt-8">
+                  <Link
+                    href="/log-book"
+                    className="inline-flex items-center justify-center rounded-xl px-8 py-4 font-bold text-lg transition-all duration-300 ease-in-out bg-slate-800 text-white hover:bg-slate-700 dark:bg-green-400 dark:text-slate-900 dark:hover:bg-green-300 shadow-md hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
+                  >
+                    Explore My Log Book
+                  </Link>
+                </div>
+              </div>
+            </section>
+          </div>
         </div>
       </main>
     </div>
