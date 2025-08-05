@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { getLogBooks, deleteLogBook } from "@/lib/LogBook";
 import { DiaryEntry } from "@/types";
 import { Calendar, Trash2, Edit } from "lucide-react";
-import AdminNewEntryButton from "./AdminNewEntryButton";
+import AdminNewEntryButton from "../../components/log-book/AdminNewEntryButton";
 import Link from "next/link";
 import toast from "react-hot-toast";
 import { useUserStore } from "@/store/useUserStore";
@@ -97,7 +97,9 @@ export default function LogBookPage() {
         setEntries((prev) => {
           const newEntries = response.log_books.filter(
             (newEntry: { id: string }) =>
-              !(reset ? [] : prev).some((prevEntry) => prevEntry.id === newEntry.id)
+              !(reset ? [] : prev).some(
+                (prevEntry) => prevEntry.id === newEntry.id
+              )
           );
           return reset ? newEntries : [...prev, ...newEntries];
         });
@@ -108,7 +110,8 @@ export default function LogBookPage() {
           setPage((prev) => prev + 1);
         }
 
-        const loadedEntriesCount = (reset ? 0 : entries.length) + response.log_books.length;
+        const loadedEntriesCount =
+          (reset ? 0 : entries.length) + response.log_books.length;
         if (loadedEntriesCount >= response.pagination.total_items) {
           setHasMore(false);
         } else {
@@ -156,10 +159,7 @@ export default function LogBookPage() {
           </div>
         </div>
 
-        <div className="flex flex-wrap items-center justify-between mb-8 gap-4">
-          
-          
-        </div>
+        <div className="flex flex-wrap items-center justify-between mb-8 gap-4"></div>
 
         <div className="grid gap-8">
           {entries.map((entry) => (

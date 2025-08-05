@@ -37,7 +37,6 @@ export default function EditLogEntryPage() {
       toastId.current = null;
     }
 
-    // Check for admin user in localStorage first
     try {
       const storedUser = localStorage.getItem("user-local");
       if (storedUser) {
@@ -45,17 +44,16 @@ export default function EditLogEntryPage() {
         if (parsedUser?.state?.user?.is_admin) {
           setStatus("authorized");
           setShowModal(false);
-          // Optionally, sync with Zustand store if needed
           if (!user?.is_admin) {
             useUserStore.setState({ user: parsedUser.state.user });
           }
-          return; // Skip the rest of the effect
+          return;
         }
       }
     } catch (error) {
       console.error("Failed to parse user from localStorage", error);
     }
-    
+
     const isAuthenticated = !!accessToken;
 
     if (isAuthenticated && !user) {
@@ -66,7 +64,7 @@ export default function EditLogEntryPage() {
 
     if (!isAuthenticated) {
       setStatus("unauthorized");
-      toast("Please log in as an admin to continue.", { icon: '🔒' });
+      toast("Please log in as an admin to continue.", { icon: "🔒" });
       setShowModal(true);
     } else if (!user?.is_admin) {
       setStatus("forbidden");
@@ -77,7 +75,7 @@ export default function EditLogEntryPage() {
       toast.success("Permissions verified. Welcome!");
       setShowModal(false);
     }
-    
+
     return () => {
       if (toastId.current) toast.dismiss(toastId.current);
     };
