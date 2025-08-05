@@ -77,7 +77,7 @@ export const RichTextEditor = ({
         formData.append("file", file);
 
         try {
-          const response = await fetch("/api/upload", {
+          const response = await fetch("/api/imageLog", {
             method: "POST",
             body: formData,
           });
