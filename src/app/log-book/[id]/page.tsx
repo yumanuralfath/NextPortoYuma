@@ -5,11 +5,13 @@ import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
 import { getLogBookById } from "@/lib/LogBook";
 import { DiaryEntry } from "@/types";
-import { Calendar } from "lucide-react";
+import { Calendar, Edit } from "lucide-react";
 import Link from "next/link";
+import { useUserStore } from "@/store/useUserStore";
 
 export default function LogBookDetailPage() {
   const { id } = useParams();
+  const { user } = useUserStore();
   const [entry, setEntry] = useState<DiaryEntry | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -19,7 +21,6 @@ export default function LogBookDetailPage() {
       const fetchEntry = async () => {
         try {
           const data = await getLogBookById(id as string);
-          console.log(data);
           if (data && data.content) {
             setEntry(data);
           } else {
@@ -79,18 +80,28 @@ export default function LogBookDetailPage() {
         </div>
         <article className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-cyan-900/50 rounded-2xl shadow-lg p-6 md:p-8">
           <header className="mb-6 pb-6 border-b border-slate-200 dark:border-slate-800">
-            <div className="flex items-center gap-3 text-sm text-slate-500 dark:text-slate-400">
-              <Calendar
-                size={16}
-                className="text-cyan-600 dark:text-cyan-400"
-              />
-              <span>
-                {new Date(entry.date).toLocaleDateString("en-US", {
-                  year: "numeric",
-                  month: "long",
-                  day: "numeric",
-                })}
-              </span>
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-3 text-sm text-slate-500 dark:text-slate-400">
+                <Calendar
+                  size={16}
+                  className="text-cyan-600 dark:text-cyan-400"
+                />
+                <span>
+                  {new Date(entry.date).toLocaleDateString("en-US", {
+                    year: "numeric",
+                    month: "long",
+                    day: "numeric",
+                  })}
+                </span>
+              </div>
+              {user?.is_admin && entry && (
+                <Link href={`/log-book/${entry.id}/edit`}>
+                  <button className="flex items-center gap-2 text-slate-500 dark:text-slate-400 hover:text-cyan-600 dark:hover:text-cyan-400 transition-colors">
+                    <Edit size={16} />
+                    <span>Edit</span>
+                  </button>
+                </Link>
+              )}
             </div>
           </header>
           <div

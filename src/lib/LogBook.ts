@@ -8,7 +8,8 @@ const LOGS_API_URL = `${BASE_URL}/logs`;
 export const getLogBooks = (page: number = 1, limit: number = 10) => {
   return withErrorHandler(async () => {
     const url = `${LOGS_API_URL}?page=${page}&limit=${limit}`;
-    return getJsonWithToken(url, false);
+    const result = await getJsonWithToken(url, false);
+    return result;
   }, "Failed to fetch log books");
 };
 

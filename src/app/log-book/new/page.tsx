@@ -4,7 +4,15 @@ import { useState, useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
 import { useUserStore } from "@/store/useUserStore";
 import { useAuthStore } from "@/store/useAuthStore";
-import TextEditor from "@/components/General/TextEditor";
+import dynamic from "next/dynamic";
+
+const RichTextEditor = dynamic(
+  () =>
+    import("@/components/General/RichTextEditor").then(
+      (mod) => mod.RichTextEditor
+    ),
+  { ssr: false, loading: () => <p>Loading editor...</p> }
+);
 import AuthModal from "@/components/General/AuthModal";
 import { ArrowLeft } from "lucide-react";
 import Link from "next/link";
@@ -133,7 +141,7 @@ export default function NewLogEntryPage() {
         <h1 className="text-3xl md:text-4xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-pink-500 mb-8">
           New Log Entry
         </h1>
-        <TextEditor onSave={handleSave} isSaving={isSaving} />
+        <RichTextEditor onSave={handleSave} isSaving={isSaving} />
       </main>
     </div>
   );

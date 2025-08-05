@@ -11,6 +11,10 @@
   },
   "dependencies": {
     "@radix-ui/react-slot": "^1.2.3",
+    "@tiptap/extension-image": "^3.0.9",
+    "@tiptap/pm": "^3.0.9",
+    "@tiptap/react": "^3.0.9",
+    "@tiptap/starter-kit": "^3.0.9",
     "@vercel/analytics": "^1.4.1",
     "assemblyai": "^4.9.0",
     "autoprefixer": "^10.4.21",
