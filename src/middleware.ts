@@ -1,8 +1,20 @@
 import { NextResponse, NextRequest } from "next/server";
 
 export function middleware(request: NextRequest) {
-  const publicPaths = ["/", "/about", "/project", "/yuma-app", "/blog", "/blog/:path*"];
-  const protectedPaths = ["/app", "/app/:path*"];
+  const publicPaths = [
+    "/",
+    "/about",
+    "/project",
+    "/yuma-app",
+    "/blog",
+    "/blog/:path*",
+  ];
+  const protectedPaths = [
+    "/app",
+    "/app/:path*",
+    "/log-book",
+    "/log-book/:path*",
+  ];
 
   const accessToken = request.cookies.get("accessToken")?.value;
 
@@ -17,7 +29,7 @@ export function middleware(request: NextRequest) {
   const isProtectedPath = protectedPaths.some(
     (path) =>
       request.nextUrl.pathname === path ||
-      request.nextUrl.pathname.startsWith(`${path}/`)
+      request.nextUrl.pathname.startsWith(`${path}/`),
   );
 
   if (isProtectedPath) {
@@ -38,5 +50,7 @@ export const config = {
     "/blog/:path*",
     "/app",
     "/app/:path*",
+    "/log-book",
+    "/log-book/:path*",
   ],
 };
