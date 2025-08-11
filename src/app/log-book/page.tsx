@@ -79,7 +79,7 @@ const LogBookCard = ({
 export default function LogBookPage() {
   const { user } = useUserStore();
   const [entries, setEntries] = useState<DiaryEntry[]>([]);
-  const [sortOrder, setSortOrder] = useState<"newest" | "oldest">("newest");
+  const [sortOrder, setSortOrder] = useState<"oldest" | "newest">("oldest");
   const [nextPageToFetch, setNextPageToFetch] = useState<number | null>(null);
   const [hasMore, setHasMore] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
@@ -106,7 +106,7 @@ export default function LogBookPage() {
       const { total_items } = initialResponse.pagination;
       const totalPages = Math.ceil(total_items / LOGS_PER_PAGE);
 
-      if (sortOrder === "newest") {
+      if (sortOrder === "oldest") {
         const lastPageResponse = await getLogBooks(totalPages, LOGS_PER_PAGE);
         if (lastPageResponse && lastPageResponse.log_books) {
           setEntries(lastPageResponse.log_books.reverse());
@@ -115,7 +115,7 @@ export default function LogBookPage() {
           setHasMore(newNextPage > 0);
         }
       } else {
-        // sortOrder === 'oldest'
+        // sortOrder === 'newest'
         setEntries(initialResponse.log_books);
         const newNextPage = 2;
         setNextPageToFetch(totalPages > 1 ? newNextPage : null);
@@ -142,20 +142,20 @@ export default function LogBookPage() {
       const response = await getLogBooks(nextPageToFetch, LOGS_PER_PAGE);
       if (response && response.log_books && response.log_books.length > 0) {
         const newEntries =
-          sortOrder === "newest"
+          sortOrder === "oldest"
             ? response.log_books.reverse()
             : response.log_books;
         setEntries((prev) => [...prev, ...newEntries]);
 
         const newNextPage =
-          sortOrder === "newest" ? nextPageToFetch - 1 : nextPageToFetch + 1;
+          sortOrder === "oldest" ? nextPageToFetch - 1 : nextPageToFetch + 1;
         const totalPages = Math.ceil(
           response.pagination.total_items / LOGS_PER_PAGE
         );
 
-        if (sortOrder === "newest" && newNextPage > 0) {
+        if (sortOrder === "oldest" && newNextPage > 0) {
           setNextPageToFetch(newNextPage);
-        } else if (sortOrder === "oldest" && newNextPage <= totalPages) {
+        } else if (sortOrder === "newest" && newNextPage <= totalPages) {
           setNextPageToFetch(newNextPage);
         } else {
           setNextPageToFetch(null);
@@ -185,11 +185,11 @@ export default function LogBookPage() {
   };
 
   const handleSortToggle = () => {
-    setSortOrder((prev) => (prev === "newest" ? "oldest" : "newest"));
+    setSortOrder((prev) => (prev === "oldest" ? "newest" : "oldest"));
   };
 
   const handleNewEntry = () => {
-    setSortOrder("newest");
+    setSortOrder("oldest");
     initialize();
   };
 
@@ -204,14 +204,14 @@ export default function LogBookPage() {
             <button
               onClick={handleSortToggle}
               className="inline-flex items-center gap-2 px-3 py-2 text-sm font-semibold text-cyan-300 bg-cyan-500/10 border border-cyan-500/30 rounded-lg hover:bg-cyan-500/20 transition-colors"
-              title={`Sort by ${sortOrder === "newest" ? "Oldest" : "Newest"}`}
+              title={`Sort by ${sortOrder === "oldest" ? "Newest" : "Oldest"}`}
             >
-              {sortOrder === "newest" ? (
+              {sortOrder === "oldest" ? (
                 <ArrowUpNarrowWide size={16} />
               ) : (
                 <ArrowDownWideNarrow size={16} />
               )}
-              <span>{sortOrder === "newest" ? "Newest" : "Oldest"}</span>
+              <span>{sortOrder === "oldest" ? "Oldest" : "Newest"}</span>
             </button>
             {user?.is_admin && (
               <AdminNewEntryButton onNewEntry={handleNewEntry} />
@@ -250,7 +250,7 @@ export default function LogBookPage() {
                 >
                   {isLoading
                     ? "Loading..."
-                    : sortOrder === "newest"
+                    : sortOrder === "oldest"
                     ? "Load Older Entries"
                     : "Load More Entries"}
                 </button>
@@ -259,7 +259,7 @@ export default function LogBookPage() {
 
             {!hasMore && entries.length > 0 && (
               <p className="text-center mt-8 text-slate-400 dark:text-slate-500">
-                {sortOrder === "newest"
+                {sortOrder === "oldest"
                   ? "You've reached the end. "
                   : "You've reached the beginning."}
               </p>
