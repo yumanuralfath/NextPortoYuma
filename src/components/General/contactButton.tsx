@@ -53,6 +53,7 @@ export default function ActionButtons() {
     <div className="relative w-full flex flex-col items-center md:items-start gap-4 font-mono text-sm z-10">
       {/* BUTTONS */}
       <div className="flex flex-col md:flex-row gap-4 justify-center md:justify-start">
+        {/* Projects Button */}
         <Link
           href="/project"
           className="inline-flex items-center justify-center rounded-xl p-4 px-6 font-bold transition-colors bg-slate-900 text-slate-50 hover:bg-slate-700 dark:bg-slate-50 dark:text-slate-900 dark:hover:bg-slate-200"
@@ -61,6 +62,18 @@ export default function ActionButtons() {
           <ArrowRight className="ml-2 h-5 w-5" />
         </Link>
 
+        {/* New Notes Button */}
+        <a
+          href="https://notes.yumana.my.id/"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="inline-flex items-center justify-center rounded-xl p-4 px-6 font-bold transition-colors bg-cyan-600 text-white hover:bg-cyan-500 dark:bg-cyan-400 dark:text-black dark:hover:bg-cyan-300 shadow-md hover:shadow-lg"
+        >
+          My Notes
+          <ArrowRight className="ml-2 h-5 w-5" />
+        </a>
+
+        {/* Contact Button */}
         <button
           onClick={() => setShowWindow(!showWindow)}
           className="p-4 px-6 rounded-xl ring-2 ring-cyan-300 bg-white text-black font-bold hover:bg-gray-100 hover:ring-pink-400 transition-all shadow-md hover:shadow-lg dark:bg-black dark:text-cyan-300 dark:hover:bg-[#1a1a1a] dark:hover:ring-pink-400 dark:shadow-md dark:hover:shadow-pink-500/40"
@@ -81,12 +94,6 @@ export default function ActionButtons() {
         >
           <div className="flex justify-between items-center mb-4">
             <h3 className="text-pink-300 text-lg font-bold">Connect with me</h3>
-            {/* <button
-              onClick={() => setShowWindow(false)}
-              className="text-pink-500 hover:text-white transition"
-            >
-              ✕
-            </button> */}
           </div>
 
           <div className="flex justify-center gap-4 flex-wrap">
