@@ -4,23 +4,23 @@ import { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { User, BookText } from "lucide-react";
-import { useAuthStore } from "@/store/useAuthStore";
+// import { useAuthStore } from "@/store/useAuthStore";
 import AuthModal from "@/components/General/AuthModal";
 
 const AboutClientPage = () => {
   const [showAuthModal, setShowAuthModal] = useState(false);
   const [authMode, setAuthMode] = useState<"login" | "register">("login");
-  const { accessToken } = useAuthStore();
+  // const { accessToken } = useAuthStore();
   const router = useRouter();
 
-  const handleLogBookClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
-    e.preventDefault();
-    if (!accessToken) {
-      setShowAuthModal(true);
-    } else {
-      router.push("/log-book");
-    }
-  };
+  // const handleLogBookClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
+  //   e.preventDefault();
+  //   if (!accessToken) {
+  //     setShowAuthModal(true);
+  //   } else {
+  //     router.push("/log-book");
+  //   }
+  // };
 
   const handleAuthSuccess = () => {
     setShowAuthModal(false);
@@ -54,12 +54,12 @@ const AboutClientPage = () => {
                   About Me
                 </h1>
                 <p className="mt-4 text-lg md:text-xl text-slate-600 dark:text-purple-300/90">
-                  I’m just a curious person who loves learning about how the world
-                  works. My background is in chemistry, but my interests often
-                  lead me into exploring science, technology, and any new ideas
-                  that spark my curiosity. I don’t see myself as an expert — I
-                  just enjoy learning, experimenting, and finding connections
-                  between different fields.
+                  I’m just a curious person who loves learning about how the
+                  world works. My background is in chemistry, but my interests
+                  often lead me into exploring science, technology, and any new
+                  ideas that spark my curiosity. I don’t see myself as an expert
+                  — I just enjoy learning, experimenting, and finding
+                  connections between different fields.
                 </p>
               </section>
 
@@ -79,8 +79,8 @@ const AboutClientPage = () => {
                   </p>
                   <div className="mt-8">
                     <Link
-                      href="/log-book"
-                      onClick={handleLogBookClick}
+                      href="https://notes.yumana.my.id/tags/Daily"
+                      //onClick={handleLogBookClick}
                       className="inline-flex items-center justify-center rounded-xl px-8 py-4 font-bold text-lg transition-all duration-300 ease-in-out bg-slate-800 text-white hover:bg-slate-700 dark:bg-green-400 dark:text-slate-900 dark:hover:bg-green-300 shadow-md hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
                     >
                       Explore My Log Book
